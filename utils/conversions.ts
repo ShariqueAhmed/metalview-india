@@ -1,73 +1,71 @@
 /**
- * Conversion utilities for metal prices
- * 
- * All metals are priced in USD per troy ounce from the API
- * We convert to Indian Rupees and appropriate units
+ * Currency and Unit Conversion Utilities
+ * Formats prices for Indian market display
  */
 
-// 1 troy ounce = 31.1035 grams
-const TROY_OUNCE_TO_GRAMS = 31.1035;
-
 /**
- * Convert gold price from USD/oz to ₹/10g
- * @param usdPerOunce - Price in USD per troy ounce
- * @param usdInr - USD to INR exchange rate
- * @returns Price in ₹ per 10 grams
- */
-export function convertGoldToRupeesPer10g(usdPerOunce: number, usdInr: number): number {
-  // Convert to ₹/gram, then multiply by 10
-  const rupeesPerGram = (usdPerOunce * usdInr) / TROY_OUNCE_TO_GRAMS;
-  return rupeesPerGram * 10;
-}
-
-/**
- * Convert silver price from USD/oz to ₹/kg
- * @param usdPerOunce - Price in USD per troy ounce
- * @param usdInr - USD to INR exchange rate
- * @returns Price in ₹ per kilogram
- */
-export function convertSilverToRupeesPerKg(usdPerOunce: number, usdInr: number): number {
-  // Convert to ₹/gram, then multiply by 1000
-  const rupeesPerGram = (usdPerOunce * usdInr) / TROY_OUNCE_TO_GRAMS;
-  return rupeesPerGram * 1000;
-}
-
-/**
- * Convert industrial metal price from USD/oz to ₹/metric ton
- * @param usdPerOunce - Price in USD per troy ounce
- * @param usdInr - USD to INR exchange rate
- * @returns Price in ₹ per metric ton
- */
-export function convertIndustrialMetalToRupeesPerTon(usdPerOunce: number, usdInr: number): number {
-  // Convert to ₹/gram, then multiply by 1,000,000 (1 metric ton = 1,000,000 grams)
-  const rupeesPerGram = (usdPerOunce * usdInr) / TROY_OUNCE_TO_GRAMS;
-  return rupeesPerGram * 1_000_000;
-}
-
-/**
- * Format currency with Indian number formatting
+ * Format number as Indian currency (₹)
  * @param amount - Amount to format
- * @returns Formatted string with ₹ symbol and Indian number format
+ * @returns Formatted string (e.g., "₹1,23,456.78")
  */
-export function formatIndianCurrency(amount: number): string {
+export function formatIndianCurrency(amount: number | null | undefined): string {
+  if (amount === null || amount === undefined || isNaN(amount)) {
+    return '—';
+  }
+
   return new Intl.NumberFormat('en-IN', {
     style: 'currency',
     currency: 'INR',
-    maximumFractionDigits: 2,
     minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
   }).format(amount);
 }
 
 /**
- * Format timestamp to readable string
- * @param timestamp - ISO timestamp string
- * @returns Formatted date-time string
+ * Format number with Indian number system (lakhs, crores)
+ * @param amount - Amount to format
+ * @returns Formatted string (e.g., "1.23 Lakh")
  */
-export function formatTimestamp(timestamp: string): string {
-  const date = new Date(timestamp);
-  return new Intl.DateTimeFormat('en-IN', {
-    dateStyle: 'medium',
-    timeStyle: 'short',
-    timeZone: 'Asia/Kolkata',
-  }).format(date);
+export function formatIndianNumber(amount: number | null | undefined): string {
+  if (amount === null || amount === undefined || isNaN(amount)) {
+    return '—';
+  }
+
+  if (amount >= 10000000) {
+    // Crores
+    return `₹${(amount / 10000000).toFixed(2)} Cr`;
+  } else if (amount >= 100000) {
+    // Lakhs
+    return `₹${(amount / 100000).toFixed(2)} L`;
+  } else if (amount >= 1000) {
+    // Thousands
+    return `₹${(amount / 1000).toFixed(2)} K`;
+  }
+
+  return formatIndianCurrency(amount);
+}
+
+/**
+ * Convert grams to kilograms
+ */
+export function gramsToKilograms(grams: number): number {
+  return grams / 1000;
+}
+
+/**
+ * Convert kilograms to grams
+ */
+export function kilogramsToGrams(kg: number): number {
+  return kg * 1000;
+}
+
+/**
+ * Format city name for display (Title Case)
+ */
+export function formatCityName(city: string | null | undefined): string {
+  if (!city) return 'India';
+  return city
+    .split(/[\s-]+/)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
 }

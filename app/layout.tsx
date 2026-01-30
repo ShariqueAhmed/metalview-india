@@ -6,59 +6,57 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: {
-    default: 'MetalView - Live Gold Prices in India | 24K & 22K Gold Rate Today',
-    template: '%s | MetalView'
+    default: 'SuperMetal - Live Metal Prices in India | Gold, Silver, Copper, Platinum',
+    template: '%s | SuperMetal'
   },
-  description: 'Get live gold prices in India for 24K and 22K gold. Check today\'s gold rate per gram in Delhi, Mumbai, Bangalore, and other cities. Real-time gold price updates with historical trends.',
+  description: 'Get live metal prices in India - Gold, Silver, Copper, and Platinum. Check today\'s rates in Mumbai, Delhi, Bangalore, and other cities. Real-time price updates with historical trends.',
   keywords: [
+    'metal price in india',
     'gold price in india',
+    'silver price in india',
+    'copper price in india',
+    'platinum price in india',
     'gold rate today',
-    '24k gold price',
-    '22k gold price',
-    'gold price per gram',
-    'gold rate delhi',
+    'silver rate today',
+    'live metal prices',
+    'metal price today',
     'gold rate mumbai',
-    'gold rate bangalore',
-    'live gold prices',
-    'gold price today',
-    'gold rate in india',
-    'gold price 1 gram',
-    'gold price 10 gram',
-    'gold price tola',
-    'precious metal prices'
+    'gold rate delhi',
+    'precious metal prices',
+    'industrial metal prices'
   ],
-  authors: [{ name: 'MetalView' }],
-  creator: 'MetalView',
-  publisher: 'MetalView',
+  authors: [{ name: 'SuperMetal' }],
+  creator: 'SuperMetal',
+  publisher: 'SuperMetal',
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://metalview.in'),
+  metadataBase: new URL('https://supermetal.in'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
     type: 'website',
     locale: 'en_IN',
-    url: 'https://metalview.in',
-    title: 'MetalView - Live Gold Prices in India | 24K & 22K Gold Rate Today',
-    description: 'Get live gold prices in India for 24K and 22K gold. Check today\'s gold rate per gram in major cities. Real-time updates with historical trends.',
-    siteName: 'MetalView',
+    url: 'https://supermetal.in',
+    title: 'SuperMetal - Live Metal Prices in India | Gold, Silver, Copper, Platinum',
+    description: 'Get live metal prices in India - Gold, Silver, Copper, and Platinum. Check today\'s rates in major cities. Real-time updates with historical trends.',
+    siteName: 'SuperMetal',
     images: [
       {
         url: '/og-image.svg',
         width: 1200,
         height: 630,
-        alt: 'MetalView - Live Gold Prices in India',
+        alt: 'SuperMetal - Live Metal Prices in India',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'MetalView - Live Gold Prices in India',
-    description: 'Get live gold prices in India for 24K and 22K gold. Check today\'s gold rate per gram.',
+    title: 'SuperMetal - Live Metal Prices in India',
+    description: 'Get live metal prices in India - Gold, Silver, Copper, and Platinum. Check today\'s rates.',
     images: ['/og-image.svg'],
   },
   robots: {
@@ -86,7 +84,7 @@ export default function RootLayout({
   return (
     <html lang="en-IN" suppressHydrationWarning>
       <head>
-        <link rel="canonical" href="https://metalview.in" />
+        <link rel="canonical" href="https://supermetal.in" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#f59e0b" />
         <meta name="geo.region" content="IN" />

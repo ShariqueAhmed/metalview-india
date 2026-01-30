@@ -1,17 +1,20 @@
+/**
+ * Metal Card Component
+ * Displays individual metal price with icon and trend indicator
+ */
+
 'use client';
 
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { formatIndianCurrency } from '@/utils/conversions';
-import React, { useEffect, useState, useRef } from 'react';
 
 interface MetalCardProps {
   name: string;
   price: number | null;
   unit: string;
-  icon?: React.ReactNode;
-  color?: 'gold' | 'silver' | 'copper' | 'aluminium' | 'zinc';
+  icon: React.ReactNode;
+  trend?: 'up' | 'down' | 'neutral' | null;
   previousPrice?: number | null;
-  unavailable?: boolean;
 }
 
 export default function MetalCard({
@@ -19,170 +22,141 @@ export default function MetalCard({
   price,
   unit,
   icon,
-  color = 'gold',
+  trend,
   previousPrice,
-  unavailable = false,
 }: MetalCardProps) {
-  const [displayPrice, setDisplayPrice] = useState(price || 0);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const prevPriceRef = useRef(price || 0);
+  const getTrendIndicator = () => {
+    if (!trend && previousPrice && price) {
+      if (price > previousPrice) trend = 'up';
+      else if (price < previousPrice) trend = 'down';
+      else trend = 'neutral';
+    }
 
-  // Handle unavailable data
-  if (unavailable || price === null) {
+    if (trend === 'up') {
+      return (
+        <div className="flex items-center gap-1.5 px-2 py-1 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg">
+          <TrendingUp className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+          <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">↑</span>
+        </div>
+      );
+    } else if (trend === 'down') {
+      return (
+        <div className="flex items-center gap-1.5 px-2 py-1 bg-red-50 dark:bg-red-900/20 rounded-lg">
+          <TrendingDown className="w-4 h-4 text-red-600 dark:text-red-400" />
+          <span className="text-xs font-semibold text-red-600 dark:text-red-400">↓</span>
+        </div>
+      );
+    } else {
+      return (
+        <div className="flex items-center gap-1.5 px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded-lg">
+          <Minus className="w-4 h-4 text-gray-400 dark:text-gray-500" />
+        </div>
+      );
+    }
+  };
+
+  if (price === null) {
     return (
-      <div
-        className={`rounded-xl border-2 p-6 shadow-md hover:shadow-lg transition-all duration-300 ${
-          color === 'gold'
-            ? 'bg-gradient-to-br from-yellow-50 to-yellow-100 dark:from-yellow-900/20 dark:to-yellow-800/20 border-yellow-200 dark:border-yellow-800'
-            : color === 'silver'
-            ? 'bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/20 dark:to-gray-700/20 border-gray-200 dark:border-gray-700'
-            : color === 'copper'
-            ? 'bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 border-orange-200 dark:border-orange-800'
-            : color === 'aluminium'
-            ? 'bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 border-blue-200 dark:border-blue-800'
-            : 'bg-gradient-to-br from-indigo-50 to-indigo-100 dark:from-indigo-900/20 dark:to-indigo-800/20 border-indigo-200 dark:border-indigo-800'
-        } dark:bg-opacity-10 opacity-75`}
-      >
+      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6 shadow-sm opacity-60">
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center gap-3">
-            {icon && (
-              <div className="p-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm opacity-50">
-                {icon}
-              </div>
-            )}
+            <div className="p-2 bg-gray-100 dark:bg-gray-800 rounded-lg">
+              {icon}
+            </div>
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h3 className="text-sm font-medium text-gray-900 dark:text-white">
                 {name}
               </h3>
-              <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
                 per {unit}
               </p>
             </div>
           </div>
         </div>
-
         <div className="mt-4">
-          <p className="text-3xl font-bold text-gray-400 dark:text-gray-500">
-            —
-          </p>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-            Free data unavailable
+          <p className="text-2xl font-bold text-gray-400">—</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+            Data unavailable
           </p>
         </div>
       </div>
     );
   }
 
-  // Update display price immediately if price changes and we don't have a previous value
-  useEffect(() => {
-    if (prevPriceRef.current === 0 && price && price > 0) {
-      setDisplayPrice(price);
-      prevPriceRef.current = price;
+  const is24K = name.includes('24K');
+  const is22K = name.includes('22K');
+  const is1g = unit === '1g';
+  
+  // Different gradient backgrounds based on metal type
+  const getCardGradient = () => {
+    if (is24K) {
+      return 'bg-gradient-to-br from-amber-50 via-yellow-50 to-amber-50 dark:from-amber-950/30 dark:via-yellow-950/20 dark:to-amber-950/30';
+    } else if (is22K) {
+      return 'bg-gradient-to-br from-amber-50/80 via-orange-50/50 to-amber-50/80 dark:from-amber-950/20 dark:via-orange-950/10 dark:to-amber-950/20';
     }
-  }, [price]);
-
-  useEffect(() => {
-    if (price === null) return;
-    
-    // Animate price change from previous to new price
-    if (prevPriceRef.current === price) {
-      setDisplayPrice(price);
-      return; // No animation needed if price hasn't changed
-    }
-    
-    setIsAnimating(true);
-    const duration = 800;
-    const steps = 40;
-    const startPrice = prevPriceRef.current;
-    const priceDiff = price - startPrice;
-    const increment = priceDiff / steps;
-    let step = 0;
-
-    const timer = setInterval(() => {
-      step++;
-      if (step >= steps) {
-        setDisplayPrice(price);
-        setIsAnimating(false);
-        prevPriceRef.current = price;
-        clearInterval(timer);
-      } else {
-        setDisplayPrice(startPrice + increment * step);
-      }
-    }, duration / steps);
-
-    return () => clearInterval(timer);
-  }, [price]);
-
-  const getPriceChange = () => {
-    if (!previousPrice || price === null) return null;
-    const change = price - previousPrice;
-    const percentChange = ((change / previousPrice) * 100).toFixed(2);
-    return { change, percentChange };
+    return 'bg-white dark:bg-gray-900';
   };
 
-  const priceChange = getPriceChange();
-  const isPositive = priceChange && priceChange.change > 0;
-  const isNegative = priceChange && priceChange.change < 0;
-
-  const colorClasses = {
-    gold: 'bg-white dark:bg-gray-900 border-amber-200/60 dark:border-amber-800/60',
-    silver: 'bg-white dark:bg-gray-900 border-gray-200/60 dark:border-gray-800/60',
-    copper: 'bg-white dark:bg-gray-900 border-orange-200/60 dark:border-orange-800/60',
-    aluminium: 'bg-white dark:bg-gray-900 border-blue-200/60 dark:border-blue-800/60',
-    zinc: 'bg-white dark:bg-gray-900 border-indigo-200/60 dark:border-indigo-800/60',
+  const getIconBg = () => {
+    if (is24K) {
+      return 'bg-gradient-to-br from-amber-500 to-yellow-600 dark:from-amber-600 dark:to-yellow-700';
+    } else if (is22K) {
+      return 'bg-gradient-to-br from-amber-400 to-orange-500 dark:from-amber-500 dark:to-orange-600';
+    }
+    return 'bg-amber-50 dark:bg-amber-900/20';
   };
 
   return (
-    <div
-      className={`rounded-lg border p-5 shadow-sm hover:shadow-md transition-all duration-200 ${colorClasses[color]}`}
-    >
-      <div className="flex items-start justify-between mb-4">
-        <div className="flex items-center gap-3">
-          {icon && (
-            <div className="p-2 bg-gray-50 dark:bg-gray-800/50 rounded-md border border-gray-200/60 dark:border-gray-700/60">
-              {icon}
+    <div className={`${getCardGradient()} rounded-2xl border-2 border-amber-200/60 dark:border-amber-800/60 p-7 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.02] relative overflow-hidden group`}>
+      {/* Decorative gradient overlay */}
+      <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-amber-200/30 to-transparent dark:from-amber-800/20 rounded-full blur-3xl -mr-20 -mt-20 group-hover:scale-150 transition-transform duration-500"></div>
+      {/* Shine effect on hover */}
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+      
+      <div className="relative z-10">
+        <div className="flex items-start justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <div className={`${getIconBg()} p-3.5 rounded-xl shadow-lg transform hover:scale-110 transition-transform duration-300`}>
+              <div className="text-white">
+                {icon}
+              </div>
+            </div>
+            <div>
+              <h3 className="text-base font-bold text-gray-900 dark:text-white tracking-tight">
+                {name}
+              </h3>
+              <p className="text-xs font-semibold text-amber-600 dark:text-amber-400 mt-1.5 uppercase tracking-wide">
+                per {unit}
+              </p>
+            </div>
+          </div>
+          {getTrendIndicator()}
+        </div>
+        <div className="mt-6 pt-4 border-t border-amber-200/50 dark:border-amber-800/50">
+          <p className="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight mb-2">
+            {formatIndianCurrency(price)}
+          </p>
+          {previousPrice && price && (
+            <div className="flex items-center gap-2">
+              {price > previousPrice ? (
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300 rounded-lg text-xs font-semibold">
+                  <span>↑</span>
+                  +{formatIndianCurrency(price - previousPrice)}
+                </span>
+              ) : price < previousPrice ? (
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 rounded-lg text-xs font-semibold">
+                  <span>↓</span>
+                  {formatIndianCurrency(price - previousPrice)}
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 rounded-lg text-xs font-semibold">
+                  <span>→</span>
+                  No change
+                </span>
+              )}
             </div>
           )}
-          <div>
-            <h3 className="text-base font-semibold text-gray-900 dark:text-white">
-              {name}
-            </h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-              per {unit}
-            </p>
-          </div>
         </div>
-        
-        {priceChange && (
-          <div
-            className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium ${
-              isPositive
-                ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border border-emerald-200/60 dark:border-emerald-800/60'
-                : isNegative
-                ? 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 border border-red-200/60 dark:border-red-800/60'
-                : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-400'
-            }`}
-          >
-            {isPositive ? (
-              <TrendingUp className="w-3 h-3" />
-            ) : isNegative ? (
-              <TrendingDown className="w-3 h-3" />
-            ) : (
-              <Minus className="w-3 h-3" />
-            )}
-            <span>{Math.abs(parseFloat(priceChange.percentChange))}%</span>
-          </div>
-        )}
-      </div>
-
-      <div className="mt-4">
-        <p
-          className={`text-2xl font-semibold text-gray-900 dark:text-white transition-all ${
-            isAnimating ? 'scale-105' : ''
-          }`}
-        >
-          {formatIndianCurrency(displayPrice)}
-        </p>
       </div>
     </div>
   );

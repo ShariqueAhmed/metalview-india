@@ -1,336 +1,247 @@
-# SuperMetal
+# SuperMetal - Indian Metal Price Screener
 
-A production-ready, lightweight, serverless web application that displays live prices of precious and industrial metals relevant to the Indian market.
+A production-ready, serverless web application for displaying live metal prices in India. Built with Next.js 14, TypeScript, and Tailwind CSS.
 
 ## 🎯 Features
 
-- **Live Metal Prices**: Real-time prices for Gold, Silver, Copper, Aluminium, and Zinc
-- **Indian Market Units**: Prices displayed in ₹ per 10g (Gold), ₹ per kg (Silver), and ₹ per metric ton (Industrial metals)
-- **Free API Support**: Works with free APIs - no API key required for precious metals!
-- **Graceful Fallbacks**: Industrial metals show "—" with note if unavailable in free tier
-- **Modern UI**: Clean, responsive design with dark mode support
-- **Price Charts**: Historical price trends for Gold and Silver (7D/30D views)
-- **Auto-refresh**: Prices update automatically every 10 minutes
-- **Error Handling**: Graceful fallback with cached data when APIs are unavailable
-- **Serverless**: Built with Next.js API routes, deployable on Vercel free tier
+- **Live Metal Prices**: Gold, Silver, Copper, and Platinum prices in Indian Rupees
+- **City-Specific Pages**: SEO-optimized pages for major Indian cities
+- **Real-Time Updates**: Prices updated every 10 minutes with intelligent caching
+- **Price Charts**: Historical price trends using Recharts
+- **Responsive Design**: Mobile-first, fully responsive UI
+- **SEO Optimized**: Complete SEO system with structured data, sitemap, and meta tags
+- **Serverless Architecture**: Deployable on Vercel Free Tier
 
-## 🚀 Quick Start
+## 🧱 Tech Stack
 
-### Prerequisites
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript 5.2
+- **Styling**: Tailwind CSS 3.3.5
+- **Icons**: Lucide React
+- **Charts**: Recharts 2.10.0
+- **Fonts**: Inter (Google Fonts)
+- **Deployment**: Vercel (Serverless)
 
-- Node.js 18+ and npm/yarn
-- **No API key required!** The app works with free APIs out of the box
-- Optional: MetalpriceAPI key for industrial metals (free tier available)
+## 📦 Installation
 
-### Installation
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd supermetal
+   ```
 
-1. **Clone or download this repository**
-
-2. **Install dependencies**:
+2. **Install dependencies**
    ```bash
    npm install
-   # or
-   yarn install
    ```
 
-3. **Set up environment variables (OPTIONAL)**:
+3. **Set up environment variables** (optional)
+   ```bash
+   cp .env.example .env.local
+   ```
    
-   Create a `.env.local` file in the root directory:
+   Add your configuration:
    ```env
-   # Optional: Only needed if you want industrial metals data
-   # Get free key at: https://metalpriceapi.com/
-   METALPRICE_API_KEY=your_metalprice_api_key_here
+   NEXT_PUBLIC_BASE_URL=http://localhost:3000
+   NEXT_PUBLIC_GOOGLE_VERIFICATION=your-google-verification-code
    ```
-   
-   **Note**: The app works perfectly without this key! Precious metals (Gold & Silver) will work using the free gold-api.com service.
 
-4. **Run the development server**:
+4. **Run development server**
    ```bash
    npm run dev
-   # or
-   yarn dev
    ```
 
-5. **Open your browser**:
-   
-   Navigate to [http://localhost:3000](http://localhost:3000)
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## 📦 Project Structure
+## 🚀 Quick Deploy to Vercel
 
-```
-metalview-india/
-├── app/
-│   ├── api/
-│   │   └── metals/
-│   │       └── route.ts          # Serverless API endpoint
-│   ├── globals.css                # Global styles
-│   ├── layout.tsx                 # Root layout
-│   └── page.tsx                   # Main dashboard page
-├── components/
-│   ├── ChartSection.tsx           # Price charts component
-│   ├── Footer.tsx                  # Footer with disclaimer
-│   ├── Header.tsx                  # Header with dark mode toggle
-│   ├── MetalCard.tsx               # Individual metal price card
-│   └── PriceGrid.tsx               # Grid of metal price cards
-├── utils/
-│   ├── cache.ts                    # In-memory cache utility
-│   ├── conversions.ts               # Price conversion utilities
-│   ├── fetcher.ts                  # Exchange rate fetcher
-│   └── fetchMetalPrices.ts         # Metal price fetcher (swappable providers)
-├── package.json
-├── tailwind.config.js
-├── tsconfig.json
-└── README.md
-```
+### Method 1: Deploy via Vercel Dashboard (Easiest)
 
-## 🌐 Deployment to Vercel
-
-### Step 1: Prepare Your Repository
-
-1. Initialize git (if not already done):
+1. **Push your code to GitHub**
    ```bash
    git init
    git add .
    git commit -m "Initial commit"
-   ```
-
-2. Push to GitHub/GitLab/Bitbucket:
-   ```bash
-   git remote add origin <your-repo-url>
+   git remote add origin https://github.com/YOUR_USERNAME/supermetal.git
    git push -u origin main
    ```
 
-### Step 2: Deploy to Vercel
-
-1. **Sign up/Login** to [Vercel](https://vercel.com/)
-
-2. **Import your project**:
-   - Click "New Project"
-   - Import your Git repository
+2. **Import to Vercel**
+   - Go to [vercel.com](https://vercel.com) and sign in (free account)
+   - Click **"Add New Project"**
+   - Import your GitHub repository
    - Vercel will auto-detect Next.js settings
+   - Click **"Deploy"**
 
-3. **Add Environment Variable (OPTIONAL)**:
-   - In project settings, go to "Environment Variables"
-   - Add `METALPRICE_API_KEY` with your API key value (only if you want industrial metals)
-   - Select "Production", "Preview", and "Development" environments
-   - **Note**: You can skip this step - the app works without it!
+3. **Done!** Your app will be live in 2-3 minutes at `https://your-project.vercel.app`
 
-4. **Deploy**:
-   - Click "Deploy"
-   - Wait for build to complete
-   - Your app will be live at `https://your-project.vercel.app`
+### Method 2: Deploy via Vercel CLI
 
-### Step 3: Verify Deployment
-
-- Check that the API route works: `https://your-project.vercel.app/api/metals`
-- Verify prices are loading correctly on the homepage
-- Test dark mode toggle
-- Check responsive design on mobile
-
-## 🔧 API Providers
-
-The app uses a **swappable API provider system** for maximum reliability:
-
-### Precious Metals (Gold & Silver)
-
-**Primary Provider: gold-api.com** (No API key required)
-- Free, no registration needed
-- Reliable and fast
-- Endpoints:
-  - `https://gold-api.com/api/XAU/USD` (Gold)
-  - `https://gold-api.com/api/XAG/USD` (Silver)
-
-**Fallback Provider: MetalpriceAPI** (Optional API key)
-- Used if gold-api.com fails
-- Requires free API key from [metalpriceapi.com](https://metalpriceapi.com/)
-
-### Industrial Metals (Copper, Aluminium, Zinc)
-
-**Provider: MetalpriceAPI** (Optional API key)
-- Only available if `METALPRICE_API_KEY` is set
-- Free tier may have limitations
-- If unavailable, cards show "—" with note: "Free data unavailable"
-
-### Currency Conversion
-
-**Provider: exchangerate.host** (Free, no API key)
-- Endpoint: `https://api.exchangerate.host/latest?base=USD&symbols=INR`
-- Fallback rate: 83.0 INR/USD if API fails
-
-## 🔄 How to Switch API Providers
-
-The API provider system is designed to be easily swappable. Edit `utils/fetchMetalPrices.ts`:
-
-### Adding a New Provider
-
-1. **Create a new fetch function**:
-   ```typescript
-   async function fetchFromNewProvider(): Promise<PreciousMetalPrices> {
-     // Your API logic here
-     return {
-       gold: goldPrice,
-       silver: silverPrice,
-     };
-   }
+1. **Install Vercel CLI**
+   ```bash
+   npm install -g vercel
    ```
 
-2. **Add to the main fetchMetalPrices function**:
-   ```typescript
-   export async function fetchMetalPrices(apiKey?: string): Promise<MetalPricesResponse> {
-     // Try new provider first
-     try {
-       const precious = await fetchFromNewProvider();
-       return { precious, industrial: {}, source: 'new-provider' };
-     } catch (error) {
-       // Fallback to existing providers...
-     }
-   }
+2. **Login to Vercel**
+   ```bash
+   vercel login
    ```
 
-### Changing Provider Priority
-
-Modify the order of try-catch blocks in `fetchMetalPrices()` to change which provider is tried first.
-
-## 🧮 Price Conversion Logic
-
-### Gold (₹/10g)
-```
-(gold_usd_per_ounce × usd_inr / 31.1035) × 10
-```
-
-### Silver (₹/kg)
-```
-(silver_usd_per_ounce × usd_inr / 31.1035) × 1000
-```
-
-### Industrial Metals (₹/metric ton)
-```
-(metal_usd_per_ounce × usd_inr / 31.1035) × 1,000,000
-```
-
-**Note**: 1 troy ounce = 31.1035 grams
-
-## ➕ Adding More Metals
-
-To add more metals:
-
-1. **Update the API call** in `utils/fetchMetalPrices.ts`:
-   ```typescript
-   // Add new metal symbol to the API request
-   const url = `...&symbols=XAU,XAG,NEW_SYMBOL`;
+3. **Deploy**
+   ```bash
+   vercel
+   ```
+   Follow the prompts, then deploy to production:
+   ```bash
+   vercel --prod
    ```
 
-2. **Update the API route** in `app/api/metals/route.ts`:
-   ```typescript
-   // Add conversion logic for new metal
-   const newMetal_ton = metalsData.industrial.newMetal
-     ? convertIndustrialMetalToRupeesPerTon(
-         metalsData.industrial.newMetal,
-         usdInr
-       )
-     : null;
-   
-   // Add to response
-   return {
-     ...existingData,
-     newMetal_ton: newMetal_ton ? Math.round(newMetal_ton * 100) / 100 : null,
-   };
-   ```
+### Environment Variables (Optional)
 
-3. **Add to PriceGrid** in `components/PriceGrid.tsx`:
-   ```tsx
-   <MetalCard
-     name="New Metal"
-     price={data.newMetal_ton}
-     unit="metric ton"
-     unavailable={data.newMetal_ton === null}
-     // ... other props
-   />
-   ```
+Set these in Vercel Dashboard → Settings → Environment Variables:
 
-4. **Update TypeScript interfaces** in relevant files
+- `NEXT_PUBLIC_BASE_URL`: Your production URL (e.g., `https://your-project.vercel.app`)
+- `NEXT_PUBLIC_GOOGLE_VERIFICATION`: Google Search Console verification code (optional)
 
-## ⚙️ Configuration
+**Note:** No environment variables are required for basic deployment. The app works out of the box!
 
-### Changing Cache Duration
+📖 **For detailed deployment instructions, see [DEPLOYMENT.md](./DEPLOYMENT.md)**
 
-Edit `CACHE_TTL` in `app/api/metals/route.ts`:
-```typescript
-const cache = new SimpleCache<any>(10); // Change 10 to desired minutes
+## 📁 Project Structure
+
+```
+supermetal/
+├── app/
+│   ├── api/
+│   │   └── metals/
+│   │       ├── route.ts              # Main API route
+│   │       └── [city]/
+│   │           └── route.ts          # City-specific API route
+│   ├── gold-price-today-in-[city]/
+│   │   ├── page.tsx                  # City-specific gold price page
+│   │   └── GoldPricePageClient.tsx  # Client component
+│   ├── layout.tsx                    # Root layout with SEO metadata
+│   ├── page.tsx                      # Homepage
+│   └── sitemap.ts                    # Dynamic sitemap
+├── components/
+│   ├── Header.tsx                    # App header
+│   ├── CitySelector.tsx              # City dropdown selector
+│   ├── MetalCard.tsx                 # Individual metal price card
+│   ├── PriceGrid.tsx                 # Grid of metal price cards
+│   ├── ChartSection.tsx              # Price trend charts
+│   └── Footer.tsx                    # Footer with disclaimer
+├── utils/
+│   ├── growwFetcher.ts               # Groww API integration
+│   ├── cache.ts                      # In-memory caching system
+│   ├── conversions.ts                # Currency/unit formatting
+│   └── seo.ts                        # SEO utilities
+└── public/
+    └── robots.txt                    # Robots.txt file
 ```
 
-### Customizing UI
+## 🔧 API Routes
 
-- **Colors**: Edit `tailwind.config.js` for theme colors
-- **Fonts**: Change font in `app/layout.tsx`
-- **Branding**: Update app name in `components/Header.tsx`
+### `/api/metals`
+Fetches metal prices for default city (Mumbai) or specified city via query parameter.
 
-## 🛠️ Tech Stack
+**Query Parameters:**
+- `city` (optional): City name (e.g., `mumbai`, `delhi`)
 
-- **Framework**: Next.js 14 (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **Charts**: Recharts
-- **Icons**: Lucide React
-- **Fonts**: Inter (Google Fonts)
-- **Hosting**: Vercel (Serverless)
+**Response:**
+```json
+{
+  "city": "mumbai",
+  "gold_10g": 65000.50,
+  "silver_1kg": 85000.00,
+  "copper": null,
+  "platinum": null,
+  "updated_at": "2025-01-20T10:30:00.000Z",
+  "cached": false
+}
+```
 
-## 📱 Browser Support
+### `/api/metals/[city]`
+Fetches metal prices for a specific city.
 
-- Chrome/Edge (latest)
-- Firefox (latest)
-- Safari (latest)
-- Mobile browsers (iOS Safari, Chrome Mobile)
+**Example:** `/api/metals/delhi`
+
+## 🎨 Customization
+
+### Adding New Cities
+
+1. Add city to `TOP_CITIES` array in:
+   - `app/page.tsx`
+   - `app/gold-price-today-in-[city]/page.tsx`
+   - `app/sitemap.ts`
+
+2. The city will automatically be included in:
+   - City selector dropdown
+   - Static page generation
+   - Sitemap
+
+### Styling
+
+The app uses Tailwind CSS. Customize colors, spacing, and other design tokens in `tailwind.config.js`.
+
+### Data Source
+
+Currently uses Groww.in API. To change data source, update `utils/growwFetcher.ts`.
+
+## 📊 Caching Strategy
+
+- **In-Memory Cache**: 10-minute TTL per city
+- **City-Specific Caches**: Separate cache for each city to reduce API load
+- **Stale-While-Revalidate**: Returns cached data if API fails
+- **Server-Side Caching**: Next.js revalidation every 10 minutes
+
+## 🔍 SEO Features
+
+- **Dynamic Metadata**: City and metal-specific meta tags
+- **Structured Data**: JSON-LD schema markup
+- **Sitemap**: Auto-generated sitemap with all city pages
+- **Robots.txt**: Search engine directives
+- **Open Graph**: Social media sharing tags
+- **Canonical URLs**: Prevents duplicate content issues
 
 ## 🐛 Troubleshooting
 
-### Prices Not Loading
-
-1. **Check Internet Connection**: Verify APIs are accessible
-2. **Check Console**: Look for errors in browser console
-3. **Check API Status**: Visit gold-api.com to verify service status
-4. **Try Refresh**: Click the "Refresh Prices" button
-
-### Industrial Metals Show "—"
-
-This is expected behavior if:
-- No `METALPRICE_API_KEY` is set
-- MetalpriceAPI free tier doesn't include industrial metals
-- API rate limit exceeded
-
-**Solution**: Get a free API key from [metalpriceapi.com](https://metalpriceapi.com/) and add it to `.env.local`
-
 ### Build Errors
 
-1. **TypeScript Errors**: Run `npm run build` locally to see errors
-2. **Missing Dependencies**: Run `npm install` again
-3. **Environment Variables**: Ensure all required env vars are set (if using MetalpriceAPI)
+If you encounter build errors:
 
-### Deployment Issues
+1. Clear `.next` directory:
+   ```bash
+   rm -rf .next
+   npm run build
+   ```
 
-1. **Build Fails**: Check Vercel build logs
-2. **API Route 500**: Verify environment variables in Vercel dashboard (if using MetalpriceAPI)
-3. **CORS Issues**: Next.js API routes handle CORS automatically
+2. Clear node_modules and reinstall:
+   ```bash
+   rm -rf node_modules package-lock.json
+   npm install
+   ```
 
-## 📄 License
+### API Errors
 
-This project is open source and available for personal and commercial use.
+If API calls fail:
 
-## 🙏 Acknowledgments
+1. Check Groww API availability
+2. Verify network connectivity
+3. Check browser console for errors
+4. Cached data will be served if available
 
-- [Gold-API.com](https://gold-api.com/) for free precious metal prices
-- [MetalpriceAPI](https://metalpriceapi.com/) for optional industrial metal data
-- [ExchangeRate.host](https://exchangerate.host/) for currency conversion
-- [Vercel](https://vercel.com/) for hosting platform
+## 📝 License
 
-## 📝 Notes
+This project is open source and available under the MIT License.
 
-- Prices are indicative, derived from international spot markets, and for informational purposes only
-- Actual local prices may vary based on premiums, taxes, and market conditions
-- This app is for informational purposes only and not financial advice
-- Chart data is currently simulated; connect to historical API for real data
-- **The app works perfectly without any API keys** - precious metals use free gold-api.com service
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📧 Support
+
+For issues and questions, please open an issue on GitHub.
 
 ---
 
-Built with ❤️ for the Indian market
+Built with ❤️ using Next.js 14

@@ -1,6 +1,6 @@
 /**
- * API Route: /api/metals
- * Fetches metal prices for default city (Mumbai)
+ * API Route: /api/metals/[city]
+ * Fetches metal prices for a specific city
  * Uses in-memory caching with 10-minute TTL
  */
 
@@ -23,11 +23,13 @@ export interface MetalsApiResponse {
   goldTrend?: GoldTrendPoint[];
 }
 
-export async function GET(request: Request) {
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ city: string }> }
+) {
   try {
-    // Get city from query params, default to mumbai
-    const { searchParams } = new URL(request.url);
-    const city = searchParams.get('city') || 'mumbai';
+    const { city: cityParam } = await params;
+    const city = cityParam || 'mumbai';
 
     // Get city-specific cache
     const cache = getCityCache<MetalsApiResponse>(city);
@@ -44,20 +46,20 @@ export async function GET(request: Request) {
     // Fetch fresh data from Groww API
     const growwData = await fetchGrowwMetalPrices(city);
 
-    const responseData: MetalsApiResponse = {
-      city: growwData.city || city,
-      gold_10g: growwData.gold_10g,
-      gold_22k_10g: growwData.gold_22k_10g,
-      gold_1g: growwData.gold_1g,
-      gold_22k_1g: growwData.gold_22k_1g,
-      silver_1kg: growwData.silver_1kg,
-      copper: growwData.copper,
-      platinum: growwData.platinum,
-      updated_at: growwData.updated_at,
-      cached: false,
-      trendingCities: growwData.trendingCities || [],
-      goldTrend: growwData.goldTrend,
-    };
+      const responseData: MetalsApiResponse = {
+        city: growwData.city || city,
+        gold_10g: growwData.gold_10g,
+        gold_22k_10g: growwData.gold_22k_10g,
+        gold_1g: growwData.gold_1g,
+        gold_22k_1g: growwData.gold_22k_1g,
+        silver_1kg: growwData.silver_1kg,
+        copper: growwData.copper,
+        platinum: growwData.platinum,
+        updated_at: growwData.updated_at,
+        cached: false,
+        trendingCities: growwData.trendingCities || [],
+        goldTrend: growwData.goldTrend,
+      };
 
     // Store in cache
     cache.set(responseData);
@@ -67,8 +69,8 @@ export async function GET(request: Request) {
     console.error('Error fetching metal prices:', error);
 
     // Try to return cached data even if expired
-    const { searchParams } = new URL(request.url);
-    const city = searchParams.get('city') || 'mumbai';
+    const { city: cityParam } = await params;
+    const city = cityParam || 'mumbai';
     const cache = getCityCache<MetalsApiResponse>(city);
     const cachedData = cache.get();
 
@@ -84,7 +86,7 @@ export async function GET(request: Request) {
     return NextResponse.json(
       {
         error: 'Live prices temporarily unavailable. Please try again later.',
-        city: searchParams.get('city') || 'mumbai',
+        city: cityParam || 'mumbai',
         gold_10g: null,
         gold_22k_10g: null,
         gold_1g: null,

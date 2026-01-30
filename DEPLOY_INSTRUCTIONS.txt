@@ -1,0 +1,53 @@
+🚀 VERCEL DEPLOYMENT INSTRUCTIONS
+==================================
+
+QUICK START (5 minutes):
+------------------------
+
+1. CREATE GITHUB REPOSITORY:
+   - Go to github.com and create a new repository
+   - Name it "supermetal" (or any name you prefer)
+   - Don't initialize with README
+
+2. PUSH CODE TO GITHUB:
+   cd /Users/shariquea.ansari/metalview-india
+   git init
+   git add .
+   git commit -m "Initial commit - SuperMetal app"
+   git branch -M main
+   git remote add origin https://github.com/YOUR_USERNAME/supermetal.git
+   git push -u origin main
+   
+   (Replace YOUR_USERNAME with your GitHub username)
+
+3. DEPLOY TO VERCEL:
+   - Go to vercel.com
+   - Sign in with GitHub (free account)
+   - Click "Add New Project"
+   - Select your "supermetal" repository
+   - Click "Import"
+   - Vercel will auto-detect Next.js
+   - Click "Deploy"
+   - Wait 2-3 minutes
+   - Your app is live! 🎉
+
+OPTIONAL: SET ENVIRONMENT VARIABLES
+-----------------------------------
+After deployment, you can set these in Vercel Dashboard → Settings → Environment Variables:
+
+- NEXT_PUBLIC_BASE_URL: https://your-project.vercel.app
+- NEXT_PUBLIC_GOOGLE_VERIFICATION: (if you have Google Search Console)
+
+CUSTOM DOMAIN (Optional):
+-------------------------
+- Go to Vercel Dashboard → Your Project → Settings → Domains
+- Add your custom domain
+- Follow DNS instructions
+
+TROUBLESHOOTING:
+---------------
+- Build fails? Check build logs in Vercel Dashboard
+- Test locally first: npm run build
+- All TypeScript errors must be fixed before deployment
+
+That's it! Your app is now live on Vercel! 🚀
