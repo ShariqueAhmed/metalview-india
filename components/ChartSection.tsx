@@ -65,17 +65,17 @@ export default function ChartSection({ goldData, silverData }: ChartSectionProps
   }));
 
   return (
-    <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6">
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+    <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-4 sm:p-6">
+      <div className="mb-4 sm:mb-6">
+        <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-1 sm:mb-2">
           Price Trends (Last 7 Days)
         </h2>
-        <p className="text-sm text-gray-600 dark:text-gray-400">
+        <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
           Historical price movement for Gold and Silver
         </p>
       </div>
 
-      <div className="w-full h-80">
+      <div className="w-full h-64 sm:h-80">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" className="stroke-gray-300 dark:stroke-gray-700" />

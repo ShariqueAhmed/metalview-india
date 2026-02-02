@@ -74,8 +74,8 @@ export default function MetalTabs({
   };
 
   return (
-    <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg rounded-2xl border-2 border-amber-100 dark:border-amber-900/50 shadow-xl p-3 mb-10">
-      <div className="flex flex-wrap gap-3">
+    <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg rounded-xl sm:rounded-2xl border-2 border-amber-100 dark:border-amber-900/50 shadow-xl p-2 sm:p-3 mb-6 sm:mb-10">
+      <div className="flex flex-wrap gap-2 sm:gap-3">
         {metalOptions.map((metal) => {
           const isActive = selectedMetal === metal.id;
           const hasData = getDataAvailability(metal.id);
@@ -105,10 +105,10 @@ export default function MetalTabs({
               key={metal.id}
               onClick={() => onMetalChange(metal.id)}
               className={`
-                flex items-center gap-2.5 px-5 py-3 rounded-xl font-semibold text-sm transition-all duration-300 transform
+                flex items-center gap-1.5 sm:gap-2.5 px-3 sm:px-5 py-2 sm:py-3 rounded-lg sm:rounded-xl font-semibold text-xs sm:text-sm transition-all duration-300 transform
                 ${activeGradient}
-                ${!hasData ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:scale-105'}
-                ${isActive ? 'scale-105 ring-2 ring-offset-2 ring-amber-300 dark:ring-amber-700' : ''}
+                ${!hasData ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:scale-105 active:scale-95'}
+                ${isActive ? 'scale-105 ring-2 ring-offset-1 sm:ring-offset-2 ring-amber-300 dark:ring-amber-700' : ''}
               `}
               disabled={!hasData}
               title={!hasData ? `${metal.name} data not available` : `View ${metal.name} prices`}

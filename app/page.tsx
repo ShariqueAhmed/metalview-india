@@ -150,20 +150,22 @@ export default function Home() {
         )}
 
         {/* City Selector */}
-        <div className="mb-8 flex justify-between items-center flex-wrap gap-4">
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
+        <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-4">
+          <div className="w-full sm:w-auto">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-1">
               Select Location
             </h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
               Choose your city to view local prices
             </p>
           </div>
-          <CitySelector
-            cities={availableCities}
-            selectedCity={selectedCity}
-            onCityChange={handleCityChange}
-          />
+          <div className="w-full sm:w-auto">
+            <CitySelector
+              cities={availableCities}
+              selectedCity={selectedCity}
+              onCityChange={handleCityChange}
+            />
+          </div>
         </div>
 
         {/* Metal Tabs */}
@@ -180,22 +182,22 @@ export default function Home() {
         {selectedMetal === 'gold' && (
           <>
             <div className="mb-12">
-              <div className="mb-10">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-2 h-12 bg-gradient-to-b from-amber-500 via-yellow-500 to-amber-600 rounded-full shadow-lg"></div>
-                  <div className="flex-1">
-                    <h2 className="text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight mb-1">
+              <div className="mb-8 sm:mb-10">
+                <div className="flex items-center gap-2 sm:gap-4 mb-3 sm:mb-4">
+                  <div className="w-1.5 sm:w-2 h-8 sm:h-12 bg-gradient-to-b from-amber-500 via-yellow-500 to-amber-600 rounded-full shadow-lg"></div>
+                  <div className="flex-1 min-w-0">
+                    <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight mb-1 break-words">
                       Gold Prices
                       {data?.city && (
-                        <span className="text-2xl font-semibold text-amber-600 dark:text-amber-400 ml-3">
+                        <span className="block sm:inline text-xl sm:text-2xl font-semibold text-amber-600 dark:text-amber-400 sm:ml-3 mt-1 sm:mt-0">
                           in {data.city}
                         </span>
                       )}
                     </h2>
                     {data?.updated_at && (
-                      <div className="flex items-center gap-2 mt-2">
+                      <div className="flex items-center gap-2 mt-2 flex-wrap">
                         <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-                        <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                        <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">
                           Live • Updated {new Date(data.updated_at).toLocaleString('en-IN', { 
                             day: 'numeric', 
                             month: 'short', 
@@ -207,14 +209,14 @@ export default function Home() {
                     )}
                   </div>
                 </div>
-                <div className="ml-6 mb-6">
-                  <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                <div className="ml-4 sm:ml-6 mb-4 sm:mb-6">
+                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
                     View real-time gold prices for 24K (pure gold) and 22K (jewelry grade) in different weights. 
                     Prices are updated live from market data.
                   </p>
                 </div>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
                 <MetalCard
                   name="Gold (24K)"
                   price={data?.gold_1g || null}

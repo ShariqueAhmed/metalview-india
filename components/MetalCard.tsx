@@ -107,33 +107,35 @@ export default function MetalCard({
   };
 
   return (
-    <div className={`${getCardGradient()} rounded-2xl border-2 border-amber-200/60 dark:border-amber-800/60 p-7 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.02] relative overflow-hidden group`}>
+    <div className={`${getCardGradient()} rounded-xl sm:rounded-2xl border-2 border-amber-200/60 dark:border-amber-800/60 p-4 sm:p-6 lg:p-7 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 sm:hover:-translate-y-2 hover:scale-[1.01] sm:hover:scale-[1.02] relative overflow-hidden group active:scale-[0.98]`}>
       {/* Decorative gradient overlay */}
       <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-amber-200/30 to-transparent dark:from-amber-800/20 rounded-full blur-3xl -mr-20 -mt-20 group-hover:scale-150 transition-transform duration-500"></div>
       {/* Shine effect on hover */}
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
       
       <div className="relative z-10">
-        <div className="flex items-start justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <div className={`${getIconBg()} p-3.5 rounded-xl shadow-lg transform hover:scale-110 transition-transform duration-300`}>
+        <div className="flex items-start justify-between mb-4 sm:mb-6">
+          <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+            <div className={`${getIconBg()} p-2.5 sm:p-3 lg:p-3.5 rounded-lg sm:rounded-xl shadow-lg transform hover:scale-110 transition-transform duration-300 flex-shrink-0`}>
               <div className="text-white">
                 {icon}
               </div>
             </div>
-            <div>
-              <h3 className="text-base font-bold text-gray-900 dark:text-white tracking-tight">
+            <div className="min-w-0 flex-1">
+              <h3 className="text-sm sm:text-base font-bold text-gray-900 dark:text-white tracking-tight truncate">
                 {name}
               </h3>
-              <p className="text-xs font-semibold text-amber-600 dark:text-amber-400 mt-1.5 uppercase tracking-wide">
+              <p className="text-xs font-semibold text-amber-600 dark:text-amber-400 mt-1 sm:mt-1.5 uppercase tracking-wide">
                 per {unit}
               </p>
             </div>
           </div>
-          {getTrendIndicator()}
+          <div className="flex-shrink-0 ml-2">
+            {getTrendIndicator()}
+          </div>
         </div>
-        <div className="mt-6 pt-4 border-t border-amber-200/50 dark:border-amber-800/50">
-          <p className="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight mb-2">
+        <div className="mt-4 sm:mt-6 pt-3 sm:pt-4 border-t border-amber-200/50 dark:border-amber-800/50">
+          <p className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight mb-2 break-words">
             {formatIndianCurrency(price)}
           </p>
           {previousPrice && price && (
