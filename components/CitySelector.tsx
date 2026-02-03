@@ -64,7 +64,7 @@ export default function CitySelector({
     <div className="relative w-full sm:w-auto" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full sm:w-auto flex items-center justify-between gap-3 px-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg hover:border-slate-300 dark:hover:border-slate-700 card-shadow hover:card-shadow-hover transition-all duration-200"
+        className="w-full sm:w-auto flex items-center justify-between gap-3 px-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg hover:border-slate-300 dark:hover:border-slate-700 card-shadow hover:card-shadow-hover transition-all duration-200 z-10 relative"
       >
         <div className="flex items-center gap-2.5">
           <MapPin className="w-4 h-4 text-slate-600 dark:text-slate-400" />
@@ -80,7 +80,14 @@ export default function CitySelector({
       </button>
 
       {isOpen && (
-        <div className="fixed sm:absolute top-full left-0 right-0 sm:right-auto mt-2 sm:w-96 w-[calc(100vw-2rem)] max-h-[70vh] sm:max-h-96 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg card-shadow-hover z-50 overflow-hidden mx-4 sm:mx-0">
+        <>
+          {/* Mobile backdrop */}
+          <div 
+            className="fixed inset-0 bg-black/20 z-[9998] sm:hidden"
+            onClick={() => setIsOpen(false)}
+          />
+          {/* Dropdown */}
+          <div className="fixed sm:absolute top-auto sm:top-full bottom-4 sm:bottom-auto left-4 sm:left-0 right-4 sm:right-auto sm:w-96 sm:mt-2 max-h-[70vh] sm:max-h-96 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg card-shadow-hover z-[9999] overflow-hidden">
           {/* Search Input */}
           <div className="p-3 border-b border-slate-200 dark:border-slate-800">
             <div className="relative">
@@ -175,7 +182,8 @@ export default function CitySelector({
               </div>
             )}
           </div>
-        </div>
+          </div>
+        </>
       )}
     </div>
   );

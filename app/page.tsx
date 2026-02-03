@@ -258,7 +258,7 @@ function HomeContent() {
         )}
 
         {/* City Selector */}
-        <div className="mb-6 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+        <div className="mb-6 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 relative z-40">
           <div>
             <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-50 mb-1">
               Market Location
@@ -267,7 +267,7 @@ function HomeContent() {
               Select city for local pricing
             </p>
           </div>
-          <div className="w-full sm:w-auto">
+          <div className="w-full sm:w-auto relative z-50">
             <CitySelector
               cities={selectedMetal === 'silver' && silverCities.length > 0 ? silverCities : availableCities}
               selectedCity={selectedCity}
