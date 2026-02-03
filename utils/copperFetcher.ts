@@ -228,12 +228,12 @@ export async function fetchCopperPrices(): Promise<CopperData> {
       copper_10g: Math.round(copper_10g * 100) / 100,
       copper_1g: Math.round(copper_1g * 100) / 100,
       updated_at: new Date().toISOString(),
-      percentageChange: !isNaN(percentageChange) ? percentageChange : null,
-      change: !isNaN(change) ? change : null,
-      openPrice: !isNaN(openPrice) ? openPrice : null,
-      highPrice: !isNaN(highPrice) ? highPrice : null,
-      lowPrice: !isNaN(lowPrice) ? lowPrice : null,
-      prevClose: !isNaN(prevClose) ? prevClose : null,
+      percentageChange: percentageChange !== null && !isNaN(percentageChange) ? percentageChange : null,
+      change: change !== null && !isNaN(change) ? change : null,
+      openPrice: openPrice !== null && !isNaN(openPrice) ? openPrice : null,
+      highPrice: highPrice !== null && !isNaN(highPrice) ? highPrice : null,
+      lowPrice: lowPrice !== null && !isNaN(lowPrice) ? lowPrice : null,
+      prevClose: prevClose !== null && !isNaN(prevClose) ? prevClose : null,
       copperTrend: copperTrend && copperTrend.length > 0 ? copperTrend : undefined,
     };
   } catch (error) {
