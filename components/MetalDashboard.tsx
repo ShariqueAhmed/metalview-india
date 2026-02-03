@@ -5,6 +5,7 @@
 
 'use client';
 
+import Link from 'next/link';
 import { TrendingUp, TrendingDown, Minus, DollarSign } from 'lucide-react';
 import { formatIndianCurrency } from '@/utils/conversions';
 
@@ -33,24 +34,28 @@ const METAL_INFO = {
     icon: '🪙',
     color: 'amber',
     unit: 'per 10g',
+    link: '/?metal=gold',
   },
   silver: {
     name: 'Silver',
     icon: '🥈',
     color: 'slate',
     unit: 'per 1kg',
+    link: '/?metal=silver',
   },
   platinum: {
     name: 'Platinum',
     icon: '💎',
     color: 'blue',
     unit: 'per 10g',
+    link: '/?metal=platinum',
   },
   palladium: {
     name: 'Palladium',
     icon: '✨',
     color: 'purple',
     unit: 'per 10g',
+    link: '/?metal=palladium',
   },
 };
 
@@ -104,16 +109,17 @@ export default function MetalDashboard({ data }: MetalDashboardProps) {
             : '0.00';
 
           return (
-            <div
+            <Link
+              href={info.link}
               key={key}
-              className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 p-6 card-shadow hover:card-shadow-hover transition-shadow"
+              className="block bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 p-6 card-shadow hover:card-shadow-hover hover:border-slate-300 dark:hover:border-slate-700 transition-all cursor-pointer group hover:scale-[1.02]"
             >
               {/* Header */}
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <div className="text-3xl">{info.icon}</div>
                   <div>
-                    <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-50">
+                    <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-50 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                       {info.name}
                     </h3>
                     <p className="text-xs text-slate-500 dark:text-slate-400">
@@ -153,7 +159,7 @@ export default function MetalDashboard({ data }: MetalDashboardProps) {
                   </div>
                 </div>
               </div>
-            </div>
+            </Link>
           );
         })}
       </div>

@@ -112,20 +112,41 @@ export default function GoldPriceSection({
     );
   }
 
+  const getCardGradient = () => {
+    if (is24K) {
+      return 'bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950/20 dark:to-yellow-950/20 border-amber-200 dark:border-amber-800';
+    } else {
+      return 'bg-gradient-to-br from-slate-50 to-gray-50 dark:from-slate-900 dark:to-slate-800 border-slate-200 dark:border-slate-700';
+    }
+  };
+
   return (
-    <div className={`${getCardBg()} rounded-lg border border-slate-200 dark:border-slate-800 p-6 card-shadow hover:card-shadow-hover transition-shadow duration-200`}>
+    <div className={`${getCardBg()} ${is24K ? getCardGradient() : ''} rounded-xl border-2 ${is24K ? 'border-amber-200 dark:border-amber-800' : 'border-slate-200 dark:border-slate-800'} p-6 sm:p-8 card-shadow hover:card-shadow-hover transition-all duration-200 relative overflow-hidden`}>
+      {/* Decorative background element */}
+      {is24K && (
+        <div className="absolute top-0 right-0 w-32 h-32 bg-amber-200/10 dark:bg-amber-800/10 rounded-full -mr-16 -mt-16"></div>
+      )}
+      
       <div className="relative">
+        {/* Header */}
         <div className="flex items-start justify-between mb-6">
           <div className="flex items-center gap-3 flex-1 min-w-0">
-            <div className={`${getIconBg()} p-2.5 rounded-md flex-shrink-0`}>
-              <Award className="w-5 h-5 text-white dark:text-slate-900" />
+            <div className={`${getIconBg()} p-3 rounded-xl flex-shrink-0 shadow-md ${is24K ? 'ring-2 ring-amber-200 dark:ring-amber-800' : ''}`}>
+              <Award className="w-6 h-6 text-white dark:text-slate-900" />
             </div>
             <div className="min-w-0 flex-1">
-              <h3 className="text-base font-semibold text-slate-900 dark:text-slate-50 tracking-tight">
-                Gold {type}
-              </h3>
-              <p className="text-xs font-normal text-slate-600 dark:text-slate-400 mt-0.5">
-                Pure gold pricing
+              <div className="flex items-center gap-2">
+                <h3 className={`text-lg font-bold ${is24K ? 'text-amber-900 dark:text-amber-100' : 'text-slate-900 dark:text-slate-50'} tracking-tight`}>
+                  Gold {type}
+                </h3>
+                {is24K && (
+                  <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-200 text-xs font-semibold rounded-full">
+                    Purest
+                  </span>
+                )}
+              </div>
+              <p className="text-xs font-medium text-slate-600 dark:text-slate-400 mt-1">
+                {is24K ? '99.9% Pure Gold' : '91.6% Pure Gold (Jewelry Grade)'}
               </p>
             </div>
           </div>
@@ -134,56 +155,63 @@ export default function GoldPriceSection({
           </div>
         </div>
 
-        <div className="space-y-4 border-t border-slate-200 dark:border-slate-800 pt-4">
+        {/* Prices Grid */}
+        <div className="grid grid-cols-2 gap-4 mb-6">
           {/* 1g Price */}
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-xs font-medium text-slate-600 dark:text-slate-400 mb-1.5">
-                1 gram
-              </p>
-              <p className="text-2xl font-semibold text-slate-900 dark:text-slate-50 tracking-tight">
-                {price1g !== null ? formatIndianCurrency(price1g) : '—'}
-              </p>
-            </div>
+          <div className={`${is24K ? 'bg-white/60 dark:bg-slate-900/60' : 'bg-slate-50 dark:bg-slate-800/50'} rounded-lg p-4 border ${is24K ? 'border-amber-100 dark:border-amber-800/50' : 'border-slate-200 dark:border-slate-700'}`}>
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wide">
+              1 Gram
+            </p>
+            <p className={`text-2xl sm:text-3xl font-bold ${is24K ? 'text-amber-900 dark:text-amber-100' : 'text-slate-900 dark:text-slate-50'} tracking-tight`}>
+              {price1g !== null ? formatIndianCurrency(price1g) : '—'}
+            </p>
           </div>
 
           {/* 10g Price */}
-          <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800">
-            <div>
-              <p className="text-xs font-medium text-slate-600 dark:text-slate-400 mb-1.5">
-                10 grams
-              </p>
-              <p className="text-2xl font-semibold text-slate-900 dark:text-slate-50 tracking-tight">
-                {price10g !== null ? formatIndianCurrency(price10g) : '—'}
-              </p>
+          <div className={`${is24K ? 'bg-white/60 dark:bg-slate-900/60' : 'bg-slate-50 dark:bg-slate-800/50'} rounded-lg p-4 border ${is24K ? 'border-amber-100 dark:border-amber-800/50' : 'border-slate-200 dark:border-slate-700'}`}>
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wide">
+              10 Grams
+            </p>
+            <p className={`text-2xl sm:text-3xl font-bold ${is24K ? 'text-amber-900 dark:text-amber-100' : 'text-slate-900 dark:text-slate-50'} tracking-tight`}>
+              {price10g !== null ? formatIndianCurrency(price10g) : '—'}
+            </p>
+          </div>
+        </div>
+
+        {/* Percentage Change - Prominent */}
+        {shouldShowChange && (
+          <div className={`${is24K ? 'bg-amber-100/50 dark:bg-amber-900/20' : 'bg-slate-100 dark:bg-slate-800/50'} rounded-lg p-4 border-t-2 ${is24K ? 'border-amber-200 dark:border-amber-800' : 'border-slate-200 dark:border-slate-700'}`}>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1 uppercase tracking-wide">
+                  24h Change
+                </p>
+                {change > 0 ? (
+                  <div className="flex items-baseline gap-2">
+                    <TrendingUp className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                    <span className="text-xl font-bold text-emerald-600 dark:text-emerald-400">
+                      +{Math.abs(change).toFixed(2)}%
+                    </span>
+                  </div>
+                ) : change < 0 ? (
+                  <div className="flex items-baseline gap-2">
+                    <TrendingDown className="w-5 h-5 text-red-600 dark:text-red-400" />
+                    <span className="text-xl font-bold text-red-600 dark:text-red-400">
+                      {change.toFixed(2)}%
+                    </span>
+                  </div>
+                ) : (
+                  <div className="flex items-baseline gap-2">
+                    <Minus className="w-5 h-5 text-slate-400 dark:text-slate-500" />
+                    <span className="text-xl font-bold text-slate-600 dark:text-slate-400">
+                      0.00%
+                    </span>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-
-          {/* Percentage Change */}
-          {shouldShowChange && (
-            <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800">
-              <span className="text-xs font-medium text-slate-600 dark:text-slate-400">
-                Change (24h)
-              </span>
-              {change > 0 ? (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 rounded text-xs font-medium">
-                  <TrendingUp className="w-3.5 h-3.5" />
-                  +{Math.abs(change).toFixed(2)}%
-                </span>
-              ) : change < 0 ? (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-400 rounded text-xs font-medium">
-                  <TrendingDown className="w-3.5 h-3.5" />
-                  {change.toFixed(2)}%
-                </span>
-              ) : (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded text-xs font-medium">
-                  <Minus className="w-3.5 h-3.5" />
-                  0.00%
-                </span>
-              )}
-            </div>
-          )}
-        </div>
+        )}
       </div>
     </div>
   );

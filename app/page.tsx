@@ -5,7 +5,8 @@
 
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Header from '@/components/Header';
 import CitySelector from '@/components/CitySelector';
 import { getAvailableSilverCities } from '@/utils/silverFetcher';
@@ -88,7 +89,8 @@ const FALLBACK_CITIES = [
   'surat',
 ];
 
-export default function Home() {
+function HomeContent() {
+  const searchParams = useSearchParams();
   const [data, setData] = useState<MetalsData | null>(null);
   const [previousData, setPreviousData] = useState<MetalsData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -98,6 +100,14 @@ export default function Home() {
   const [availableCities, setAvailableCities] = useState<string[]>(FALLBACK_CITIES);
   const [silverCities, setSilverCities] = useState<string[]>([]);
   const [selectedMetal, setSelectedMetal] = useState<MetalType>('gold');
+
+  // Read metal from URL parameter on mount
+  useEffect(() => {
+    const metalParam = searchParams.get('metal');
+    if (metalParam && ['gold', 'silver', 'copper', 'platinum', 'palladium'].includes(metalParam)) {
+      setSelectedMetal(metalParam as MetalType);
+    }
+  }, [searchParams]);
 
   const fetchData = useCallback(async (city: string, isManualRefresh = false) => {
     if (isManualRefresh) {
@@ -279,22 +289,24 @@ export default function Home() {
         {/* Metal-Specific Content */}
         {selectedMetal === 'gold' && (
           <>
-            <div className="mb-8">
-              <div className="mb-6">
-                <div className="flex items-start justify-between mb-4">
+            <div className="mb-10">
+              <div className="mb-8">
+                <div className="flex items-start justify-between mb-6">
                   <div>
-                    <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-50 mb-1">
-                      Gold Prices
+                    <div className="flex items-center gap-3 mb-2">
+                      <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-50">
+                        Gold Prices
+                      </h2>
                       {data?.city && (
-                        <span className="text-lg font-normal text-slate-600 dark:text-slate-400 ml-2">
-                          {data.city}
+                        <span className="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm font-medium rounded-full">
+                          {data.city.charAt(0).toUpperCase() + data.city.slice(1)}
                         </span>
                       )}
-                    </h2>
+                    </div>
                     {data?.updated_at && (
-                      <div className="flex items-center gap-2 mt-2">
-                        <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>
-                        <p className="text-xs font-normal text-slate-600 dark:text-slate-400">
+                      <div className="flex items-center gap-2 mt-3">
+                        <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                        <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
                           Updated {new Date(data.updated_at).toLocaleString('en-IN', { 
                             day: 'numeric', 
                             month: 'short', 
@@ -307,7 +319,7 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                 {/* 24K Gold Section */}
                 <GoldPriceSection
                   type="24K"
@@ -362,6 +374,9 @@ export default function Home() {
                       ]
                     : undefined
                 }
+                silverData={undefined}
+                title="Price Trends (Last 7 Days)"
+                subtitle="Historical price movement for Gold"
               />
             </div>
             <div className="mb-12">
@@ -642,5 +657,26 @@ export default function Home() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950">
+        <Header />
+        <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 w-full">
+          <div className="flex items-center justify-center py-12">
+            <div className="text-center">
+              <RefreshCw className="w-8 h-8 text-slate-400 dark:text-slate-600 animate-spin mx-auto mb-4" />
+              <p className="text-slate-600 dark:text-slate-400">Loading...</p>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    }>
+      <HomeContent />
+    </Suspense>
   );
 }

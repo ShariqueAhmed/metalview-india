@@ -61,8 +61,10 @@ export default function ChartSection({
   const hasSilver = silverData && silverData.length > 0;
 
   // Use provided data or generate mock data (only if not metal-specific)
-  const goldChartData = (hasCopper || hasPlatinum) ? [] : (goldData || (goldData === undefined ? generateMockData(65000, 7) : []));
-  const silverChartData = (hasCopper || hasPlatinum) ? [] : (silverData || (silverData === undefined ? generateMockData(85000, 7) : []));
+  // If silverData is explicitly undefined, don't show silver even if gold is provided
+  const shouldShowSilver = silverData !== undefined && hasSilver;
+  const goldChartData = (hasCopper || hasPlatinum) ? [] : (goldData || (goldData === undefined && silverData === undefined ? generateMockData(65000, 7) : []));
+  const silverChartData = (hasCopper || hasPlatinum || !shouldShowSilver) ? [] : (silverData || (silverData === undefined && goldData === undefined ? generateMockData(85000, 7) : []));
   const copperChartData = copperData || [];
   const platinumChartData = platinumData || [];
 
@@ -91,12 +93,27 @@ export default function ChartSection({
       platinum: item.price,
     }));
   } else {
-    // For gold/silver, combine both
-    chartData = goldChartData.map((item, index) => ({
-      date: item.date,
-      gold: item.price,
-      silver: silverChartData[index]?.price || 0,
-    }));
+    // For gold/silver, show only what's available
+    if (hasGold && !shouldShowSilver) {
+      // Only gold
+      chartData = goldChartData.map((item) => ({
+        date: item.date,
+        gold: item.price,
+      }));
+    } else if (hasSilver && !hasGold) {
+      // Only silver
+      chartData = silverChartData.map((item) => ({
+        date: item.date,
+        silver: item.price,
+      }));
+    } else {
+      // Both gold and silver
+      chartData = goldChartData.map((item, index) => ({
+        date: item.date,
+        gold: item.price,
+        silver: silverChartData[index]?.price || 0,
+      }));
+    }
   }
 
   // Determine chart title and subtitle
@@ -105,6 +122,10 @@ export default function ChartSection({
     ? 'Historical price movement for Copper'
     : hasPlatinum
     ? 'Historical price movement for Platinum'
+    : hasGold && !shouldShowSilver
+    ? 'Historical price movement for Gold'
+    : hasSilver && !hasGold
+    ? 'Historical price movement for Silver'
     : 'Historical price movement for Gold and Silver');
 
   return (

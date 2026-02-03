@@ -52,16 +52,16 @@ export default function GoldWeightPrices({
   };
 
   return (
-    <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-4 sm:p-6 mb-8 sm:mb-12">
-      <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center border border-amber-200 dark:border-amber-800 flex-shrink-0">
-          <Award className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600 dark:text-amber-400" />
+    <div className="bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 p-4 sm:p-6 mb-8 sm:mb-12 card-shadow">
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-100 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30 flex items-center justify-center border-2 border-amber-200 dark:border-amber-800 flex-shrink-0 shadow-md">
+          <Award className="w-6 h-6 text-amber-700 dark:text-amber-400" />
         </div>
         <div className="min-w-0">
-          <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
+          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">
             Gold Prices by Weight
           </h2>
-          <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-0.5">
+          <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
             24 Karat & 22 Karat Gold prices for different weights
           </p>
         </div>
@@ -70,24 +70,24 @@ export default function GoldWeightPrices({
       <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
         <table className="w-full border-collapse min-w-[600px]">
           <thead>
-            <tr className="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-              <th className="px-3 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
+            <tr className="bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-950/30 dark:to-yellow-950/30 border-b-2 border-amber-200 dark:border-amber-800">
+              <th className="px-4 lg:px-6 py-3 text-left text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                 Weight
               </th>
-              <th className="px-3 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
+              <th className="px-4 lg:px-6 py-3 text-left text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                 Unit
               </th>
-              <th className="px-3 sm:px-4 lg:px-6 py-2 sm:py-3 text-right text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
-                <span className="inline-flex items-center gap-1">
-                  <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
+              <th className="px-4 lg:px-6 py-3 text-right text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                <span className="inline-flex items-center gap-2">
+                  <span className="w-3 h-3 bg-amber-500 rounded-full ring-2 ring-amber-200 dark:ring-amber-800"></span>
                   <span className="hidden sm:inline">24K Gold Price</span>
                   <span className="sm:hidden">24K</span>
                 </span>
               </th>
               {basePrice1g_22k && (
-                <th className="px-3 sm:px-4 lg:px-6 py-2 sm:py-3 text-right text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
-                  <span className="inline-flex items-center gap-1">
-                    <span className="w-2 h-2 bg-amber-500 rounded-full"></span>
+                <th className="px-4 lg:px-6 py-3 text-right text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                  <span className="inline-flex items-center gap-2">
+                    <span className="w-3 h-3 bg-slate-500 rounded-full ring-2 ring-slate-200 dark:ring-slate-700"></span>
                     <span className="hidden sm:inline">22K Gold Price</span>
                     <span className="sm:hidden">22K</span>
                   </span>
@@ -95,7 +95,7 @@ export default function GoldWeightPrices({
               )}
             </tr>
           </thead>
-          <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
+          <tbody className="bg-white dark:bg-slate-900 divide-y divide-slate-200 dark:divide-slate-700">
             {weightOptions.map((option, index) => {
               const price24k = calculatePrice(option.weight, false);
               const price22k = basePrice1g_22k ? calculatePrice(option.weight, true) : null;
@@ -105,42 +105,42 @@ export default function GoldWeightPrices({
               return (
                 <tr
                   key={option.weight}
-                  className={`transition-colors ${
+                  className={`transition-all ${
                     isTola
-                      ? 'bg-amber-50 dark:bg-amber-900/20'
+                      ? 'bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-950/30 dark:to-yellow-950/30 border-l-4 border-amber-400 dark:border-amber-600'
                       : isEven
-                      ? 'bg-gray-50/50 dark:bg-gray-800/30'
-                      : 'bg-white dark:bg-gray-900'
-                  } hover:bg-gray-100 dark:hover:bg-gray-800/50`}
+                      ? 'bg-slate-50/50 dark:bg-slate-800/30'
+                      : 'bg-white dark:bg-slate-900'
+                  } hover:bg-amber-50/50 dark:hover:bg-amber-950/20`}
                 >
-                  <td className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4 whitespace-nowrap">
-                    <div className="flex items-center gap-1.5 sm:gap-2">
+                  <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center gap-2">
                       {isTola && (
-                        <span className="flex items-center justify-center w-4 h-4 sm:w-5 sm:h-5 bg-yellow-500 dark:bg-yellow-400 rounded-full text-white text-[10px] sm:text-xs font-bold flex-shrink-0">
+                        <span className="flex items-center justify-center w-6 h-6 bg-amber-500 dark:bg-amber-400 rounded-full text-white text-xs font-bold flex-shrink-0 shadow-md">
                           ⭐
                         </span>
                       )}
-                      <span className={`font-medium text-sm sm:text-base ${isTola ? 'text-yellow-900 dark:text-yellow-100' : 'text-gray-900 dark:text-white'}`}>
+                      <span className={`font-semibold text-base ${isTola ? 'text-amber-900 dark:text-amber-100' : 'text-slate-900 dark:text-slate-50'}`}>
                         {option.label}
                       </span>
                       {isTola && (
-                        <span className="px-1.5 sm:px-2 py-0.5 bg-yellow-100 dark:bg-yellow-800/50 text-yellow-800 dark:text-yellow-200 text-[10px] sm:text-xs font-medium rounded-full">
+                        <span className="px-2 py-1 bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-200 text-xs font-semibold rounded-full border border-amber-200 dark:border-amber-800">
                           Traditional
                         </span>
                       )}
                     </div>
                   </td>
-                  <td className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4 whitespace-nowrap">
-                    <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">{option.unit}</span>
+                  <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
+                    <span className="text-sm font-medium text-slate-600 dark:text-slate-400">{option.unit}</span>
                   </td>
-                  <td className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4 whitespace-nowrap text-right">
-                    <span className={`font-semibold text-sm sm:text-base ${isTola ? 'text-yellow-800 dark:text-yellow-200 sm:text-lg' : 'text-gray-900 dark:text-white'}`}>
+                  <td className="px-4 lg:px-6 py-4 whitespace-nowrap text-right">
+                    <span className={`font-bold text-base ${isTola ? 'text-amber-900 dark:text-amber-100 text-lg' : 'text-slate-900 dark:text-slate-50'}`}>
                       {formatIndianCurrency(price24k)}
                     </span>
                   </td>
                   {basePrice1g_22k && (
-                    <td className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4 whitespace-nowrap text-right">
-                      <span className={`font-semibold text-sm sm:text-base ${isTola ? 'text-amber-800 dark:text-amber-200 sm:text-lg' : 'text-gray-900 dark:text-white'}`}>
+                    <td className="px-4 lg:px-6 py-4 whitespace-nowrap text-right">
+                      <span className={`font-bold text-base ${isTola ? 'text-slate-800 dark:text-slate-200 text-lg' : 'text-slate-900 dark:text-slate-50'}`}>
                         {formatIndianCurrency(price22k!)}
                       </span>
                     </td>
@@ -152,9 +152,11 @@ export default function GoldWeightPrices({
         </table>
       </div>
 
-      <p className="text-xs text-gray-500 dark:text-gray-400 mt-6 text-center">
-        * 24K gold is 99.9% pure. 22K gold is 91.6% pure (ideal for jewelry). Prices may vary based on location.
-      </p>
+      <div className="mt-6 pt-4 border-t border-slate-200 dark:border-slate-700">
+        <p className="text-xs text-slate-500 dark:text-slate-400 text-center">
+          * 24K gold is 99.9% pure. 22K gold is 91.6% pure (ideal for jewelry). Prices may vary based on location.
+        </p>
+      </div>
     </div>
   );
 }
