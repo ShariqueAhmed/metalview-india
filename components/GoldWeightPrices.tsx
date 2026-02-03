@@ -5,7 +5,7 @@
 
 'use client';
 
-import { Coins } from 'lucide-react';
+import { Award } from 'lucide-react';
 import { formatIndianCurrency } from '@/utils/conversions';
 
 interface GoldWeightPricesProps {
@@ -55,7 +55,7 @@ export default function GoldWeightPrices({
     <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-4 sm:p-6 mb-8 sm:mb-12">
       <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
         <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center border border-amber-200 dark:border-amber-800 flex-shrink-0">
-          <Coins className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600 dark:text-amber-400" />
+          <Award className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600 dark:text-amber-400" />
         </div>
         <div className="min-w-0">
           <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">

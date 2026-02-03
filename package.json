@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "clean": "rm -rf .next node_modules/.cache .swc",
+    "dev": "npm run clean && next dev",
+    "dev:clean": "npm run clean && PORT=4000 next dev",
+    "build": "npm run clean && next build",
     "start": "next start",
     "lint": "next lint"
   },

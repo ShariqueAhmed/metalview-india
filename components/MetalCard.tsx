@@ -15,6 +15,7 @@ interface MetalCardProps {
   icon: React.ReactNode;
   trend?: 'up' | 'down' | 'neutral' | null;
   previousPrice?: number | null;
+  percentageChange?: number | null;
 }
 
 export default function MetalCard({
@@ -24,6 +25,7 @@ export default function MetalCard({
   icon,
   trend,
   previousPrice,
+  percentageChange,
 }: MetalCardProps) {
   const getTrendIndicator = () => {
     if (!trend && previousPrice && price) {
@@ -138,24 +140,38 @@ export default function MetalCard({
           <p className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight mb-2 break-words">
             {formatIndianCurrency(price)}
           </p>
-          {previousPrice && price && (
+          {((percentageChange !== null && percentageChange !== undefined) || (previousPrice && price)) && (
             <div className="flex items-center gap-2">
-              {price > previousPrice ? (
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300 rounded-lg text-xs font-semibold">
-                  <span>↑</span>
-                  +{formatIndianCurrency(price - previousPrice)}
-                </span>
-              ) : price < previousPrice ? (
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 rounded-lg text-xs font-semibold">
-                  <span>↓</span>
-                  {formatIndianCurrency(price - previousPrice)}
-                </span>
-              ) : (
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 rounded-lg text-xs font-semibold">
-                  <span>→</span>
-                  No change
-                </span>
-              )}
+              {(() => {
+                const change = percentageChange !== null && percentageChange !== undefined 
+                  ? percentageChange 
+                  : previousPrice !== null && previousPrice !== undefined && price !== null && price !== undefined && previousPrice !== 0
+                    ? ((price - previousPrice) / previousPrice) * 100 
+                    : 0;
+                
+                if (change > 0) {
+                  return (
+                    <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300 rounded-lg text-xs font-semibold">
+                      <span>↑</span>
+                      +{Math.abs(change).toFixed(2)}%
+                    </span>
+                  );
+                } else if (change < 0) {
+                  return (
+                    <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 rounded-lg text-xs font-semibold">
+                      <span>↓</span>
+                      {change.toFixed(2)}%
+                    </span>
+                  );
+                } else {
+                  return (
+                    <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 rounded-lg text-xs font-semibold">
+                      <span>→</span>
+                      0.00%
+                    </span>
+                  );
+                }
+              })()}
             </div>
           )}
         </div>

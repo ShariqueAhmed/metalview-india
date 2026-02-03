@@ -21,6 +21,8 @@ export interface GrowwMetalData {
   updated_at: string;
   trendingCities?: string[];
   goldTrend?: GoldTrendPoint[]; // Historical gold price trend data
+  percentageChange24k?: number | null; // Percentage change for 24K gold
+  percentageChange22k?: number | null; // Percentage change for 22K gold
 }
 
 export interface GrowwApiResponse {
@@ -32,6 +34,10 @@ export interface GrowwApiResponse {
       };
       priceLocation?: string;
       date?: string;
+      percentageChange?: {
+        TWENTY_FOUR?: number;
+        TWENTY_TWO?: number;
+      };
     };
   };
   silverRate?: {
@@ -53,9 +59,43 @@ export interface GrowwApiResponse {
     };
   };
   trendingCities?: string[];
-  goldTrend?: {
-    [city: string]: {
-      [date: string]: number; // Date as key, price as value
+  goldTrend?: Array<{
+    date: string;
+    price?: {
+      date?: string;
+      firstDayPrice?: {
+        TWENTY_FOUR: number;
+        TWENTY_TWO: number;
+      };
+      lastDayPrice?: {
+        TWENTY_FOUR: number;
+        TWENTY_TWO: number;
+      };
+      highest?: {
+        TWENTY_FOUR: number;
+        TWENTY_TWO: number;
+      };
+      lowest?: {
+        TWENTY_FOUR: number;
+        TWENTY_TWO: number;
+      };
+    };
+  }> | Array<{
+    date: string;
+    price: number;
+    city?: string;
+  }> | {
+    [city: string]: Array<{
+      date: string;
+      price?: {
+        date?: string;
+        lastDayPrice?: {
+          TWENTY_FOUR: number;
+          TWENTY_TWO: number;
+        };
+      };
+    }> | {
+      [date: string]: number;
     };
   };
   // Alternative structure: array of trend points
@@ -152,6 +192,21 @@ export async function fetchGrowwMetalPrices(
     const gold_10g = gold24k_1g * 10; // Convert 1g to 10g
     const gold_22k_10g = gold22k_1g * 10; // Convert 1g to 10g
 
+    // Extract percentage change from API response
+    // Handle both null and numeric values (0 is a valid percentage change)
+    // If value is null or undefined, set to null; otherwise use the numeric value
+    const percentageChange24k = (cityData.percentageChange?.TWENTY_FOUR !== undefined && 
+                                 cityData.percentageChange?.TWENTY_FOUR !== null)
+      ? cityData.percentageChange.TWENTY_FOUR 
+      : null;
+    const percentageChange22k = (cityData.percentageChange?.TWENTY_TWO !== undefined && 
+                                 cityData.percentageChange?.TWENTY_TWO !== null)
+      ? cityData.percentageChange.TWENTY_TWO 
+      : ((cityData.percentageChange?.TWENTY_FOUR !== undefined && 
+          cityData.percentageChange?.TWENTY_FOUR !== null)
+          ? cityData.percentageChange.TWENTY_FOUR 
+          : null);
+
     // Silver, Copper, Platinum - these may not be available in Groww API
     // For now, set to null (can be extended when API provides this data)
     const silver_1kg = data.silverRate?.[city]?.price || null;
@@ -164,37 +219,128 @@ export async function fetchGrowwMetalPrices(
     // Extract gold trend data
     let goldTrend: GoldTrendPoint[] | undefined = undefined;
     
-    if (data.goldTrendData && Array.isArray(data.goldTrendData)) {
-      // If API returns array format
-      goldTrend = data.goldTrendData
-        .filter((item) => !item.city || item.city.toLowerCase() === city.toLowerCase())
-        .map((item) => ({
-          date: item.date,
-          price: item.price * 10, // Convert 1g to 10g if needed
-        }))
-        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-    } else if (data.goldTrend && data.goldTrend[city]) {
+    // Check if goldTrend is a simple array of {date, price} objects first
+    if (data.goldTrend && Array.isArray(data.goldTrend) && data.goldTrend.length > 0) {
+      const firstItem = data.goldTrend[0];
+      // Check if it's already in the simple format: {date, price}
+      if (firstItem && typeof firstItem === 'object' && 'date' in firstItem && 'price' in firstItem && typeof firstItem.price === 'number') {
+        // Simple array format: [{date, price}, ...] - use directly
+        goldTrend = data.goldTrend
+          .map((item: any) => ({
+            date: item.date,
+            price: item.price, // Assume already in correct format (per 10g)
+          }))
+          .filter((item: any) => item.date && item.price !== undefined && item.price !== null)
+          .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+      }
+      // If it has nested price object, it will be processed in the next condition
+    }
+    
+    // If not processed yet, try other formats
+    if (!goldTrend) {
+      if (data.goldTrendData && Array.isArray(data.goldTrendData)) {
+        // If API returns goldTrendData array format
+        goldTrend = data.goldTrendData
+          .filter((item) => !item.city || item.city.toLowerCase() === city.toLowerCase())
+          .map((item) => ({
+            date: item.date,
+            price: item.price * 10, // Convert 1g to 10g if needed
+          }))
+          .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+      } else if (data.goldTrend && Array.isArray(data.goldTrend)) {
+        // API returns array of monthly trend objects with nested price structure
+        goldTrend = data.goldTrend
+          .map((trendItem: any) => {
+            try {
+              // Extract date and price from trend structure
+              if (trendItem && trendItem.price) {
+                // Try lastDayPrice first (most recent price in the month)
+                let price: number | null = null;
+                let date: string | null = trendItem.date || trendItem.price?.date || null;
+                
+                // Check for lastDayPrice (preferred - most recent)
+                if (trendItem.price.lastDayPrice) {
+                  price = trendItem.price.lastDayPrice.TWENTY_FOUR || trendItem.price.lastDayPrice.TWENTY_TWO || null;
+                  date = trendItem.price.date || trendItem.date || date;
+                } 
+                // Fallback to firstDayPrice
+                else if (trendItem.price.firstDayPrice) {
+                  price = trendItem.price.firstDayPrice.TWENTY_FOUR || trendItem.price.firstDayPrice.TWENTY_TWO || null;
+                  date = trendItem.price.date || trendItem.date || date;
+                }
+                // Fallback to highest price
+                else if (trendItem.price.highest) {
+                  price = trendItem.price.highest.TWENTY_FOUR || trendItem.price.highest.TWENTY_TWO || null;
+                  date = trendItem.price.date || trendItem.date || date;
+                }
+                // Fallback to lowest price
+                else if (trendItem.price.lowest) {
+                  price = trendItem.price.lowest.TWENTY_FOUR || trendItem.price.lowest.TWENTY_TWO || null;
+                  date = trendItem.price.date || trendItem.date || date;
+                }
+                
+                if (date && price !== null && price !== undefined && !isNaN(price)) {
+                  // Convert date format if needed (YYYY-MM to YYYY-MM-01)
+                  let normalizedDate = date;
+                  if (typeof date === 'string') {
+                    if (date.match(/^\d{4}-\d{2}$/)) {
+                      // YYYY-MM format - use first day of month
+                      normalizedDate = `${date}-01`;
+                    } else if (date.includes('T')) {
+                      // ISO format - extract date part
+                      normalizedDate = date.split('T')[0];
+                    }
+                  }
+                  
+                  return {
+                    date: normalizedDate,
+                    price: Math.round(price * 10 * 100) / 100, // Convert 1g to 10g and round to 2 decimals
+                  };
+                }
+              }
+            } catch (error) {
+              console.error('Error processing goldTrend item:', error, trendItem);
+            }
+            return null;
+          })
+          .filter((item: any): item is GoldTrendPoint => item !== null && item !== undefined && item.date && item.price !== undefined)
+          .sort((a, b) => {
+            const dateA = new Date(a.date).getTime();
+            const dateB = new Date(b.date).getTime();
+            return dateA - dateB; // Oldest first for proper trend calculation
+          });
+        
+        // Log for debugging
+        if (goldTrend && goldTrend.length > 0) {
+          console.log(`Extracted ${goldTrend.length} gold trend points from API`);
+        } else {
+          console.warn('No gold trend data extracted from API response. goldTrend structure:', 
+            data.goldTrend ? (Array.isArray(data.goldTrend) ? `Array[${data.goldTrend.length}]` : 'Object') : 'undefined');
+        }
+      }
+    }
+    
+    // If still not processed, try object format
+    if (!goldTrend && data.goldTrend && typeof data.goldTrend === 'object' && !Array.isArray(data.goldTrend)) {
       // If API returns object format with city key
-      const cityTrend = data.goldTrend[city];
-      goldTrend = Object.entries(cityTrend)
-        .map(([date, price]) => ({
-          date: date,
-          price: typeof price === 'number' ? price * 10 : price, // Convert 1g to 10g if needed
-        }))
-        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-    } else if (data.goldTrend) {
-      // Try to find city in trend data
-      const cityKeys = Object.keys(data.goldTrend);
-      const matchingCity = cityKeys.find(
-        (k) => k.toLowerCase() === city.toLowerCase() || 
-               k.toLowerCase().replace(/\s+/g, '-') === city.toLowerCase()
-      );
-      
-      if (matchingCity && data.goldTrend[matchingCity]) {
-        const cityTrend = data.goldTrend[matchingCity];
-        if (typeof cityTrend === 'object' && !Array.isArray(cityTrend)) {
+      const cityTrend: any = data.goldTrend[city];
+      if (cityTrend) {
+        if (Array.isArray(cityTrend)) {
+          goldTrend = cityTrend
+            .map((item: any) => {
+              if (item.price && item.price.lastDayPrice) {
+                const lastDayPrice = item.price.lastDayPrice.TWENTY_FOUR || item.price.lastDayPrice.TWENTY_TWO;
+                return {
+                  date: item.date || item.price.date,
+                  price: lastDayPrice * 10,
+                };
+              }
+              return null;
+            })
+            .filter((item: any): item is GoldTrendPoint => item !== null);
+        } else if (typeof cityTrend === 'object') {
           goldTrend = Object.entries(cityTrend)
-            .map(([date, price]) => ({
+            .map(([date, price]: [string, any]) => ({
               date: date,
               price: typeof price === 'number' ? price * 10 : price,
             }))
@@ -215,6 +361,8 @@ export async function fetchGrowwMetalPrices(
       updated_at: new Date().toISOString(),
       trendingCities: trendingCities,
       goldTrend: goldTrend,
+      percentageChange24k: percentageChange24k,
+      percentageChange22k: percentageChange22k,
     };
   } catch (error) {
     console.error('Groww API error:', error);

@@ -5,7 +5,7 @@
 
 'use client';
 
-import { Coins, DollarSign, Zap, Gem } from 'lucide-react';
+import { Award, DollarSign, Zap, Gem } from 'lucide-react';
 import MetalCard from './MetalCard';
 
 interface PriceGridProps {
@@ -47,7 +47,7 @@ export default function PriceGrid({ data, previousData, isLoading }: PriceGridPr
         name="Gold"
         price={data?.gold_10g || null}
         unit="10g"
-        icon={<Coins className="w-5 h-5 text-amber-600 dark:text-amber-400" />}
+        icon={<Award className="w-5 h-5 text-amber-600 dark:text-amber-400" />}
         previousPrice={previousData?.gold_10g || null}
       />
       <MetalCard

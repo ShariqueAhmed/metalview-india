@@ -64,33 +64,33 @@ export default function CitySelector({
     <div className="relative w-full sm:w-auto" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full sm:w-auto flex items-center justify-between sm:justify-start gap-2 sm:gap-3 px-4 sm:px-5 py-2.5 sm:py-3 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-2 border-amber-200 dark:border-amber-800 rounded-xl hover:border-amber-300 dark:hover:border-amber-700 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98]"
+        className="w-full sm:w-auto flex items-center justify-between gap-3 px-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg hover:border-slate-300 dark:hover:border-slate-700 card-shadow hover:card-shadow-hover transition-all duration-200"
       >
-        <div className="p-1.5 bg-gradient-to-br from-amber-500 to-yellow-500 rounded-lg">
-          <MapPin className="w-4 h-4 text-white" />
+        <div className="flex items-center gap-2.5">
+          <MapPin className="w-4 h-4 text-slate-600 dark:text-slate-400" />
+          <span className="text-sm font-medium text-slate-900 dark:text-slate-50">
+            {formatCityName(selectedCity)}
+          </span>
         </div>
-        <span className="text-sm font-semibold text-gray-900 dark:text-white">
-          {formatCityName(selectedCity)}
-        </span>
         <ChevronDown
-          className={`w-4 h-4 text-amber-600 dark:text-amber-400 transition-transform duration-300 ${
+          className={`w-4 h-4 text-slate-500 dark:text-slate-400 transition-transform duration-200 ${
             isOpen ? 'rotate-180' : ''
           }`}
         />
       </button>
 
       {isOpen && (
-        <div className="fixed sm:absolute top-full left-0 right-0 sm:right-auto mt-3 sm:w-96 w-[calc(100vw-2rem)] max-h-[70vh] sm:max-h-96 bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg border-2 border-amber-200/50 dark:border-amber-800/50 rounded-2xl shadow-2xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200 mx-4 sm:mx-0">
+        <div className="fixed sm:absolute top-full left-0 right-0 sm:right-auto mt-2 sm:w-96 w-[calc(100vw-2rem)] max-h-[70vh] sm:max-h-96 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg card-shadow-hover z-50 overflow-hidden mx-4 sm:mx-0">
           {/* Search Input */}
-          <div className="p-4 border-b border-amber-100 dark:border-amber-900/50 bg-gradient-to-r from-amber-50/50 to-yellow-50/50 dark:from-amber-950/20 dark:to-yellow-950/20">
+          <div className="p-3 border-b border-slate-200 dark:border-slate-800">
             <div className="relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-amber-500" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <input
                 type="text"
                 placeholder="Search city..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-11 pr-10 py-3 text-sm bg-white dark:bg-gray-800 border-2 border-amber-200 dark:border-amber-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all"
+                className="w-full pl-9 pr-8 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-slate-50 focus:border-transparent transition-all"
               />
               {searchTerm && (
                 <button
@@ -120,13 +120,13 @@ export default function CitySelector({
                         setIsOpen(false);
                         setSearchTerm('');
                       }}
-                      className={`w-full text-left px-4 py-3 text-sm flex items-center gap-3 rounded-lg mx-2 my-1 transition-all duration-200 ${
+                      className={`w-full text-left px-3 py-2.5 text-sm flex items-center gap-2.5 rounded-md mx-1 my-0.5 transition-colors ${
                         isSelected
-                          ? 'bg-gradient-to-r from-amber-500 to-yellow-500 text-white font-semibold shadow-md'
-                          : 'hover:bg-amber-50 dark:hover:bg-amber-900/20 text-gray-700 dark:text-gray-300'
+                          ? 'bg-slate-900 dark:bg-slate-50 text-white dark:text-slate-900 font-medium'
+                          : 'hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300'
                       }`}
                     >
-                      <MapPin className={`w-4 h-4 ${isSelected ? 'text-white' : 'text-amber-500'}`} />
+                      <MapPin className={`w-3.5 h-3.5 ${isSelected ? 'text-white dark:text-slate-900' : 'text-slate-500 dark:text-slate-400'}`} />
                       {formatCityName(city)}
                       {isSelected && (
                         <span className="ml-auto text-xs bg-white/20 px-2 py-0.5 rounded-full">✓</span>
@@ -152,13 +152,13 @@ export default function CitySelector({
                         setIsOpen(false);
                         setSearchTerm('');
                       }}
-                      className={`w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 rounded-lg mx-2 my-1 transition-all duration-200 ${
+                      className={`w-full text-left px-3 py-2.5 text-sm flex items-center gap-2.5 rounded-md mx-1 my-0.5 transition-colors ${
                         isSelected
-                          ? 'bg-gradient-to-r from-amber-500 to-yellow-500 text-white font-semibold shadow-md'
-                          : 'hover:bg-amber-50 dark:hover:bg-amber-900/20 text-gray-700 dark:text-gray-300'
+                          ? 'bg-slate-900 dark:bg-slate-50 text-white dark:text-slate-900 font-medium'
+                          : 'hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300'
                       }`}
                     >
-                      <MapPin className={`w-4 h-4 ${isSelected ? 'text-white' : 'text-amber-500'}`} />
+                      <MapPin className={`w-3.5 h-3.5 ${isSelected ? 'text-white dark:text-slate-900' : 'text-slate-500 dark:text-slate-400'}`} />
                       {formatCityName(city)}
                       {isSelected && (
                         <span className="ml-auto text-xs bg-white/20 px-2 py-0.5 rounded-full">✓</span>
