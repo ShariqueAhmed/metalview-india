@@ -7,7 +7,6 @@
 
 import { MapPin, ArrowRight } from 'lucide-react';
 import { formatCityName } from '@/utils/conversions';
-import Link from 'next/link';
 
 interface TrendingCitiesProps {
   cities: string[];
@@ -20,7 +19,7 @@ export default function TrendingCities({
   selectedCity,
   onCityClick,
 }: TrendingCitiesProps) {
-  if (!cities || cities.length === 0) {
+  if (!Array.isArray(cities) || cities.length === 0) {
     return null;
   }
 

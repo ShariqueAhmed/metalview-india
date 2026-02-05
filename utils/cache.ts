@@ -76,7 +76,7 @@ class SimpleCache<T> {
 }
 
 // City-specific cache storage
-const cityCaches = new Map<string, SimpleCache<any>>();
+const cityCaches = new Map<string, SimpleCache<unknown>>();
 
 /**
  * Get or create cache for a specific city
@@ -85,7 +85,8 @@ export function getCityCache<T>(city: string): SimpleCache<T> {
   if (!cityCaches.has(city)) {
     cityCaches.set(city, new SimpleCache<T>(10)); // 10 minutes TTL
   }
-  return cityCaches.get(city)!;
+  // Type assertion is safe here as we control the cache creation
+  return cityCaches.get(city) as SimpleCache<T>;
 }
 
 /**

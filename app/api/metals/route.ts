@@ -5,12 +5,20 @@
  */
 
 import { NextResponse } from 'next/server';
-import { fetchGrowwMetalPrices, GoldTrendPoint } from '@/utils/growwFetcher';
+import { GoldTrendPoint } from '@/utils/growwFetcher';
+import { fetchAngelOneGoldPrices, fetchAngelOneGoldHistory, getGoldCityList } from '@/utils/angeloneGoldFetcher';
 import { fetchSilverPrices, SilverTrendPoint } from '@/utils/silverFetcher';
 import { fetchCopperPrices, CopperTrendPoint } from '@/utils/copperFetcher';
 import { fetchAllMetalPrices } from '@/utils/ebullionFetcher';
 import { getCityCache } from '@/utils/cache';
 import { storePrice, getHistoricalPrices } from '@/utils/historicalStorage';
+import {
+  fetchWithRetry,
+  ErrorSource,
+  logError,
+  formatErrorForUser,
+} from '@/utils/errorHandler';
+import { validateMetalsApiResponse } from '@/utils/validation';
 
 export interface MetalsApiResponse {
   city: string;
@@ -18,6 +26,14 @@ export interface MetalsApiResponse {
   gold_22k_10g: number | null;
   gold_1g: number | null;
   gold_22k_1g: number | null;
+  gold_18k_1g?: number | null;
+  gold_18k_10g?: number | null;
+  gold_18k_difference?: string | null;
+  gold_22k_difference?: string | null;
+  gold_24k_difference?: string | null;
+  gold_18k_percentage?: string | null;
+  gold_22k_percentage?: string | null;
+  gold_24k_percentage?: string | null;
   silver_1kg: number | null;
   silver_10g?: number | null;
   silver_1g?: number | null;
@@ -33,6 +49,12 @@ export interface MetalsApiResponse {
   platinumPercentageChange?: number | null;
   platinumVariationType?: 'up' | 'down';
   platinumVariation?: string;
+  palladium: number | null;
+  palladium_1g?: number | null;
+  palladium_10g?: number | null;
+  palladiumPercentageChange?: number | null;
+  palladiumVariationType?: 'up' | 'down';
+  palladiumVariation?: string;
   updated_at: string;
   cached: boolean;
   trendingCities?: string[];
@@ -65,111 +87,252 @@ export async function GET(request: Request) {
       });
     }
 
-    // Fetch fresh data from Groww API (for gold)
-    const growwData = await fetchGrowwMetalPrices(city);
+    // Fetch all data in parallel with retry logic and error handling
+    const [
+      angelOneGoldResult,
+      silverResult,
+      copperResult,
+      ebullionResult,
+    ] = await Promise.allSettled([
+      fetchWithRetry(
+        () => fetchAngelOneGoldPrices(city),
+        { maxRetries: 2 },
+        ErrorSource.ANGELONE
+      ),
+      fetchWithRetry(
+        () => fetchSilverPrices(city),
+        { maxRetries: 2 },
+        ErrorSource.ANGELONE
+      ),
+      fetchWithRetry(
+        () => fetchCopperPrices(),
+        { maxRetries: 2 },
+        ErrorSource.MONEYCONTROL
+      ),
+      fetchWithRetry(
+        () => fetchAllMetalPrices(),
+        { maxRetries: 2 },
+        ErrorSource.EBULLION
+      ),
+    ]);
 
-    // Fetch silver prices from AngelOne API
-    let silverData;
-    try {
-      silverData = await fetchSilverPrices(city);
-    } catch (error) {
-      console.error('Error fetching silver prices:', error);
-      silverData = {
-        silver_1kg: null,
-        silver_10g: null,
-        silver_1g: null,
-        updated_at: new Date().toISOString(),
-      };
-    }
-
-    // Fetch copper prices from MoneyControl API
-    let copperData;
-    try {
-      copperData = await fetchCopperPrices();
-    } catch (error) {
-      console.error('Error fetching copper prices:', error);
-      copperData = {
-        copper_1kg: null,
-        copper_100g: null,
-        copper_10g: null,
-        copper_1g: null,
-        updated_at: new Date().toISOString(),
-      };
-    }
-
-    // Fetch all metal prices from Ebullion API (for platinum)
-    let ebullionData;
-    try {
-      ebullionData = await fetchAllMetalPrices();
-    } catch (error) {
-      console.error('Error fetching Ebullion metal prices:', error);
-      ebullionData = null;
-    }
-
-    // Store current price in historical storage for fallback
-    if (growwData.gold_10g) {
-      storePrice(growwData.gold_10g);
-    }
-
-    // Use historical storage as fallback if goldTrend is empty
-    let goldTrend: GoldTrendPoint[] | undefined = growwData.goldTrend;
-    
-    if (!goldTrend || goldTrend.length === 0) {
-      // Fallback to historical storage data
-      const historicalData = getHistoricalPrices(30);
-      if (historicalData.length > 0) {
-        goldTrend = historicalData.map((item) => ({
-          date: item.date,
-          price: item.gold_10g,
-        }));
-        console.log(`Using historical storage data: ${goldTrend.length} points`);
-      } else {
-        console.warn('No gold trend data available from API or historical storage');
-      }
+    // Extract AngelOne gold data (for 18k, 22k, 24k today's prices)
+    let angelOneGoldData;
+    if (angelOneGoldResult.status === 'fulfilled') {
+      angelOneGoldData = angelOneGoldResult.value;
+      console.log('API Route - Received gold data:', {
+        '18k_diff': angelOneGoldData?.gold_18k_difference,
+        '22k_diff': angelOneGoldData?.gold_22k_difference,
+        '24k_diff': angelOneGoldData?.gold_24k_difference,
+        '18k_pct': angelOneGoldData?.gold_18k_percentage,
+        '22k_pct': angelOneGoldData?.gold_22k_percentage,
+        '24k_pct': angelOneGoldData?.gold_24k_percentage,
+      });
     } else {
-      console.log(`Using API gold trend data: ${goldTrend.length} points`);
+      logError(angelOneGoldResult.reason, { city, source: 'angelone-gold' });
+      throw angelOneGoldResult.reason; // Gold is required, throw if failed
+    }
+
+    const silverData =
+      silverResult.status === 'fulfilled'
+        ? silverResult.value
+        : {
+            silver_1kg: null,
+            silver_10g: null,
+            silver_1g: null,
+            updated_at: new Date().toISOString(),
+            silverTrend: undefined,
+            percentageChange: null,
+          };
+
+    if (silverResult.status === 'rejected') {
+      logError(silverResult.reason, { city, source: 'angelone' });
+    }
+
+    const copperData =
+      copperResult.status === 'fulfilled'
+        ? copperResult.value
+        : {
+            copper_1kg: null,
+            copper_100g: null,
+            copper_10g: null,
+            copper_1g: null,
+            updated_at: new Date().toISOString(),
+            copperTrend: undefined,
+            percentageChange: null,
+          };
+
+    if (copperResult.status === 'rejected') {
+      logError(copperResult.reason, { city, source: 'moneycontrol' });
+    }
+
+    const ebullionData =
+      ebullionResult.status === 'fulfilled' ? ebullionResult.value : null;
+
+    if (ebullionResult.status === 'rejected') {
+      logError(ebullionResult.reason, { city, source: 'ebullion' });
+    }
+
+    // Fetch gold price history from AngelOne API
+    let goldTrend: GoldTrendPoint[] | undefined = undefined;
+    try {
+      goldTrend = await fetchAngelOneGoldHistory(city, '24k');
+      
+      // Add today's price if not already in history
+      if (goldTrend.length > 0 && angelOneGoldData?.gold_24k_10g) {
+        const todayDate = new Date().toISOString().split('T')[0] || '';
+        const todayInHistory = goldTrend.find((item) => item.date === todayDate);
+        
+        if (!todayInHistory) {
+          goldTrend.push({
+            date: todayDate,
+            price: angelOneGoldData.gold_24k_10g,
+          });
+          // Re-sort after adding today
+          goldTrend.sort((a, b) => {
+            const dateA = new Date(a.date).getTime();
+            const dateB = new Date(b.date).getTime();
+            return dateA - dateB;
+          });
+        }
+      }
+      
+      if (goldTrend.length > 0) {
+        console.log(`Using AngelOne gold history: ${goldTrend.length} points`);
+      }
+    } catch (error) {
+      console.error('Error fetching gold history from AngelOne:', error);
+      // Fallback to historical storage if API fails
+      const historicalData = getHistoricalPrices(30);
+      if (Array.isArray(historicalData) && historicalData.length > 0) {
+        goldTrend = historicalData
+          .filter((item) => item && item.date && typeof item.gold_10g === 'number' && !isNaN(item.gold_10g))
+          .map((item) => {
+            const dateSplit = new Date().toISOString().split('T');
+            const fallbackDate: string = dateSplit[0] || '';
+            return {
+              date: (item.date || fallbackDate) as string,
+              price: item.gold_10g,
+            };
+          });
+        console.log(`Using historical storage data as fallback: ${goldTrend.length} points`);
+      }
+    }
+
+    // Store current price in historical storage as backup
+    if (angelOneGoldData?.gold_24k_10g) {
+      storePrice(angelOneGoldData.gold_24k_10g);
+    }
+
+    // Calculate percentage changes from historical data (if available)
+    let percentageChange24k: number | null = null;
+    let percentageChange22k: number | null = null;
+    if (goldTrend && goldTrend.length >= 2 && angelOneGoldData?.gold_24k_10g) {
+      const previousPrice = goldTrend[goldTrend.length - 2]?.price;
+      if (previousPrice && previousPrice > 0) {
+        percentageChange24k = ((angelOneGoldData.gold_24k_10g - previousPrice) / previousPrice) * 100;
+      }
+    }
+    if (goldTrend && goldTrend.length >= 2 && angelOneGoldData?.gold_22k_10g) {
+      const previousPrice = goldTrend[goldTrend.length - 2]?.price;
+      if (previousPrice && previousPrice > 0) {
+        // Approximate 22k change from 24k change
+        percentageChange22k = percentageChange24k !== null ? percentageChange24k : null;
+      }
+    }
+
+    // Fetch gold cities from AngelOne API
+    let goldCities: string[] = [];
+    try {
+      goldCities = await getGoldCityList();
+      if (goldCities.length === 0) {
+        throw new Error('No cities returned from API');
+      }
+    } catch (error) {
+      console.error('Error fetching gold cities, using fallback:', error);
+      // Fallback to hardcoded list if API fails
+      goldCities = [
+        'mumbai', 'delhi', 'bangalore', 'kolkata', 'chennai', 'hyderabad', 'pune',
+        'ahmedabad', 'jaipur', 'surat', 'lucknow', 'kanpur', 'nagpur', 'indore',
+        'thane', 'bhopal', 'visakhapatnam', 'patna', 'vadodara', 'ghaziabad'
+      ];
     }
 
     const responseData: MetalsApiResponse = {
-      city: growwData.city || city,
-      gold_10g: growwData.gold_10g,
-      gold_22k_10g: growwData.gold_22k_10g,
-      gold_1g: growwData.gold_1g,
-      gold_22k_1g: growwData.gold_22k_1g,
-      silver_1kg: silverData.silver_1kg || growwData.silver_1kg,
-      silver_10g: silverData.silver_10g || null,
-      silver_1g: silverData.silver_1g || null,
-      copper: copperData.copper_1kg || growwData.copper,
-      copper_1kg: copperData.copper_1kg || null,
-      copper_100g: copperData.copper_100g || null,
-      copper_10g: copperData.copper_10g || null,
-      copper_1g: copperData.copper_1g || null,
-      copperPercentageChange: copperData.percentageChange || null,
-      copperTrend: copperData.copperTrend,
-      platinum: ebullionData?.platinum?.rate || growwData.platinum || null,
-      platinum_10g: ebullionData?.platinum?.rate || null,
+      city: angelOneGoldData?.city || city,
+      gold_10g: angelOneGoldData?.gold_24k_10g ?? null,
+      gold_22k_10g: angelOneGoldData?.gold_22k_10g ?? null,
+      gold_1g: angelOneGoldData?.gold_24k_1g ?? null,
+      gold_22k_1g: angelOneGoldData?.gold_22k_1g ?? null,
+      gold_18k_1g: angelOneGoldData?.gold_18k_1g ?? null,
+      gold_18k_10g: angelOneGoldData?.gold_18k_10g ?? null,
+      gold_18k_difference: angelOneGoldData?.gold_18k_difference ?? null,
+      gold_22k_difference: angelOneGoldData?.gold_22k_difference ?? null,
+      gold_24k_difference: angelOneGoldData?.gold_24k_difference ?? null,
+      gold_18k_percentage: angelOneGoldData?.gold_18k_percentage ?? null,
+      gold_22k_percentage: angelOneGoldData?.gold_22k_percentage ?? null,
+      gold_24k_percentage: angelOneGoldData?.gold_24k_percentage ?? null,
+      silver_1kg: silverData?.silver_1kg ?? null,
+      silver_10g: silverData?.silver_10g ?? null,
+      silver_1g: silverData?.silver_1g ?? null,
+      copper: copperData?.copper_1kg ?? null,
+      copper_1kg: copperData?.copper_1kg ?? null,
+      copper_100g: copperData?.copper_100g ?? null,
+      copper_10g: copperData?.copper_10g ?? null,
+      copper_1g: copperData?.copper_1g ?? null,
+      copperPercentageChange: copperData?.percentageChange ?? null,
+      copperTrend: copperData?.copperTrend ?? undefined,
+      platinum: ebullionData?.platinum?.rate ?? null,
+      platinum_10g: ebullionData?.platinum?.rate ?? null,
       platinum_1g: ebullionData?.platinum?.rate ? ebullionData.platinum.rate / 10 : null,
       platinumPercentageChange: ebullionData?.platinum?.rate && ebullionData.platinum.variation
         ? (parseFloat(ebullionData.platinum.variation) / (ebullionData.platinum.rate - parseFloat(ebullionData.platinum.variation))) * 100
         : null,
       platinumVariationType: ebullionData?.platinum?.variationType,
       platinumVariation: ebullionData?.platinum?.variation,
-      updated_at: growwData.updated_at,
-      cached: false,
-      trendingCities: growwData.trendingCities || [],
-      goldTrend: goldTrend,
-      percentageChange24k: growwData.percentageChange24k,
-      percentageChange22k: growwData.percentageChange22k,
-      silverTrend: silverData.silverTrend,
-      silverPercentageChange: silverData.percentageChange,
+      palladium: ebullionData?.palladium?.rate ?? null,
+      palladium_10g: ebullionData?.palladium?.rate ?? null,
+      palladium_1g: ebullionData?.palladium?.rate ? ebullionData.palladium.rate / 10 : null,
+      palladiumPercentageChange: ebullionData?.palladium?.rate && ebullionData.palladium.variation
+        ? (parseFloat(ebullionData.palladium.variation) / (ebullionData.palladium.rate - parseFloat(ebullionData.palladium.variation))) * 100
+        : null,
+      palladiumVariationType: ebullionData?.palladium?.variationType,
+      palladiumVariation: ebullionData?.palladium?.variation,
+      updated_at: angelOneGoldData?.updated_at || new Date().toISOString(),
+      cached: false as boolean,
+      trendingCities: goldCities,
+      goldTrend: goldTrend ?? undefined,
+      percentageChange24k: percentageChange24k,
+      percentageChange22k: percentageChange22k,
+      silverTrend: silverData?.silverTrend ?? undefined,
+      silverPercentageChange: silverData?.percentageChange ?? null,
     };
 
-    // Store in cache
-    cache.set(responseData);
+    // Validate response data (with fallback if validation fails)
+    let validatedData: MetalsApiResponse;
+    try {
+      validatedData = validateMetalsApiResponse(responseData);
+    } catch (validationError) {
+      logError(validationError, { city, source: 'validation' });
+      // Use responseData as-is if validation fails (graceful degradation)
+      validatedData = responseData;
+    }
 
-    return NextResponse.json(responseData);
+    // Store in cache
+    cache.set(validatedData);
+    
+    console.log('API Route - Setting cache with data:', {
+      '18k_diff': validatedData.gold_18k_difference,
+      '22k_diff': validatedData.gold_22k_difference,
+      '24k_diff': validatedData.gold_24k_difference,
+      '18k_pct': validatedData.gold_18k_percentage,
+      '22k_pct': validatedData.gold_22k_percentage,
+      '24k_pct': validatedData.gold_24k_percentage,
+    });
+
+    return NextResponse.json(validatedData);
   } catch (error) {
-    console.error('Error fetching metal prices:', error);
+    logError(error, { endpoint: '/api/metals' });
 
     // Try to return cached data even if expired
     const { searchParams } = new URL(request.url);
@@ -181,14 +344,14 @@ export async function GET(request: Request) {
       return NextResponse.json({
         ...cachedData,
         cached: true,
-        error: 'Live prices temporarily unavailable. Using cached data.',
+        error: formatErrorForUser(error),
       });
     }
 
     // No cache available, return error
     return NextResponse.json(
       {
-        error: 'Live prices temporarily unavailable. Please try again later.',
+        error: formatErrorForUser(error),
         city: searchParams.get('city') || 'mumbai',
         gold_10g: null,
         gold_22k_10g: null,

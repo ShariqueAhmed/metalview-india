@@ -6,7 +6,7 @@
 'use client';
 
 import Link from 'next/link';
-import { TrendingUp, TrendingDown, Minus, DollarSign } from 'lucide-react';
+import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { formatIndianCurrency } from '@/utils/conversions';
 
 interface MetalPriceData {
@@ -81,11 +81,22 @@ export default function MetalDashboard({ data }: MetalDashboardProps) {
     return <Minus className="w-4 h-4" />;
   };
 
-  const metals = Object.entries(data).map(([key, value]) => ({
-    key: key as keyof AllMetalPrices,
-    data: value,
-    info: METAL_INFO[key as keyof typeof METAL_INFO],
-  }));
+  // Ensure data is valid and has entries
+  if (!data || typeof data !== 'object') {
+    return (
+      <div className="text-center py-12 text-slate-500 dark:text-slate-400">
+        <p>No data available</p>
+      </div>
+    );
+  }
+
+  const metals = Object.entries(data)
+    .filter(([, value]) => value && typeof value === 'object')
+    .map(([key, value]) => ({
+      key: key as keyof AllMetalPrices,
+      data: value,
+      info: METAL_INFO[key as keyof typeof METAL_INFO],
+    }));
 
   return (
     <div className="space-y-6">

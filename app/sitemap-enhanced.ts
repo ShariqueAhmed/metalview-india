@@ -1,6 +1,9 @@
 /**
  * Enhanced Sitemap Generation
  * Includes all metals, cities, blog posts, and guides
+ * 
+ * This is an example of an enhanced sitemap.
+ * Replace the current sitemap.ts with this implementation.
  */
 
 import { MetadataRoute } from 'next';
@@ -34,7 +37,7 @@ const GUIDE_PAGES = [
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://supermetal.in';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://metalview.in';
   const now = new Date();
 
   const sitemapEntries: MetadataRoute.Sitemap = [];
@@ -43,7 +46,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   sitemapEntries.push({
     url: baseUrl,
     lastModified: now,
-    changeFrequency: 'hourly' as const,
+    changeFrequency: 'hourly',
     priority: 1.0,
   });
 
@@ -51,7 +54,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   sitemapEntries.push({
     url: `${baseUrl}/dashboard`,
     lastModified: now,
-    changeFrequency: 'hourly' as const,
+    changeFrequency: 'hourly',
     priority: 0.9,
   });
 
@@ -61,7 +64,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       sitemapEntries.push({
         url: `${baseUrl}/${metal}-price-today-in-${city}`,
         lastModified: now,
-        changeFrequency: 'hourly' as const,
+        changeFrequency: 'hourly',
         priority: 0.85,
       });
     });
@@ -72,7 +75,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     sitemapEntries.push({
       url: `${baseUrl}/${guide}`,
       lastModified: now,
-      changeFrequency: 'weekly' as const,
+      changeFrequency: 'weekly',
       priority: 0.8,
     });
   });
@@ -81,7 +84,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   sitemapEntries.push({
     url: `${baseUrl}/blog`,
     lastModified: now,
-    changeFrequency: 'daily' as const,
+    changeFrequency: 'daily',
     priority: 0.8,
   });
 
@@ -90,7 +93,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     sitemapEntries.push({
       url: `${baseUrl}/blog/${slug}`,
       lastModified: now,
-      changeFrequency: 'monthly' as const,
+      changeFrequency: 'monthly',
       priority: 0.7,
     });
   });
@@ -99,14 +102,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
   sitemapEntries.push({
     url: `${baseUrl}/gold-price-comparison`,
     lastModified: now,
-    changeFrequency: 'daily' as const,
+    changeFrequency: 'daily',
     priority: 0.75,
   });
 
   sitemapEntries.push({
     url: `${baseUrl}/metal-price-trends`,
     lastModified: now,
-    changeFrequency: 'daily' as const,
+    changeFrequency: 'daily',
     priority: 0.75,
   });
 

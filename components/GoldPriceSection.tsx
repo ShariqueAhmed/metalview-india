@@ -5,28 +5,31 @@
 
 'use client';
 
+import { memo } from 'react';
 import { Award } from 'lucide-react';
 import { formatIndianCurrency } from '@/utils/conversions';
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 
 interface GoldPriceSectionProps {
-  type: '24K' | '22K';
-  price1g: number | null;
+  type: '24K' | '22K' | '18K';
   price10g: number | null;
   previousPrice1g?: number | null;
-  previousPrice10g?: number | null;
   percentageChange?: number | null;
+  difference?: string | null; // Price difference from API (e.g., "+154.48" or "-50.25")
+  priceChange?: string | null; // Price change percentage from API (e.g., "+1.33%" or "-0.50%")
 }
 
-export default function GoldPriceSection({
+function GoldPriceSection({
   type,
-  price1g,
   price10g,
   previousPrice1g,
-  previousPrice10g,
   percentageChange,
+  difference,
+  priceChange,
 }: GoldPriceSectionProps) {
   const is24K = type === '24K';
+  const is22K = type === '22K';
+  const is18K = type === '18K';
   
   const getCardBg = () => {
     return 'bg-white dark:bg-slate-900';
@@ -35,8 +38,10 @@ export default function GoldPriceSection({
   const getIconBg = () => {
     if (is24K) {
       return 'bg-slate-900 dark:bg-slate-50';
-    } else {
+    } else if (is22K) {
       return 'bg-slate-700 dark:bg-slate-300';
+    } else {
+      return 'bg-slate-600 dark:bg-slate-400';
     }
   };
 
@@ -47,9 +52,11 @@ export default function GoldPriceSection({
       if (percentageChange > 0) trend = 'up';
       else if (percentageChange < 0) trend = 'down';
       else trend = 'neutral';
-    } else if (previousPrice1g && price1g) {
-      if (price1g > previousPrice1g) trend = 'up';
-      else if (price1g < previousPrice1g) trend = 'down';
+    } else if (previousPrice1g && price10g) {
+      // Use price10g for trend calculation (since we removed price1g display)
+      const previousPrice10g = previousPrice1g * 10;
+      if (price10g > previousPrice10g) trend = 'up';
+      else if (price10g < previousPrice10g) trend = 'down';
       else trend = 'neutral';
     }
 
@@ -78,8 +85,9 @@ export default function GoldPriceSection({
     // Prioritize percentageChange from API response
     if (percentageChange !== null && percentageChange !== undefined) {
       return percentageChange;
-    } else if (previousPrice1g && price1g && previousPrice1g !== 0) {
-      return ((price1g - previousPrice1g) / previousPrice1g) * 100;
+    } else if (previousPrice1g && price10g && previousPrice1g !== 0) {
+      const previousPrice10g = previousPrice1g * 10;
+      return ((price10g - previousPrice10g) / previousPrice10g) * 100;
     }
     return null;
   };
@@ -89,7 +97,7 @@ export default function GoldPriceSection({
   // Show percentage change even if it's 0 (not null)
   const shouldShowChange = change !== null && change !== undefined;
 
-  if (price1g === null && price10g === null) {
+  if (price10g === null) {
     return (
       <div className={`${getCardBg()} rounded-lg border border-slate-200 dark:border-slate-800 p-6 card-shadow opacity-60`}>
         <div className="flex items-start justify-between mb-4 sm:mb-6">
@@ -115,13 +123,15 @@ export default function GoldPriceSection({
   const getCardGradient = () => {
     if (is24K) {
       return 'bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950/20 dark:to-yellow-950/20 border-amber-200 dark:border-amber-800';
-    } else {
+    } else if (is22K) {
       return 'bg-gradient-to-br from-slate-50 to-gray-50 dark:from-slate-900 dark:to-slate-800 border-slate-200 dark:border-slate-700';
+    } else {
+      return 'bg-gradient-to-br from-slate-100 to-gray-100 dark:from-slate-800 dark:to-slate-900 border-slate-300 dark:border-slate-600';
     }
   };
 
   return (
-    <div className={`${getCardBg()} ${is24K ? getCardGradient() : ''} rounded-xl border-2 ${is24K ? 'border-amber-200 dark:border-amber-800' : 'border-slate-200 dark:border-slate-800'} p-6 sm:p-8 card-shadow hover:card-shadow-hover transition-all duration-200 relative overflow-hidden`}>
+    <div className={`${getCardBg()} ${is24K || is22K || is18K ? getCardGradient() : ''} rounded-xl border-2 ${is24K ? 'border-amber-200 dark:border-amber-800' : is22K ? 'border-slate-200 dark:border-slate-800' : 'border-slate-300 dark:border-slate-600'} p-6 sm:p-8 card-shadow hover:card-shadow-hover transition-all duration-200 relative overflow-hidden`}>
       {/* Decorative background element */}
       {is24K && (
         <div className="absolute top-0 right-0 w-32 h-32 bg-amber-200/10 dark:bg-amber-800/10 rounded-full -mr-16 -mt-16"></div>
@@ -136,7 +146,7 @@ export default function GoldPriceSection({
             </div>
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2">
-                <h3 className={`text-lg font-bold ${is24K ? 'text-amber-900 dark:text-amber-100' : 'text-slate-900 dark:text-slate-50'} tracking-tight`}>
+                <h3 className={`text-lg font-bold ${is24K ? 'text-amber-900 dark:text-amber-100' : is22K ? 'text-slate-900 dark:text-slate-50' : 'text-slate-800 dark:text-slate-200'} tracking-tight`}>
                   Gold {type}
                 </h3>
                 {is24K && (
@@ -144,9 +154,14 @@ export default function GoldPriceSection({
                     Purest
                   </span>
                 )}
+                {is18K && (
+                  <span className="px-2 py-0.5 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-semibold rounded-full">
+                    Jewelry
+                  </span>
+                )}
               </div>
               <p className="text-xs font-medium text-slate-600 dark:text-slate-400 mt-1">
-                {is24K ? '99.9% Pure Gold' : '91.6% Pure Gold (Jewelry Grade)'}
+                {is24K ? '99.9% Pure Gold' : is22K ? '91.6% Pure Gold (Jewelry Grade)' : '75% Pure Gold (Jewelry Grade)'}
               </p>
             </div>
           </div>
@@ -158,57 +173,126 @@ export default function GoldPriceSection({
         {/* Prices Grid */}
         <div className="grid grid-cols-2 gap-4 mb-6">
           {/* 1g Price */}
-          <div className={`${is24K ? 'bg-white/60 dark:bg-slate-900/60' : 'bg-slate-50 dark:bg-slate-800/50'} rounded-lg p-4 border ${is24K ? 'border-amber-100 dark:border-amber-800/50' : 'border-slate-200 dark:border-slate-700'}`}>
+          <div className={`${is24K ? 'bg-white/60 dark:bg-slate-900/60' : is22K ? 'bg-slate-50 dark:bg-slate-800/50' : 'bg-slate-100 dark:bg-slate-800/50'} rounded-lg p-4 border ${is24K ? 'border-amber-100 dark:border-amber-800/50' : is22K ? 'border-slate-200 dark:border-slate-700' : 'border-slate-300 dark:border-slate-600'}`}>
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wide">
               1 Gram
             </p>
-            <p className={`text-2xl sm:text-3xl font-bold ${is24K ? 'text-amber-900 dark:text-amber-100' : 'text-slate-900 dark:text-slate-50'} tracking-tight`}>
-              {price1g !== null ? formatIndianCurrency(price1g) : '—'}
+            <p className={`text-2xl sm:text-3xl font-bold ${is24K ? 'text-amber-900 dark:text-amber-100' : is22K ? 'text-slate-900 dark:text-slate-50' : 'text-slate-800 dark:text-slate-200'} tracking-tight`}>
+              {price10g !== null ? formatIndianCurrency(price10g / 10) : '—'}
             </p>
           </div>
 
           {/* 10g Price */}
-          <div className={`${is24K ? 'bg-white/60 dark:bg-slate-900/60' : 'bg-slate-50 dark:bg-slate-800/50'} rounded-lg p-4 border ${is24K ? 'border-amber-100 dark:border-amber-800/50' : 'border-slate-200 dark:border-slate-700'}`}>
+          <div className={`${is24K ? 'bg-white/60 dark:bg-slate-900/60' : is22K ? 'bg-slate-50 dark:bg-slate-800/50' : 'bg-slate-100 dark:bg-slate-800/50'} rounded-lg p-4 border ${is24K ? 'border-amber-100 dark:border-amber-800/50' : is22K ? 'border-slate-200 dark:border-slate-700' : 'border-slate-300 dark:border-slate-600'}`}>
             <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wide">
               10 Grams
             </p>
-            <p className={`text-2xl sm:text-3xl font-bold ${is24K ? 'text-amber-900 dark:text-amber-100' : 'text-slate-900 dark:text-slate-50'} tracking-tight`}>
+            <p className={`text-2xl sm:text-3xl font-bold ${is24K ? 'text-amber-900 dark:text-amber-100' : is22K ? 'text-slate-900 dark:text-slate-50' : 'text-slate-800 dark:text-slate-200'} tracking-tight`}>
               {price10g !== null ? formatIndianCurrency(price10g) : '—'}
             </p>
           </div>
         </div>
 
-        {/* Percentage Change - Prominent */}
-        {shouldShowChange && (
-          <div className={`${is24K ? 'bg-amber-100/50 dark:bg-amber-900/20' : 'bg-slate-100 dark:bg-slate-800/50'} rounded-lg p-4 border-t-2 ${is24K ? 'border-amber-200 dark:border-amber-800' : 'border-slate-200 dark:border-slate-700'}`}>
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1 uppercase tracking-wide">
-                  24h Change
-                </p>
-                {change > 0 ? (
+        {/* Price Difference, Price Change, and Percentage Change */}
+        {(difference || priceChange || shouldShowChange) && (
+          <div className={`${is24K ? 'bg-amber-100/50 dark:bg-amber-900/20' : is22K ? 'bg-slate-100 dark:bg-slate-800/50' : 'bg-slate-100 dark:bg-slate-800/50'} rounded-lg p-4 border-t-2 ${is24K ? 'border-amber-200 dark:border-amber-800' : is22K ? 'border-slate-200 dark:border-slate-700' : 'border-slate-300 dark:border-slate-600'}`}>
+            <div className="space-y-3">
+              {/* Price Difference */}
+              {difference && (
+                <div>
+                  <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1 uppercase tracking-wide">
+                    Price Difference
+                  </p>
                   <div className="flex items-baseline gap-2">
-                    <TrendingUp className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                    <span className="text-xl font-bold text-emerald-600 dark:text-emerald-400">
-                      +{Math.abs(change).toFixed(2)}%
-                    </span>
+                    {difference.startsWith('+') ? (
+                      <>
+                        <TrendingUp className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                        <span className="text-xl font-bold text-emerald-600 dark:text-emerald-400">
+                          ₹{difference.substring(1)} per gram
+                        </span>
+                      </>
+                    ) : difference.startsWith('-') ? (
+                      <>
+                        <TrendingDown className="w-5 h-5 text-red-600 dark:text-red-400" />
+                        <span className="text-xl font-bold text-red-600 dark:text-red-400">
+                          ₹{difference.substring(1)} per gram
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <Minus className="w-5 h-5 text-slate-400 dark:text-slate-500" />
+                        <span className="text-xl font-bold text-slate-600 dark:text-slate-400">
+                          ₹{difference} per gram
+                        </span>
+                      </>
+                    )}
                   </div>
-                ) : change < 0 ? (
+                </div>
+              )}
+              
+              {/* Price Change (from API) */}
+              {priceChange && (
+                <div>
+                  <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1 uppercase tracking-wide">
+                    Price Change
+                  </p>
                   <div className="flex items-baseline gap-2">
-                    <TrendingDown className="w-5 h-5 text-red-600 dark:text-red-400" />
-                    <span className="text-xl font-bold text-red-600 dark:text-red-400">
-                      {change.toFixed(2)}%
-                    </span>
+                    {priceChange.startsWith('+') ? (
+                      <>
+                        <TrendingUp className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                        <span className="text-xl font-bold text-emerald-600 dark:text-emerald-400">
+                          {priceChange}
+                        </span>
+                      </>
+                    ) : priceChange.startsWith('-') ? (
+                      <>
+                        <TrendingDown className="w-5 h-5 text-red-600 dark:text-red-400" />
+                        <span className="text-xl font-bold text-red-600 dark:text-red-400">
+                          {priceChange}
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <Minus className="w-5 h-5 text-slate-400 dark:text-slate-500" />
+                        <span className="text-xl font-bold text-slate-600 dark:text-slate-400">
+                          {priceChange}
+                        </span>
+                      </>
+                    )}
                   </div>
-                ) : (
-                  <div className="flex items-baseline gap-2">
-                    <Minus className="w-5 h-5 text-slate-400 dark:text-slate-500" />
-                    <span className="text-xl font-bold text-slate-600 dark:text-slate-400">
-                      0.00%
-                    </span>
-                  </div>
-                )}
-              </div>
+                </div>
+              )}
+              
+              {/* Percentage Change (calculated) */}
+              {shouldShowChange && !priceChange && (
+                <div>
+                  <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1 uppercase tracking-wide">
+                    24h Change
+                  </p>
+                  {change > 0 ? (
+                    <div className="flex items-baseline gap-2">
+                      <TrendingUp className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                      <span className="text-xl font-bold text-emerald-600 dark:text-emerald-400">
+                        +{Math.abs(change).toFixed(2)}%
+                      </span>
+                    </div>
+                  ) : change < 0 ? (
+                    <div className="flex items-baseline gap-2">
+                      <TrendingDown className="w-5 h-5 text-red-600 dark:text-red-400" />
+                      <span className="text-xl font-bold text-red-600 dark:text-red-400">
+                        {change.toFixed(2)}%
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="flex items-baseline gap-2">
+                      <Minus className="w-5 h-5 text-slate-400 dark:text-slate-500" />
+                      <span className="text-xl font-bold text-slate-600 dark:text-slate-400">
+                        0.00%
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -216,3 +300,14 @@ export default function GoldPriceSection({
     </div>
   );
 }
+
+export default memo(GoldPriceSection, (prevProps, nextProps) => {
+  return (
+    prevProps.price10g === nextProps.price10g &&
+    prevProps.previousPrice1g === nextProps.previousPrice1g &&
+    prevProps.percentageChange === nextProps.percentageChange &&
+    prevProps.type === nextProps.type &&
+    prevProps.difference === nextProps.difference &&
+    prevProps.priceChange === nextProps.priceChange
+  );
+});

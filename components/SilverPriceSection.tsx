@@ -5,26 +5,19 @@
 
 'use client';
 
+import { memo } from 'react';
 import { DollarSign } from 'lucide-react';
 import { formatIndianCurrency } from '@/utils/conversions';
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 
 interface SilverPriceSectionProps {
-  price1g: number | null;
-  price10g: number | null;
   price1kg: number | null;
-  previousPrice1g?: number | null;
-  previousPrice10g?: number | null;
   previousPrice1kg?: number | null;
   percentageChange?: number | null;
 }
 
-export default function SilverPriceSection({
-  price1g,
-  price10g,
+function SilverPriceSection({
   price1kg,
-  previousPrice1g,
-  previousPrice10g,
   previousPrice1kg,
   percentageChange,
 }: SilverPriceSectionProps) {
@@ -43,9 +36,9 @@ export default function SilverPriceSection({
       if (percentageChange > 0) trend = 'up';
       else if (percentageChange < 0) trend = 'down';
       else trend = 'neutral';
-    } else if (previousPrice1g && price1g) {
-      if (price1g > previousPrice1g) trend = 'up';
-      else if (price1g < previousPrice1g) trend = 'down';
+    } else if (previousPrice1kg && price1kg) {
+      if (price1kg > previousPrice1kg) trend = 'up';
+      else if (price1kg < previousPrice1kg) trend = 'down';
       else trend = 'neutral';
     }
 
@@ -74,8 +67,8 @@ export default function SilverPriceSection({
     // Prioritize percentageChange from API response
     if (percentageChange !== null && percentageChange !== undefined) {
       return percentageChange;
-    } else if (previousPrice1g && price1g && previousPrice1g !== 0) {
-      return ((price1g - previousPrice1g) / previousPrice1g) * 100;
+    } else if (previousPrice1kg && price1kg && previousPrice1kg !== 0) {
+      return ((price1kg - previousPrice1kg) / previousPrice1kg) * 100;
     }
     return null;
   };
@@ -85,7 +78,7 @@ export default function SilverPriceSection({
   // Show percentage change even if it's 0 (not null)
   const shouldShowChange = change !== null && change !== undefined;
 
-  if (price1g === null && price10g === null && price1kg === null) {
+  if (price1kg === null) {
     return (
       <div className={`${getCardBg()} rounded-lg border border-slate-200 dark:border-slate-800 p-6 card-shadow opacity-60`}>
         <div className="flex items-start justify-between mb-4 sm:mb-6">
@@ -108,20 +101,33 @@ export default function SilverPriceSection({
     );
   }
 
+  const getCardGradient = () => {
+    return 'bg-gradient-to-br from-slate-50 to-gray-50 dark:from-slate-900 dark:to-slate-800 border-slate-200 dark:border-slate-700';
+  };
+
   return (
-    <div className={`${getCardBg()} rounded-lg border border-slate-200 dark:border-slate-800 p-6 card-shadow hover:card-shadow-hover transition-shadow duration-200`}>
+    <div className={`${getCardBg()} ${getCardGradient()} rounded-xl border-2 border-slate-200 dark:border-slate-800 p-6 sm:p-8 card-shadow hover:card-shadow-hover transition-all duration-200 relative overflow-hidden`}>
+      {/* Decorative background element */}
+      <div className="absolute top-0 right-0 w-32 h-32 bg-slate-200/10 dark:bg-slate-700/10 rounded-full -mr-16 -mt-16"></div>
+      
       <div className="relative">
+        {/* Header */}
         <div className="flex items-start justify-between mb-6">
           <div className="flex items-center gap-3 flex-1 min-w-0">
-            <div className={`${getIconBg()} p-2.5 rounded-md flex-shrink-0`}>
-              <DollarSign className="w-5 h-5 text-white dark:text-slate-900" />
+            <div className="bg-slate-700 dark:bg-slate-300 p-3 rounded-xl flex-shrink-0 shadow-md ring-2 ring-slate-200 dark:ring-slate-700">
+              <DollarSign className="w-6 h-6 text-white dark:text-slate-900" />
             </div>
             <div className="min-w-0 flex-1">
-              <h3 className="text-base font-semibold text-slate-900 dark:text-slate-50 tracking-tight">
-                Silver
-              </h3>
-              <p className="text-xs font-normal text-slate-600 dark:text-slate-400 mt-0.5">
-                Live silver pricing
+              <div className="flex items-center gap-2">
+                <h3 className="text-lg font-bold text-slate-900 dark:text-slate-50 tracking-tight">
+                  Silver
+                </h3>
+                <span className="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 text-xs font-semibold rounded-full">
+                  Pure
+                </span>
+              </div>
+              <p className="text-xs font-medium text-slate-600 dark:text-slate-400 mt-1">
+                99.9% Pure Silver
               </p>
             </div>
           </div>
@@ -130,75 +136,64 @@ export default function SilverPriceSection({
           </div>
         </div>
 
-        <div className="space-y-4 border-t border-slate-200 dark:border-slate-800 pt-4">
-          {/* 1g Price */}
-          {price1g !== null && (
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs font-medium text-slate-600 dark:text-slate-400 mb-1.5">
-                  1 gram
-                </p>
-                <p className="text-2xl font-semibold text-slate-900 dark:text-slate-50 tracking-tight">
-                  {formatIndianCurrency(price1g)}
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* 10g Price */}
-          {price10g !== null && (
-            <div className={`flex items-center justify-between ${price1g !== null ? 'pt-4 border-t border-slate-100 dark:border-slate-800' : ''}`}>
-              <div>
-                <p className="text-xs font-medium text-slate-600 dark:text-slate-400 mb-1.5">
-                  10 grams
-                </p>
-                <p className="text-2xl font-semibold text-slate-900 dark:text-slate-50 tracking-tight">
-                  {formatIndianCurrency(price10g)}
-                </p>
-              </div>
-            </div>
-          )}
-
+        {/* Prices Grid */}
+        <div className="grid grid-cols-1 gap-4 mb-6">
           {/* 1kg Price */}
           {price1kg !== null && (
-            <div className={`flex items-center justify-between ${(price1g !== null || price10g !== null) ? 'pt-4 border-t border-slate-100 dark:border-slate-800' : ''}`}>
-              <div>
-                <p className="text-xs font-medium text-slate-600 dark:text-slate-400 mb-1.5">
-                  1 kilogram
-                </p>
-                <p className="text-2xl font-semibold text-slate-900 dark:text-slate-50 tracking-tight">
-                  {formatIndianCurrency(price1kg)}
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* Percentage Change */}
-          {shouldShowChange && (
-            <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800">
-              <span className="text-xs font-medium text-slate-600 dark:text-slate-400">
-                Change (24h)
-              </span>
-              {change > 0 ? (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 rounded text-xs font-medium">
-                  <TrendingUp className="w-3.5 h-3.5" />
-                  +{Math.abs(change).toFixed(2)}%
-                </span>
-              ) : change < 0 ? (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-400 rounded text-xs font-medium">
-                  <TrendingDown className="w-3.5 h-3.5" />
-                  {change.toFixed(2)}%
-                </span>
-              ) : (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded text-xs font-medium">
-                  <Minus className="w-3.5 h-3.5" />
-                  0.00%
-                </span>
-              )}
+            <div className="bg-white/60 dark:bg-slate-900/60 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+              <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wide">
+                1 Kilogram
+              </p>
+              <p className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-50 tracking-tight">
+                {formatIndianCurrency(price1kg)}
+              </p>
             </div>
           )}
         </div>
+
+        {/* Percentage Change - Prominent */}
+        {shouldShowChange && (
+          <div className="bg-slate-100 dark:bg-slate-800/50 rounded-lg p-4 border-t-2 border-slate-200 dark:border-slate-700">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1 uppercase tracking-wide">
+                  24h Change
+                </p>
+                {change > 0 ? (
+                  <div className="flex items-baseline gap-2">
+                    <TrendingUp className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                    <span className="text-xl font-bold text-emerald-600 dark:text-emerald-400">
+                      +{Math.abs(change).toFixed(2)}%
+                    </span>
+                  </div>
+                ) : change < 0 ? (
+                  <div className="flex items-baseline gap-2">
+                    <TrendingDown className="w-5 h-5 text-red-600 dark:text-red-400" />
+                    <span className="text-xl font-bold text-red-600 dark:text-red-400">
+                      {change.toFixed(2)}%
+                    </span>
+                  </div>
+                ) : (
+                  <div className="flex items-baseline gap-2">
+                    <Minus className="w-5 h-5 text-slate-400 dark:text-slate-500" />
+                    <span className="text-xl font-bold text-slate-600 dark:text-slate-400">
+                      0.00%
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
 }
+
+export default memo(SilverPriceSection, (prevProps, nextProps) => {
+  return (
+    prevProps.price1kg === nextProps.price1kg &&
+    prevProps.previousPrice1kg === nextProps.previousPrice1kg &&
+    prevProps.percentageChange === nextProps.percentageChange
+  );
+});

@@ -4,9 +4,7 @@
  */
 
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
 import Header from '@/components/Header';
-import CitySelector from '@/components/CitySelector';
 import PriceGrid from '@/components/PriceGrid';
 import ChartSection from '@/components/ChartSection';
 import Footer from '@/components/Footer';

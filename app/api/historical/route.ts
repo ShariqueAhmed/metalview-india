@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getHistoricalPrices, getAllHistoricalPrices } from '@/utils/historicalStorage';
+import { getHistoricalPrices } from '@/utils/historicalStorage';
 
 export async function GET(request: Request) {
   try {

@@ -196,7 +196,7 @@ export async function fetchCopperPrices(): Promise<CopperData> {
             });
           
           // Add today's price if not already in trend
-          const todayDate = new Date().toISOString().split('T')[0];
+          const todayDate: string = new Date().toISOString().split('T')[0] || '';
           const todayInTrend = copperTrend.find((item) => item.date === todayDate);
           
           if (!todayInTrend && copper_1kg) {

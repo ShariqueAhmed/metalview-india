@@ -93,7 +93,17 @@ export default function RootLayout({
           <meta name="google-site-verification" content={process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION} />
         )}
       </head>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        {/* Skip to main content link for screen readers */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-slate-900 focus:text-white focus:rounded-lg focus:shadow-lg"
+          aria-label="Skip to main content"
+        >
+          Skip to main content
+        </a>
+        {children}
+      </body>
     </html>
   );
 }

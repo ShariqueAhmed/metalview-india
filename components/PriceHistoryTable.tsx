@@ -29,7 +29,7 @@ export default function PriceHistoryTable({
 }: PriceHistoryTableProps) {
   const [currentPage, setCurrentPage] = useState(1);
 
-  if (!data || data.length === 0) {
+  if (!Array.isArray(data) || data.length === 0) {
     return (
       <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 p-6 card-shadow">
         <div className="text-center py-8 text-slate-500 dark:text-slate-400">
@@ -41,12 +41,15 @@ export default function PriceHistoryTable({
   }
 
   // Normalize dates and calculate price changes
-  const normalizedData = data.map((point) => {
+  const normalizedData = data
+    .filter((point) => point && point.date && typeof point.price === 'number')
+    .map((point) => {
     // Handle different date formats
-    let normalizedDate = point.date;
-    if (point.date.includes('T')) {
-      normalizedDate = point.date.split('T')[0];
-    } else if (point.date.match(/^\d{4}-\d{2}$/)) {
+    let normalizedDate: string = point.date || '';
+    if (point.date && point.date.includes('T')) {
+      const splitResult = point.date.split('T');
+      normalizedDate = splitResult[0] || point.date || '';
+    } else if (point.date && point.date.match(/^\d{4}-\d{2}$/)) {
       // If it's just YYYY-MM, use the first day of the month
       normalizedDate = `${point.date}-01`;
     }
@@ -66,9 +69,10 @@ export default function PriceHistoryTable({
 
   // Calculate price changes (comparing with previous entry)
   const dataWithChanges = sortedByDate.map((point, index) => {
-    const previousPrice = index > 0 ? sortedByDate[index - 1].price : null;
+    const previousEntry = index > 0 ? sortedByDate[index - 1] : null;
+    const previousPrice = previousEntry?.price ?? null;
     const change = previousPrice !== null ? point.price - previousPrice : null;
-    const changePercent = previousPrice !== null && previousPrice !== 0 ? ((change! / previousPrice) * 100) : null;
+    const changePercent = previousPrice !== null && previousPrice !== 0 && change !== null ? ((change / previousPrice) * 100) : null;
 
     return {
       ...point,
@@ -109,33 +113,33 @@ export default function PriceHistoryTable({
         <div className="flex items-center gap-2 sm:gap-3">
           <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center border border-slate-200 dark:border-slate-700 flex-shrink-0">
             <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-slate-600 dark:text-slate-400" />
-          </div>
-          <div className="min-w-0">
+        </div>
+        <div className="min-w-0">
             <h2 className="text-lg sm:text-xl font-semibold text-slate-900 dark:text-slate-50">
-              {title}
-            </h2>
+            {title}
+          </h2>
             <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-0.5">
-              Historical {metalName} prices with daily changes
+            Historical {metalName} prices with daily changes
               {itemsPerPage && ` (${totalItems} total records)`}
-            </p>
+          </p>
           </div>
         </div>
       </div>
 
       <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
-        <table className="w-full border-collapse min-w-[500px]">
+        <table className="w-full border-collapse min-w-[280px] sm:min-w-[500px]">
           <thead>
             <tr className="bg-slate-50 dark:bg-slate-800 border-b-2 border-slate-200 dark:border-slate-700">
-              <th className="px-3 sm:px-4 lg:px-6 py-2.5 sm:py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+              <th className="px-2 sm:px-3 lg:px-4 py-2 sm:py-2.5 text-left text-[10px] sm:text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
                 Date
               </th>
-              <th className="px-3 sm:px-4 lg:px-6 py-2.5 sm:py-3 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+              <th className="px-2 sm:px-3 lg:px-4 py-2 sm:py-2.5 text-right text-[10px] sm:text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
                 Price
               </th>
-              <th className="px-3 sm:px-4 lg:px-6 py-2.5 sm:py-3 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+              <th className="px-2 sm:px-3 lg:px-4 py-2 sm:py-2.5 text-right text-[10px] sm:text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider hidden sm:table-cell">
                 Change
               </th>
-              <th className="px-3 sm:px-4 lg:px-6 py-2.5 sm:py-3 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+              <th className="px-2 sm:px-3 lg:px-4 py-2 sm:py-2.5 text-right text-[10px] sm:text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
                 %
               </th>
             </tr>
@@ -156,28 +160,36 @@ export default function PriceHistoryTable({
                       : 'bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800/30'
                   }`}
                 >
-                  <td className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4 whitespace-nowrap">
-                    <div className="flex items-center gap-2">
+                  <td className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 whitespace-nowrap">
+                    <div className="flex items-center gap-1 sm:gap-1.5">
                       {isLatest && (
-                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-700">
+                        <span className="inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded text-[10px] sm:text-xs font-semibold bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-700">
                           Latest
                         </span>
                       )}
-                      <span className={`font-medium text-sm sm:text-base ${
+                      <span className={`font-medium text-xs sm:text-sm ${
                         isLatest 
                           ? 'text-slate-900 dark:text-slate-50' 
                           : 'text-slate-900 dark:text-slate-50'
                       }`}>
+                        <span className="sm:hidden">
+                          {new Date(row.date).toLocaleDateString('en-IN', {
+                            day: 'numeric',
+                            month: 'short',
+                          })}
+                        </span>
+                        <span className="hidden sm:inline">
                         {new Date(row.date).toLocaleDateString('en-IN', {
                           day: 'numeric',
                           month: 'short',
                           year: 'numeric',
                         })}
+                        </span>
                       </span>
                     </div>
                   </td>
-                  <td className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4 whitespace-nowrap text-right">
-                    <span className={`font-semibold text-sm sm:text-base ${
+                  <td className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 whitespace-nowrap text-right">
+                    <span className={`font-semibold text-xs sm:text-sm ${
                       isLatest 
                         ? 'text-slate-900 dark:text-slate-50' 
                         : 'text-slate-900 dark:text-slate-50'
@@ -185,27 +197,27 @@ export default function PriceHistoryTable({
                       {formatIndianCurrency(row.price)}
                     </span>
                   </td>
-                  <td className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4 whitespace-nowrap text-right">
+                  <td className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 whitespace-nowrap text-right hidden sm:table-cell">
                     {row.change !== null ? (
-                      <div className="flex items-center justify-end gap-1.5">
+                      <div className="flex items-center justify-end gap-1 sm:gap-1.5">
                         {row.trend === 'up' && (
-                          <TrendingUp className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+                          <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
                         )}
                         {row.trend === 'down' && (
-                          <TrendingDown className="w-4 h-4 text-red-600 dark:text-red-400 flex-shrink-0" />
+                          <TrendingDown className="w-3 h-3 sm:w-4 sm:h-4 text-red-600 dark:text-red-400 flex-shrink-0" />
                         )}
                         {row.trend === 'neutral' && (
-                          <Minus className="w-4 h-4 text-gray-400 dark:text-gray-500 flex-shrink-0" />
+                          <Minus className="w-3 h-3 sm:w-4 sm:h-4 text-slate-400 dark:text-slate-500 flex-shrink-0" />
                         )}
                         <span
-                          className={`font-medium text-sm ${
+                          className={`font-medium text-xs sm:text-sm ${
                             row.trend === 'up'
                               ? 'text-emerald-600 dark:text-emerald-400'
                               : row.trend === 'down'
                               ? 'text-red-600 dark:text-red-400'
                               : row.trend === 'neutral'
-                              ? 'text-gray-500 dark:text-gray-400'
-                              : 'text-gray-400 dark:text-gray-500'
+                              ? 'text-slate-500 dark:text-slate-400'
+                              : 'text-slate-400 dark:text-slate-500'
                           }`}
                         >
                           {row.change > 0 ? '+' : row.change === 0 ? '' : ''}
@@ -213,27 +225,35 @@ export default function PriceHistoryTable({
                         </span>
                       </div>
                     ) : (
-                      <span className="text-slate-400 dark:text-slate-500 text-sm">—</span>
+                      <span className="text-slate-400 dark:text-slate-500 text-xs sm:text-sm">—</span>
                     )}
                   </td>
-                  <td className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4 whitespace-nowrap text-right">
+                  <td className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 whitespace-nowrap text-right">
                     {row.changePercent !== null ? (
+                      <div className="flex items-center justify-end gap-1 sm:gap-1.5">
+                        {row.trend === 'up' && (
+                          <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0 sm:hidden" />
+                        )}
+                        {row.trend === 'down' && (
+                          <TrendingDown className="w-3 h-3 sm:w-4 sm:h-4 text-red-600 dark:text-red-400 flex-shrink-0 sm:hidden" />
+                        )}
                       <span
-                        className={`font-medium text-sm ${
+                          className={`font-medium text-xs sm:text-sm ${
                           row.trend === 'up'
                             ? 'text-emerald-600 dark:text-emerald-400'
                             : row.trend === 'down'
                             ? 'text-red-600 dark:text-red-400'
                             : row.trend === 'neutral'
-                            ? 'text-slate-500 dark:text-slate-400'
-                            : 'text-slate-400 dark:text-slate-500'
+                              ? 'text-slate-500 dark:text-slate-400'
+                              : 'text-slate-400 dark:text-slate-500'
                         }`}
                       >
                         {row.changePercent > 0 ? '+' : ''}
                         {row.changePercent.toFixed(2)}%
                       </span>
+                      </div>
                     ) : (
-                      <span className="text-slate-400 dark:text-slate-500 text-sm">—</span>
+                      <span className="text-slate-400 dark:text-slate-500 text-xs sm:text-sm">—</span>
                     )}
                   </td>
                 </tr>
@@ -245,21 +265,29 @@ export default function PriceHistoryTable({
 
       {/* Pagination Controls */}
       {itemsPerPage && totalPages > 1 && (
-        <div className="mt-6 pt-4 border-t border-slate-200 dark:border-slate-700">
-          <div className="flex items-center justify-between">
-            <div className="text-sm text-slate-600 dark:text-slate-400">
-              Showing {startIndex + 1} to {Math.min(endIndex, totalItems)} of {totalItems} entries
+        <div className="mt-4 sm:mt-6 pt-4 border-t border-slate-200 dark:border-slate-700">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+              <span className="hidden sm:inline">Showing {startIndex + 1} to {Math.min(endIndex, totalItems)} of {totalItems} entries</span>
+              <span className="sm:hidden">{startIndex + 1}-{Math.min(endIndex, totalItems)} of {totalItems}</span>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2">
               <button
                 onClick={() => handlePageChange(currentPage - 1)}
+                onKeyDown={(e) => {
+                  if ((e.key === 'Enter' || e.key === ' ') && currentPage > 1) {
+                    e.preventDefault();
+                    handlePageChange(currentPage - 1);
+                  }
+                }}
                 disabled={currentPage === 1}
-                className="px-3 py-1.5 text-sm font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md hover:bg-slate-50 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                aria-label="Go to previous page"
+                className="px-2 sm:px-3 py-1.5 text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md hover:bg-slate-50 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus:outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-slate-50 focus:ring-offset-2"
               >
-                <ChevronLeft className="w-4 h-4" />
+                <ChevronLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" aria-hidden="true" />
               </button>
               
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-0.5 sm:gap-1">
                 {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                   let pageNum;
                   if (totalPages <= 5) {
@@ -276,7 +304,15 @@ export default function PriceHistoryTable({
                     <button
                       key={pageNum}
                       onClick={() => handlePageChange(pageNum)}
-                      className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          handlePageChange(pageNum);
+                        }
+                      }}
+                      aria-label={`Go to page ${pageNum}`}
+                      aria-current={currentPage === pageNum ? 'page' : undefined}
+                      className={`px-2 sm:px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-slate-50 focus:ring-offset-2 ${
                         currentPage === pageNum
                           ? 'bg-slate-900 dark:bg-slate-50 text-white dark:text-slate-900'
                           : 'text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700'
@@ -290,10 +326,17 @@ export default function PriceHistoryTable({
               
               <button
                 onClick={() => handlePageChange(currentPage + 1)}
+                onKeyDown={(e) => {
+                  if ((e.key === 'Enter' || e.key === ' ') && currentPage < totalPages) {
+                    e.preventDefault();
+                    handlePageChange(currentPage + 1);
+                  }
+                }}
                 disabled={currentPage === totalPages}
-                className="px-3 py-1.5 text-sm font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md hover:bg-slate-50 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                aria-label="Go to next page"
+                className="px-2 sm:px-3 py-1.5 text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md hover:bg-slate-50 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus:outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-slate-50 focus:ring-offset-2"
               >
-                <ChevronRight className="w-4 h-4" />
+                <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" aria-hidden="true" />
               </button>
             </div>
           </div>

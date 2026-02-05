@@ -14,6 +14,8 @@ export interface GrowwMetalData {
   gold_22k_10g: number | null; // 22K gold per 10g
   gold_1g: number | null; // 24K gold per 1g
   gold_22k_1g: number | null; // 22K gold per 1g
+  gold_18k_1g?: number | null; // 18K gold per 1g
+  gold_18k_10g?: number | null; // 18K gold per 10g
   silver_1kg: number | null;
   copper: number | null;
   platinum: number | null;
@@ -260,8 +262,13 @@ export async function fetchGrowwMetalPrices(
                 
                 // Check for lastDayPrice (preferred - most recent)
                 if (trendItem.price.lastDayPrice) {
-                  price = trendItem.price.lastDayPrice.TWENTY_FOUR || trendItem.price.lastDayPrice.TWENTY_TWO || null;
+                  price = (trendItem.price.lastDayPrice.TWENTY_FOUR || trendItem.price.lastDayPrice.TWENTY_TWO || null);
+                  // Use price.date if available (more specific), otherwise use trendItem.date
                   date = trendItem.price.date || trendItem.date || date;
+                  // If date is in YYYY-MM format, use price.date which should be YYYY-MM-DD
+                  if (date && date.match(/^\d{4}-\d{2}$/) && trendItem.price.date) {
+                    date = trendItem.price.date;
+                  }
                 } 
                 // Fallback to firstDayPrice
                 else if (trendItem.price.firstDayPrice) {
@@ -288,7 +295,8 @@ export async function fetchGrowwMetalPrices(
                       normalizedDate = `${date}-01`;
                     } else if (date.includes('T')) {
                       // ISO format - extract date part
-                      normalizedDate = date.split('T')[0];
+                      const splitResult = date.split('T');
+                      normalizedDate = splitResult[0] || date || '';
                     }
                   }
                   

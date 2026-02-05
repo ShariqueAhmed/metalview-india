@@ -5,22 +5,19 @@
 
 'use client';
 
+import { memo } from 'react';
 import { Zap } from 'lucide-react';
 import { formatIndianCurrency } from '@/utils/conversions';
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 
 interface CopperPriceSectionProps {
-  price1g: number | null;
-  price10g: number | null;
   price100g: number | null;
   price1kg: number | null;
   previousPrice1kg?: number | null;
   percentageChange?: number | null;
 }
 
-export default function CopperPriceSection({
-  price1g,
-  price10g,
+function CopperPriceSection({
   price100g,
   price1kg,
   previousPrice1kg,
@@ -83,7 +80,7 @@ export default function CopperPriceSection({
   // Show percentage change even if it's 0 (not null)
   const shouldShowChange = change !== null && change !== undefined;
 
-  if (price1g === null && price10g === null && price100g === null && price1kg === null) {
+  if (price100g === null && price1kg === null) {
     return (
       <div className={`${getCardBg()} rounded-lg border border-slate-200 dark:border-slate-800 p-6 card-shadow opacity-60`}>
         <div className="flex items-start justify-between mb-4 sm:mb-6">
@@ -129,37 +126,9 @@ export default function CopperPriceSection({
         </div>
 
         <div className="space-y-4 border-t border-slate-200 dark:border-slate-800 pt-4">
-          {/* 1g Price */}
-          {price1g !== null && (
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs font-medium text-slate-600 dark:text-slate-400 mb-1.5">
-                  1 gram
-                </p>
-                <p className="text-2xl font-semibold text-slate-900 dark:text-slate-50 tracking-tight">
-                  {formatIndianCurrency(price1g)}
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* 10g Price */}
-          {price10g !== null && (
-            <div className={`flex items-center justify-between ${price1g !== null ? 'pt-4 border-t border-slate-100 dark:border-slate-800' : ''}`}>
-              <div>
-                <p className="text-xs font-medium text-slate-600 dark:text-slate-400 mb-1.5">
-                  10 grams
-                </p>
-                <p className="text-2xl font-semibold text-slate-900 dark:text-slate-50 tracking-tight">
-                  {formatIndianCurrency(price10g)}
-                </p>
-              </div>
-            </div>
-          )}
-
           {/* 100g Price */}
           {price100g !== null && (
-            <div className={`flex items-center justify-between ${(price1g !== null || price10g !== null) ? 'pt-4 border-t border-slate-100 dark:border-slate-800' : ''}`}>
+            <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs font-medium text-slate-600 dark:text-slate-400 mb-1.5">
                   100 grams
@@ -173,7 +142,7 @@ export default function CopperPriceSection({
 
           {/* 1kg Price */}
           {price1kg !== null && (
-            <div className={`flex items-center justify-between ${(price1g !== null || price10g !== null || price100g !== null) ? 'pt-4 border-t border-slate-100 dark:border-slate-800' : ''}`}>
+            <div className={`flex items-center justify-between ${price100g !== null ? 'pt-4 border-t border-slate-100 dark:border-slate-800' : ''}`}>
               <div>
                 <p className="text-xs font-medium text-slate-600 dark:text-slate-400 mb-1.5">
                   1 kilogram
@@ -214,3 +183,12 @@ export default function CopperPriceSection({
     </div>
   );
 }
+
+export default memo(CopperPriceSection, (prevProps, nextProps) => {
+  return (
+    prevProps.price100g === nextProps.price100g &&
+    prevProps.price1kg === nextProps.price1kg &&
+    prevProps.previousPrice1kg === nextProps.previousPrice1kg &&
+    prevProps.percentageChange === nextProps.percentageChange
+  );
+});

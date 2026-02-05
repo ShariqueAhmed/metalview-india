@@ -22,8 +22,11 @@ export function generateMetalMetadata(data: SEOData): Metadata {
   const cityName = city ? formatCityName(city) : 'India';
   const metalName = metal ? metal.charAt(0).toUpperCase() + metal.slice(1) : 'Metal';
 
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://metalview.in';
+  const ogImageUrl = `${baseUrl}/api/og?metal=${metal || 'gold'}&city=${city || 'india'}${data.price ? `&price=${data.price}` : ''}`;
+
   return {
-    title: `${title} | SuperMetal`,
+    title: `${title} | MetalView India`,
     description,
     keywords: [
       `${metal || 'metal'} price in ${cityName.toLowerCase()}`,
@@ -34,19 +37,29 @@ export function generateMetalMetadata(data: SEOData): Metadata {
       `current ${metal || 'metal'} price`,
     ],
     openGraph: {
-      title: `${title} | SuperMetal`,
+      title: `${title} | MetalView India`,
       description,
       type: 'website',
       locale: 'en_IN',
-      siteName: 'SuperMetal',
+      siteName: 'MetalView India',
+      url: `${baseUrl}/${metal || 'gold'}-price-today-in-${city || 'india'}`,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${metalName} price in ${cityName}`,
+        },
+      ],
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${title} | SuperMetal`,
+      title: `${title} | MetalView India`,
       description,
+      images: [ogImageUrl],
     },
     alternates: {
-      canonical: `https://supermetal.in/${metal}-price-today-in-${city || 'india'}`,
+      canonical: `${baseUrl}/${metal || 'gold'}-price-today-in-${city || 'india'}`,
     },
   };
 }

@@ -34,6 +34,14 @@ const nextConfig = {
     serverActions: {
       bodySizeLimit: '2mb',
     },
+    // Optimize package imports for better tree-shaking
+    optimizePackageImports: ['recharts', 'lucide-react'],
+  },
+  // Bundle optimization
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production' ? {
+      exclude: ['error', 'warn'],
+    } : false,
   },
 }
 

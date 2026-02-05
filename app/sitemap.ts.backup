@@ -1,0 +1,48 @@
+/**
+ * Dynamic Sitemap Generation
+ * Includes homepage and all city-specific pages
+ */
+
+import { MetadataRoute } from 'next';
+
+const TOP_CITIES = [
+  'mumbai',
+  'delhi',
+  'bangalore',
+  'kolkata',
+  'chennai',
+  'hyderabad',
+  'pune',
+  'ahmedabad',
+  'jaipur',
+  'surat',
+  'lucknow',
+  'kanpur',
+  'nagpur',
+  'indore',
+  'thane',
+  'bhopal',
+  'visakhapatnam',
+  'patna',
+  'vadodara',
+  'ghaziabad',
+];
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://supermetal.in';
+
+  return [
+    {
+      url: baseUrl,
+      lastModified: new Date(),
+      changeFrequency: 'hourly' as const,
+      priority: 1,
+    },
+    ...TOP_CITIES.map((city) => ({
+      url: `${baseUrl}/gold-price-today-in-${city}`,
+      lastModified: new Date(),
+      changeFrequency: 'hourly' as const,
+      priority: 0.8,
+    })),
+  ];
+}

@@ -106,9 +106,10 @@ export async function fetchGrowwGoldPrices(city: string = 'delhi'): Promise<Grow
     
     // If still not found, use first available city
     if (!cityData) {
-      const cityKeys = Object.keys(physicalGoldRate);
-      if (cityKeys.length > 0) {
-        cityData = physicalGoldRate[cityKeys[0]];
+      const cityKeys: string[] = Object.keys(physicalGoldRate);
+      const firstCityKey = cityKeys[0];
+      if (cityKeys.length > 0 && firstCityKey) {
+        cityData = physicalGoldRate[firstCityKey];
       }
     }
     

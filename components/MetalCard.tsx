@@ -87,7 +87,6 @@ export default function MetalCard({
 
   const is24K = name.includes('24K');
   const is22K = name.includes('22K');
-  const is1g = unit === '1g';
   
   // Different gradient backgrounds based on metal type
   const getCardGradient = () => {

@@ -281,8 +281,8 @@ export async function fetchSilverPrices(
         try {
           // Try to parse the date
           // Format: "3rd Feb, 2026" or "1st Jan, 2026"
-          const dateMatch = dateStr.match(/(\d+)(st|nd|rd|th)\s+(\w+),\s+(\d+)/);
-          if (dateMatch) {
+          const dateMatch = dateStr?.match(/(\d+)(st|nd|rd|th)\s+(\w+),\s+(\d+)/);
+          if (dateMatch && dateMatch[1] && dateMatch[3] && dateMatch[4]) {
             const day = parseInt(dateMatch[1]);
             const monthName = dateMatch[3];
             const year = parseInt(dateMatch[4]);
@@ -324,8 +324,12 @@ export async function fetchSilverPrices(
           parsedDate = new Date(); // Use today as fallback
         }
 
+        const isoString = parsedDate.toISOString();
+        const dateSplit = isoString.split('T');
+        const dateValue: string = dateSplit[0] || '';
+        
         return {
-          date: parsedDate.toISOString().split('T')[0], // YYYY-MM-DD format
+          date: dateValue, // YYYY-MM-DD format
           price: parseFloat(item.price),
           differenceAmount: parseFloat(item.differenceAmount),
           differencePercentage: parseFloat(item.differencePercentage),
@@ -343,7 +347,9 @@ export async function fetchSilverPrices(
     }
 
     // Add today's price to the trend if not already present
-    const todayDate = new Date().toISOString().split('T')[0];
+    const todayIso = new Date().toISOString();
+    const todaySplit = todayIso.split('T');
+    const todayDate: string = todaySplit[0] || '';
     const todayInTrend = silverTrend.find((item) => item.date === todayDate);
     
     if (!todayInTrend) {

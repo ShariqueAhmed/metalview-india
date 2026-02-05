@@ -1,6 +1,6 @@
 /**
- * Platinum Price Section Component
- * Displays platinum prices for 1g and 10g in a single card
+ * Palladium Price Section Component
+ * Displays palladium prices for 1g and 10g in a single card
  */
 
 'use client';
@@ -11,7 +11,7 @@ import { Gem } from 'lucide-react';
 import { formatIndianCurrency } from '@/utils/conversions';
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 
-interface PlatinumPriceSectionProps {
+interface PalladiumPriceSectionProps {
   price1g: number | null;
   price10g: number | null;
   previousPrice1g?: number | null;
@@ -21,7 +21,7 @@ interface PlatinumPriceSectionProps {
   variation?: string;
 }
 
-function PlatinumPriceSection({
+function PalladiumPriceSection({
   price1g,
   price10g,
   previousPrice1g,
@@ -29,7 +29,7 @@ function PlatinumPriceSection({
   percentageChange,
   variationType,
   variation,
-}: PlatinumPriceSectionProps) {
+}: PalladiumPriceSectionProps) {
   const getCardBg = () => {
     return 'bg-white dark:bg-slate-900';
   };
@@ -100,15 +100,15 @@ function PlatinumPriceSection({
     <div className={`${getCardBg()} rounded-lg border border-slate-200 dark:border-slate-800 p-6 card-shadow hover:card-shadow-hover transition-shadow`}>
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-3">
-          <div className={`w-12 h-12 rounded-lg bg-blue-50 dark:bg-blue-950/30 flex items-center justify-center border border-blue-200 dark:border-blue-800`}>
-            <Gem className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+          <div className={`w-12 h-12 rounded-lg bg-purple-50 dark:bg-purple-950/30 flex items-center justify-center border border-purple-200 dark:border-purple-800`}>
+            <Gem className="w-6 h-6 text-purple-600 dark:text-purple-400" />
           </div>
           <div>
             <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-50">
-              Platinum
+              Palladium
             </h3>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-              Pure Platinum Prices
+              Pure Palladium Prices
             </p>
           </div>
         </div>
@@ -174,7 +174,7 @@ function PlatinumPriceSection({
   );
 }
 
-export default memo(PlatinumPriceSection, (prevProps, nextProps) => {
+export default memo(PalladiumPriceSection, (prevProps, nextProps) => {
   return (
     prevProps.price1g === nextProps.price1g &&
     prevProps.price10g === nextProps.price10g &&

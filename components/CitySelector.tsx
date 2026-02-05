@@ -49,7 +49,10 @@ export default function CitySelector({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const filteredCities = cities.filter((city) =>
+  // Ensure cities is an array
+  const safeCities = Array.isArray(cities) ? cities : [];
+  
+  const filteredCities = safeCities.filter((city) =>
     city.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -64,7 +67,18 @@ export default function CitySelector({
     <div className="relative w-full sm:w-auto" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full sm:w-auto flex items-center justify-between gap-3 px-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg hover:border-slate-300 dark:hover:border-slate-700 card-shadow hover:card-shadow-hover transition-all duration-200 z-10 relative"
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            setIsOpen(!isOpen);
+          } else if (e.key === 'Escape' && isOpen) {
+            setIsOpen(false);
+          }
+        }}
+        aria-label={`Select city. Currently selected: ${formatCityName(selectedCity)}`}
+        aria-expanded={isOpen}
+        aria-haspopup="listbox"
+        className="w-full sm:w-auto flex items-center justify-between gap-3 px-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg hover:border-slate-300 dark:hover:border-slate-700 card-shadow hover:card-shadow-hover transition-all duration-200 z-10 relative focus:outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-slate-50 focus:ring-offset-2"
       >
         <div className="flex items-center gap-2.5">
           <MapPin className="w-4 h-4 text-slate-600 dark:text-slate-400" />
@@ -87,7 +101,11 @@ export default function CitySelector({
             onClick={() => setIsOpen(false)}
           />
           {/* Dropdown */}
-          <div className="fixed sm:absolute top-auto sm:top-full bottom-4 sm:bottom-auto left-4 sm:left-0 right-4 sm:right-auto sm:w-96 sm:mt-2 max-h-[70vh] sm:max-h-96 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg card-shadow-hover z-[9999] overflow-hidden">
+          <div 
+            role="listbox"
+            aria-label="City selection"
+            className="fixed sm:absolute top-auto sm:top-full bottom-4 sm:bottom-auto left-4 sm:left-0 right-4 sm:right-auto sm:w-96 sm:mt-2 max-h-[70vh] sm:max-h-96 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg card-shadow-hover z-[9999] overflow-hidden"
+          >
           {/* Search Input */}
           <div className="p-3 border-b border-slate-200 dark:border-slate-800">
             <div className="relative">
@@ -127,7 +145,18 @@ export default function CitySelector({
                         setIsOpen(false);
                         setSearchTerm('');
                       }}
-                      className={`w-full text-left px-3 py-2.5 text-sm flex items-center gap-2.5 rounded-md mx-1 my-0.5 transition-colors ${
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          onCityChange(city);
+                          setIsOpen(false);
+                          setSearchTerm('');
+                        }
+                      }}
+                      role="option"
+                      aria-selected={isSelected}
+                      tabIndex={0}
+                      className={`w-full text-left px-3 py-2.5 text-sm flex items-center gap-2.5 rounded-md mx-1 my-0.5 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-slate-50 focus:ring-offset-2 ${
                         isSelected
                           ? 'bg-slate-900 dark:bg-slate-50 text-white dark:text-slate-900 font-medium'
                           : 'hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300'
@@ -159,7 +188,18 @@ export default function CitySelector({
                         setIsOpen(false);
                         setSearchTerm('');
                       }}
-                      className={`w-full text-left px-3 py-2.5 text-sm flex items-center gap-2.5 rounded-md mx-1 my-0.5 transition-colors ${
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          onCityChange(city);
+                          setIsOpen(false);
+                          setSearchTerm('');
+                        }
+                      }}
+                      role="option"
+                      aria-selected={isSelected}
+                      tabIndex={0}
+                      className={`w-full text-left px-3 py-2.5 text-sm flex items-center gap-2.5 rounded-md mx-1 my-0.5 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-slate-50 focus:ring-offset-2 ${
                         isSelected
                           ? 'bg-slate-900 dark:bg-slate-50 text-white dark:text-slate-900 font-medium'
                           : 'hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300'

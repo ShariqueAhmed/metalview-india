@@ -32,7 +32,11 @@ function generateSampleData(currentPrice: number): void {
   for (let i = 6; i >= 0; i--) {
     const date = new Date(today);
     date.setDate(date.getDate() - i);
-    const dateStr = date.toISOString().split('T')[0];
+    const isoString = date.toISOString();
+    const splitResult = isoString.split('T');
+    const fallbackIso = new Date().toISOString();
+    const fallbackSplit = fallbackIso.split('T');
+    const dateStr: string = (splitResult[0] ?? fallbackSplit[0] ?? '');
     
     // Generate price with slight random variation (±2%)
     const variation = (Math.random() - 0.5) * 0.04; // ±2%
@@ -54,7 +58,8 @@ function generateSampleData(currentPrice: number): void {
  */
 export function storePrice(gold_10g: number): void {
   const now = new Date();
-  const date = now.toISOString().split('T')[0]; // YYYY-MM-DD
+  const dateSplit = now.toISOString().split('T');
+  const date: string = dateSplit[0] || ''; // YYYY-MM-DD
   const timestamp = now.toISOString();
 
   // Initialize sample data if we don't have enough data points
