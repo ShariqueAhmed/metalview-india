@@ -26,7 +26,7 @@ const ChartSection = dynamic(() => import('@/components/ChartSection'), {
   ssr: false, // Charts don't need SSR
 });
 import MetalTabs, { MetalType } from '@/components/MetalTabs';
-import GoldPriceSection from '@/components/GoldPriceSection';
+import CombinedGoldPriceSection from '@/components/CombinedGoldPriceSection';
 import SilverPriceSection from '@/components/SilverPriceSection';
 import CopperPriceSection from '@/components/CopperPriceSection';
 import PlatinumPriceSection from '@/components/PlatinumPriceSection';
@@ -72,6 +72,9 @@ interface MetalsData {
   gold_18k_percentage?: string | null;
   gold_22k_percentage?: string | null;
   gold_24k_percentage?: string | null;
+  goldTrend18k?: GoldTrendPoint[];
+  goldTrend22k?: GoldTrendPoint[];
+  goldTrend24k?: GoldTrendPoint[];
   silver_1kg: number | null;
   silver_10g?: number | null;
   silver_1g?: number | null;
@@ -200,7 +203,7 @@ function HomeContent() {
     } finally {
       setIsRefreshing(false);
     }
-  }, []);
+  }, [selectedCity]);
 
   useEffect(() => {
     fetchData(selectedCity);
@@ -300,26 +303,15 @@ function HomeContent() {
       <Header />
 
       <main id="main-content" className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 w-full" role="main" aria-label="Metal prices content">
-        {/* Dashboard Link Banner */}
+        {/* Market Overview */}
         <div className="mb-8 border-b border-slate-200 dark:border-slate-800 pb-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-base font-semibold text-slate-900 dark:text-slate-50 mb-1.5">
-                Market Overview
-              </h2>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
-                Real-time pricing for Gold, Silver, Platinum, and Palladium
-              </p>
-            </div>
-            <a
-              href="/dashboard"
-              className="text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-50 transition-colors duration-200 whitespace-nowrap flex items-center gap-1.5"
-            >
-              View Dashboard
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </a>
+          <div>
+            <h2 className="text-base font-semibold text-slate-900 dark:text-slate-50 mb-1.5">
+              Market Overview
+            </h2>
+            <p className="text-sm text-slate-600 dark:text-slate-400">
+              Real-time pricing for Gold, Silver, Platinum, and Palladium
+            </p>
           </div>
         </div>
 
@@ -404,35 +396,21 @@ function HomeContent() {
                   </div>
                 </div>
               </div>
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-                {/* 24K Gold Section */}
-                <GoldPriceSection
-                  type="24K"
-                  price10g={data?.gold_10g ?? null}
-                  previousPrice1g={previousData?.gold_1g ?? null}
-                  percentageChange={data?.percentageChange24k ?? null}
-                  difference={data?.gold_24k_difference ?? null}
-                  priceChange={data?.gold_24k_percentage ?? null}
-                />
-                
-                {/* 22K Gold Section */}
-                <GoldPriceSection
-                  type="22K"
-                  price10g={data?.gold_22k_10g ?? null}
-                  previousPrice1g={previousData?.gold_22k_1g ?? null}
-                  percentageChange={data?.percentageChange22k ?? null}
-                  difference={data?.gold_22k_difference ?? null}
-                  priceChange={data?.gold_22k_percentage ?? null}
-                />
-                
-                {/* 18K Gold Section */}
-                <GoldPriceSection
-                  type="18K"
-                  price10g={data?.gold_18k_10g ?? null}
-                  previousPrice1g={previousData?.gold_18k_1g ?? null}
-                  percentageChange={null}
-                  difference={data?.gold_18k_difference ?? null}
-                  priceChange={data?.gold_18k_percentage ?? null}
+              {/* Combined Gold Price Section */}
+              <div className="mb-6">
+                <CombinedGoldPriceSection
+                  gold24k_10g={data?.gold_10g ?? null}
+                  gold22k_10g={data?.gold_22k_10g ?? null}
+                  gold18k_10g={data?.gold_18k_10g ?? null}
+                  gold24k_1g={data?.gold_1g ?? null}
+                  gold22k_1g={data?.gold_22k_1g ?? null}
+                  gold18k_1g={data?.gold_18k_1g ?? null}
+                  gold24k_difference={data?.gold_24k_difference ?? null}
+                  gold22k_difference={data?.gold_22k_difference ?? null}
+                  gold18k_difference={data?.gold_18k_difference ?? null}
+                  gold24k_percentage={data?.gold_24k_percentage ?? null}
+                  gold22k_percentage={data?.gold_22k_percentage ?? null}
+                  gold18k_percentage={data?.gold_18k_percentage ?? null}
                 />
               </div>
               
@@ -443,8 +421,105 @@ function HomeContent() {
                   goldPrice1g={data.gold_1g || (data.gold_10g ? data.gold_10g / 10 : undefined)}
                   gold22kPrice10g={data.gold_22k_10g || undefined}
                   gold22kPrice1g={data.gold_22k_1g || undefined}
+                  gold18kPrice10g={data.gold_18k_10g || undefined}
+                  gold18kPrice1g={data.gold_18k_1g || undefined}
                 />
               )}
+            </div>
+            <div className="mb-12">
+              <PriceHistoryTable
+                data={
+                  Array.isArray(data?.goldTrend24k) && data.goldTrend24k.length > 0
+                    ? data.goldTrend24k
+                        .filter((point) => {
+                          if (!point) return false;
+                          const priceValue = typeof point.price === 'number' ? point.price : null;
+                          return point.date && priceValue !== null && !isNaN(priceValue);
+                        })
+                        .map((point) => {
+                          const priceValue = typeof point.price === 'number' ? point.price : 0;
+                          let dateStr = point.date || '';
+                          if (dateStr.match(/^\d{4}-\d{2}$/)) {
+                            dateStr = `${dateStr}-01`;
+                          } else if (dateStr.includes('T')) {
+                            dateStr = dateStr.split('T')[0] || dateStr;
+                          }
+                          return {
+                            date: dateStr,
+                            price: Math.round(priceValue * 100) / 100,
+                          };
+                        })
+                    : undefined
+                }
+                caratData={{
+                  '18k': Array.isArray(data?.goldTrend18k) && data.goldTrend18k.length > 0
+                    ? data.goldTrend18k
+                        .filter((point) => {
+                          if (!point) return false;
+                          const priceValue = typeof point.price === 'number' ? point.price : null;
+                          return point.date && priceValue !== null && !isNaN(priceValue);
+                        })
+                        .map((point) => {
+                          const priceValue = typeof point.price === 'number' ? point.price : 0;
+                          let dateStr = point.date || '';
+                          if (dateStr.match(/^\d{4}-\d{2}$/)) {
+                            dateStr = `${dateStr}-01`;
+                          } else if (dateStr.includes('T')) {
+                            dateStr = dateStr.split('T')[0] || dateStr;
+                          }
+                          return {
+                            date: dateStr,
+                            price: Math.round(priceValue * 100) / 100,
+                          };
+                        })
+                    : undefined,
+                  '22k': Array.isArray(data?.goldTrend22k) && data.goldTrend22k.length > 0
+                    ? data.goldTrend22k
+                        .filter((point) => {
+                          if (!point) return false;
+                          const priceValue = typeof point.price === 'number' ? point.price : null;
+                          return point.date && priceValue !== null && !isNaN(priceValue);
+                        })
+                        .map((point) => {
+                          const priceValue = typeof point.price === 'number' ? point.price : 0;
+                          let dateStr = point.date || '';
+                          if (dateStr.match(/^\d{4}-\d{2}$/)) {
+                            dateStr = `${dateStr}-01`;
+                          } else if (dateStr.includes('T')) {
+                            dateStr = dateStr.split('T')[0] || dateStr;
+                          }
+                          return {
+                            date: dateStr,
+                            price: Math.round(priceValue * 100) / 100,
+                          };
+                        })
+                    : undefined,
+                  '24k': Array.isArray(data?.goldTrend24k) && data.goldTrend24k.length > 0
+                    ? data.goldTrend24k
+                        .filter((point) => {
+                          if (!point) return false;
+                          const priceValue = typeof point.price === 'number' ? point.price : null;
+                          return point.date && priceValue !== null && !isNaN(priceValue);
+                        })
+                        .map((point) => {
+                          const priceValue = typeof point.price === 'number' ? point.price : 0;
+                          let dateStr = point.date || '';
+                          if (dateStr.match(/^\d{4}-\d{2}$/)) {
+                            dateStr = `${dateStr}-01`;
+                          } else if (dateStr.includes('T')) {
+                            dateStr = dateStr.split('T')[0] || dateStr;
+                          }
+                          return {
+                            date: dateStr,
+                            price: Math.round(priceValue * 100) / 100,
+                          };
+                        })
+                    : undefined,
+                }}
+                title="Gold Price History"
+                metalName="Gold"
+                showCaratSelector={true}
+              />
             </div>
             <div className="mb-12">
               <ChartSection
@@ -472,49 +547,6 @@ function HomeContent() {
                 silverData={undefined}
                 title="Price Trends (Last 7 Days)"
                 subtitle="Historical price movement for Gold"
-              />
-            </div>
-            <div className="mb-12">
-              <PriceHistoryTable
-                data={
-                  Array.isArray(data?.goldTrend) && data.goldTrend.length > 0
-                    ? data.goldTrend
-                        .filter((point) => {
-                          // Ensure point exists and has valid data
-                          if (!point) return false;
-                          // Check if price is a number (could be nested object from API)
-                          const priceValue = typeof point.price === 'number' 
-                            ? point.price 
-                            : (point.price as any)?.lastDayPrice?.TWENTY_FOUR 
-                              ? (point.price as any).lastDayPrice.TWENTY_FOUR * 10 
-                              : null;
-                          return point.date && priceValue !== null && !isNaN(priceValue);
-                        })
-                        .map((point) => {
-                          // Extract price value
-                          const priceValue = typeof point.price === 'number' 
-                            ? point.price 
-                            : (point.price as any)?.lastDayPrice?.TWENTY_FOUR 
-                              ? (point.price as any).lastDayPrice.TWENTY_FOUR * 10 
-                              : 0;
-                          
-                          // Normalize date
-                          let dateStr = point.date || '';
-                          if (dateStr.match(/^\d{4}-\d{2}$/)) {
-                            dateStr = `${dateStr}-01`;
-                          } else if (dateStr.includes('T')) {
-                            dateStr = dateStr.split('T')[0] || dateStr;
-                          }
-                          
-                          return {
-                            date: dateStr,
-                            price: Math.round(priceValue * 100) / 100,
-                          };
-                        })
-                    : undefined
-                }
-                title="Gold Price History"
-                metalName="Gold"
               />
             </div>
           </>

@@ -5,7 +5,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { TrendingUp, TrendingDown, Minus, Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
 import { formatIndianCurrency } from '@/utils/conversions';
 
@@ -19,6 +19,12 @@ interface PriceHistoryTableProps {
   title?: string;
   metalName?: string;
   itemsPerPage?: number; // Number of items per page (default: all items, no pagination)
+  caratData?: {
+    '18k'?: PriceHistoryPoint[];
+    '22k'?: PriceHistoryPoint[];
+    '24k'?: PriceHistoryPoint[];
+  };
+  showCaratSelector?: boolean;
 }
 
 export default function PriceHistoryTable({
@@ -26,10 +32,25 @@ export default function PriceHistoryTable({
   title = 'Price History',
   metalName = 'Gold',
   itemsPerPage,
+  caratData,
+  showCaratSelector = false,
 }: PriceHistoryTableProps) {
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedCarat, setSelectedCarat] = useState<'18k' | '22k' | '24k'>('24k');
+  
+  // Use carat-specific data if available, otherwise use default data
+  const activeData = showCaratSelector && caratData 
+    ? caratData[selectedCarat] || []
+    : data || [];
 
-  if (!Array.isArray(data) || data.length === 0) {
+  // Reset page when carat changes
+  useEffect(() => {
+    if (showCaratSelector) {
+      setCurrentPage(1);
+    }
+  }, [selectedCarat, showCaratSelector]);
+
+  if (!Array.isArray(activeData) || activeData.length === 0) {
     return (
       <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 p-6 card-shadow">
         <div className="text-center py-8 text-slate-500 dark:text-slate-400">
@@ -41,7 +62,7 @@ export default function PriceHistoryTable({
   }
 
   // Normalize dates and calculate price changes
-  const normalizedData = data
+  const normalizedData = activeData
     .filter((point) => point && point.date && typeof point.price === 'number')
     .map((point) => {
     // Handle different date formats
@@ -108,28 +129,52 @@ export default function PriceHistoryTable({
   };
 
   return (
-    <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 p-4 sm:p-6 card-shadow">
-      <div className="flex items-center justify-between mb-4 sm:mb-6">
-        <div className="flex items-center gap-2 sm:gap-3">
-          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center border border-slate-200 dark:border-slate-700 flex-shrink-0">
-            <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-slate-600 dark:text-slate-400" />
+    <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-4 sm:p-6 lg:p-8 card-shadow hover:card-shadow-hover transition-all duration-200">
+      <div className="flex items-center justify-between mb-6 sm:mb-8 flex-wrap gap-4">
+        <div className="flex items-center gap-3 sm:gap-4">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-amber-100 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30 flex items-center justify-center border-2 border-amber-200 dark:border-amber-800 flex-shrink-0 shadow-md">
+            <Calendar className="w-5 h-5 sm:w-6 sm:h-6 text-amber-700 dark:text-amber-400" />
         </div>
         <div className="min-w-0">
-            <h2 className="text-lg sm:text-xl font-semibold text-slate-900 dark:text-slate-50">
+            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-50 tracking-tight">
             {title}
           </h2>
-            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-0.5">
+            <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
             Historical {metalName} prices with daily changes
               {itemsPerPage && ` (${totalItems} total records)`}
           </p>
           </div>
         </div>
+        {showCaratSelector && caratData && (
+          <div className="flex items-center gap-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl px-4 py-2.5 border border-slate-200 dark:border-slate-700">
+            <label htmlFor="carat-selector" className="text-sm font-semibold text-slate-700 dark:text-slate-300 whitespace-nowrap">
+              Carat:
+            </label>
+            <select
+              id="carat-selector"
+              value={selectedCarat}
+              onChange={(e) => {
+                setSelectedCarat(e.target.value as '18k' | '22k' | '24k');
+                setCurrentPage(1);
+              }}
+              className="px-4 py-2 text-sm font-semibold bg-white dark:bg-slate-900 border-2 border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-slate-50 focus:outline-none focus:ring-2 focus:ring-amber-500 dark:focus:ring-amber-400 focus:border-amber-500 dark:focus:border-amber-400 transition-all duration-200 hover:border-slate-400 dark:hover:border-slate-500 shadow-sm hover:shadow-md cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22currentColor%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22m6 9 6 6 6-6%22/%3E%3C/svg%3E')] bg-no-repeat bg-right pr-10"
+              style={{
+                backgroundPosition: 'right 0.75rem center',
+                backgroundSize: '1.25em 1.25em',
+              }}
+            >
+              <option value="24k">24K (Purest)</option>
+              <option value="22k">22K (Jewelry)</option>
+              <option value="18k">18K (Jewelry)</option>
+            </select>
+          </div>
+        )}
       </div>
 
-      <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
+      <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0 rounded-lg border border-slate-200 dark:border-slate-700">
         <table className="w-full border-collapse min-w-[280px] sm:min-w-[500px]">
           <thead>
-            <tr className="bg-slate-50 dark:bg-slate-800 border-b-2 border-slate-200 dark:border-slate-700">
+            <tr className="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 border-b-2 border-slate-300 dark:border-slate-600">
               <th className="px-2 sm:px-3 lg:px-4 py-2 sm:py-2.5 text-left text-[10px] sm:text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
                 Date
               </th>
@@ -152,12 +197,12 @@ export default function PriceHistoryTable({
               return (
                 <tr
                   key={index}
-                  className={`transition-colors ${
+                  className={`transition-all duration-200 ${
                     isLatest
-                      ? 'bg-slate-50 dark:bg-slate-800/50 border-l-4 border-slate-500 dark:border-slate-400'
+                      ? 'bg-gradient-to-r from-emerald-50 to-slate-50 dark:from-emerald-950/20 dark:to-slate-800/50 border-l-4 border-emerald-500 dark:border-emerald-400 shadow-sm'
                       : isEven
-                      ? 'bg-slate-50/50 dark:bg-slate-800/30 hover:bg-slate-100 dark:hover:bg-slate-800/50'
-                      : 'bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800/30'
+                      ? 'bg-slate-50/50 dark:bg-slate-800/30 hover:bg-slate-100 dark:hover:bg-slate-800/50 hover:shadow-sm'
+                      : 'bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800/30 hover:shadow-sm'
                   }`}
                 >
                   <td className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 whitespace-nowrap">
@@ -282,7 +327,7 @@ export default function PriceHistoryTable({
                 }}
                 disabled={currentPage === 1}
                 aria-label="Go to previous page"
-                className="px-2 sm:px-3 py-1.5 text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md hover:bg-slate-50 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus:outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-slate-50 focus:ring-offset-2"
+                className="px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-400 dark:hover:border-slate-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-amber-500 dark:focus:ring-amber-400 focus:border-amber-500 dark:focus:border-amber-400 shadow-sm hover:shadow-md"
               >
                 <ChevronLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" aria-hidden="true" />
               </button>
@@ -312,7 +357,7 @@ export default function PriceHistoryTable({
                       }}
                       aria-label={`Go to page ${pageNum}`}
                       aria-current={currentPage === pageNum ? 'page' : undefined}
-                      className={`px-2 sm:px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-slate-50 focus:ring-offset-2 ${
+                      className={`px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-amber-500 dark:focus:ring-amber-400 focus:ring-offset-2 shadow-sm hover:shadow-md ${
                         currentPage === pageNum
                           ? 'bg-slate-900 dark:bg-slate-50 text-white dark:text-slate-900'
                           : 'text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700'
@@ -334,7 +379,7 @@ export default function PriceHistoryTable({
                 }}
                 disabled={currentPage === totalPages}
                 aria-label="Go to next page"
-                className="px-2 sm:px-3 py-1.5 text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md hover:bg-slate-50 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus:outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-slate-50 focus:ring-offset-2"
+                className="px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-400 dark:hover:border-slate-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-amber-500 dark:focus:ring-amber-400 focus:border-amber-500 dark:focus:border-amber-400 shadow-sm hover:shadow-md"
               >
                 <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" aria-hidden="true" />
               </button>

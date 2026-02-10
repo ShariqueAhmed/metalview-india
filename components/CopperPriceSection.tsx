@@ -128,12 +128,12 @@ function CopperPriceSection({
         <div className="space-y-4 border-t border-slate-200 dark:border-slate-800 pt-4">
           {/* 100g Price */}
           {price100g !== null && (
-            <div className="flex items-center justify-between">
-              <div>
+            <div className="flex items-center justify-between min-w-0 overflow-hidden">
+              <div className="min-w-0 flex-1 overflow-hidden">
                 <p className="text-xs font-medium text-slate-600 dark:text-slate-400 mb-1.5">
                   100 grams
                 </p>
-                <p className="text-2xl font-semibold text-slate-900 dark:text-slate-50 tracking-tight">
+                <p className="text-xl sm:text-2xl font-semibold text-slate-900 dark:text-slate-50 tracking-tight break-words overflow-hidden">
                   {formatIndianCurrency(price100g)}
                 </p>
               </div>
@@ -142,12 +142,12 @@ function CopperPriceSection({
 
           {/* 1kg Price */}
           {price1kg !== null && (
-            <div className={`flex items-center justify-between ${price100g !== null ? 'pt-4 border-t border-slate-100 dark:border-slate-800' : ''}`}>
-              <div>
+            <div className={`flex items-center justify-between min-w-0 overflow-hidden ${price100g !== null ? 'pt-4 border-t border-slate-100 dark:border-slate-800' : ''}`}>
+              <div className="min-w-0 flex-1 overflow-hidden">
                 <p className="text-xs font-medium text-slate-600 dark:text-slate-400 mb-1.5">
                   1 kilogram
                 </p>
-                <p className="text-2xl font-semibold text-slate-900 dark:text-slate-50 tracking-tight">
+                <p className="text-xl sm:text-2xl font-semibold text-slate-900 dark:text-slate-50 tracking-tight break-words overflow-hidden">
                   {formatIndianCurrency(price1kg)}
                 </p>
               </div>

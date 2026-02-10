@@ -13,6 +13,8 @@ interface GoldWeightPricesProps {
   goldPrice1g?: number | null; // Optional: if provided, use this for more accurate calculations
   gold22kPrice10g?: number | null;
   gold22kPrice1g?: number | null;
+  gold18kPrice10g?: number | null;
+  gold18kPrice1g?: number | null;
 }
 
 interface WeightOption {
@@ -36,7 +38,9 @@ export default function GoldWeightPrices({
   goldPrice10g, 
   goldPrice1g,
   gold22kPrice10g,
-  gold22kPrice1g 
+  gold22kPrice1g,
+  gold18kPrice10g,
+  gold18kPrice1g
 }: GoldWeightPricesProps) {
   if (!goldPrice10g || goldPrice10g === 0) {
     return null;
@@ -45,9 +49,15 @@ export default function GoldWeightPrices({
   // Use 1gm price if available, otherwise calculate from 10gm
   const basePrice1g_24k = goldPrice1g || goldPrice10g / 10;
   const basePrice1g_22k = gold22kPrice1g || (gold22kPrice10g ? gold22kPrice10g / 10 : null);
+  const basePrice1g_18k = gold18kPrice1g || (gold18kPrice10g ? gold18kPrice10g / 10 : null);
 
-  const calculatePrice = (weight: number, is22k: boolean = false): number => {
-    const basePrice = is22k && basePrice1g_22k ? basePrice1g_22k : basePrice1g_24k;
+  const calculatePrice = (weight: number, carat: '24k' | '22k' | '18k' = '24k'): number => {
+    let basePrice = basePrice1g_24k;
+    if (carat === '22k' && basePrice1g_22k) {
+      basePrice = basePrice1g_22k;
+    } else if (carat === '18k' && basePrice1g_18k) {
+      basePrice = basePrice1g_18k;
+    }
     return basePrice * weight;
   };
 
@@ -62,7 +72,7 @@ export default function GoldWeightPrices({
             Gold Prices by Weight
           </h2>
           <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-            24 Karat & 22 Karat Gold prices for different weights
+            24K, 22K & 18K Gold prices for different weights
           </p>
         </div>
       </div>
@@ -70,8 +80,9 @@ export default function GoldWeightPrices({
       {/* Mobile Card View */}
       <div className="block md:hidden space-y-3">
         {weightOptions.map((option) => {
-          const price24k = calculatePrice(option.weight, false);
-          const price22k = basePrice1g_22k ? calculatePrice(option.weight, true) : null;
+          const price24k = calculatePrice(option.weight, '24k');
+          const price22k = basePrice1g_22k ? calculatePrice(option.weight, '22k') : null;
+          const price18k = basePrice1g_18k ? calculatePrice(option.weight, '18k') : null;
           const isTola = option.weight === 12;
 
           return (
@@ -130,6 +141,18 @@ export default function GoldWeightPrices({
                     </span>
                   </div>
                 )}
+                
+                {basePrice1g_18k && (
+                  <div className="flex items-center justify-between p-2.5 bg-white dark:bg-slate-900/50 rounded-md">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2.5 h-2.5 bg-slate-400 rounded-full"></span>
+                      <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">18K</span>
+                    </div>
+                    <span className={`font-bold text-base ${isTola ? 'text-slate-800 dark:text-slate-200' : 'text-slate-900 dark:text-slate-50'}`}>
+                      {formatIndianCurrency(price18k!)}
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
           );
@@ -140,21 +163,21 @@ export default function GoldWeightPrices({
       <div className="hidden md:block w-full">
         <div className="overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700">
           <table className="w-full border-collapse">
-            <thead>
+          <thead>
               <tr className="bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-950/30 dark:to-yellow-950/30 border-b-2 border-amber-200 dark:border-amber-800">
                 <th className="px-3 lg:px-4 py-3 text-left text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider w-[25%]">
-                  Weight
-                </th>
+                Weight
+              </th>
                 <th className="px-3 lg:px-4 py-3 text-left text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider w-[15%]">
-                  Unit
-                </th>
+                Unit
+              </th>
                 <th className="px-3 lg:px-4 py-3 text-right text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                   <span className="inline-flex items-center gap-2">
                     <span className="w-3 h-3 bg-amber-500 rounded-full ring-2 ring-amber-200 dark:ring-amber-800"></span>
                     <span>24K Price</span>
-                  </span>
-                </th>
-                {basePrice1g_22k && (
+                </span>
+              </th>
+              {basePrice1g_22k && (
                   <th className="px-3 lg:px-4 py-3 text-right text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                     <span className="inline-flex items-center gap-2">
                       <span className="w-3 h-3 bg-slate-500 rounded-full ring-2 ring-slate-200 dark:ring-slate-700"></span>
@@ -162,74 +185,90 @@ export default function GoldWeightPrices({
                     </span>
                   </th>
                 )}
-              </tr>
-            </thead>
+                {basePrice1g_18k && (
+                  <th className="px-3 lg:px-4 py-3 text-right text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                    <span className="inline-flex items-center gap-2">
+                      <span className="w-3 h-3 bg-slate-400 rounded-full ring-2 ring-slate-200 dark:ring-slate-700"></span>
+                      <span>18K Price</span>
+                  </span>
+                </th>
+              )}
+            </tr>
+          </thead>
             <tbody className="bg-white dark:bg-slate-900 divide-y divide-slate-200 dark:divide-slate-700">
-              {weightOptions.map((option, index) => {
-                const price24k = calculatePrice(option.weight, false);
-                const price22k = basePrice1g_22k ? calculatePrice(option.weight, true) : null;
-                const isTola = option.weight === 12;
-                const isEven = index % 2 === 0;
+            {weightOptions.map((option, index) => {
+                const price24k = calculatePrice(option.weight, '24k');
+                const price22k = basePrice1g_22k ? calculatePrice(option.weight, '22k') : null;
+                const price18k = basePrice1g_18k ? calculatePrice(option.weight, '18k') : null;
+              const isTola = option.weight === 12;
+              const isEven = index % 2 === 0;
 
-                return (
-                  <tr
-                    key={option.weight}
+              return (
+                <tr
+                  key={option.weight}
                     className={`transition-all ${
-                      isTola
+                    isTola
                         ? 'bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-950/30 dark:to-yellow-950/30 border-l-4 border-amber-400 dark:border-amber-600'
-                        : isEven
+                      : isEven
                         ? 'bg-slate-50/50 dark:bg-slate-800/30'
                         : 'bg-white dark:bg-slate-900'
                     } hover:bg-amber-50/50 dark:hover:bg-amber-950/20`}
                   >
                     <td className="px-3 lg:px-4 py-3.5">
                       <div className="flex items-center gap-2">
-                        {isTola && (
+                      {isTola && (
                           <span className="flex items-center justify-center w-6 h-6 bg-amber-500 dark:bg-amber-400 rounded-full text-white text-[10px] font-bold flex-shrink-0 shadow-md">
-                            ⭐
-                          </span>
-                        )}
+                          ⭐
+                        </span>
+                      )}
                         <div className="min-w-0">
                           <div className="flex items-center gap-1.5 flex-wrap">
                             <span className={`font-semibold text-sm ${isTola ? 'text-amber-900 dark:text-amber-100' : 'text-slate-900 dark:text-slate-50'}`}>
-                              {option.label}
-                            </span>
-                            {isTola && (
+                        {option.label}
+                      </span>
+                      {isTola && (
                               <span className="px-1.5 py-0.5 bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-200 text-[10px] font-semibold rounded-full border border-amber-200 dark:border-amber-800">
-                                Traditional
-                              </span>
-                            )}
+                          Traditional
+                        </span>
+                      )}
                           </div>
                         </div>
-                      </div>
-                    </td>
+                    </div>
+                  </td>
                     <td className="px-3 lg:px-4 py-3.5">
                       <span className="text-sm font-medium text-slate-600 dark:text-slate-400">{option.unit}</span>
-                    </td>
+                  </td>
                     <td className="px-3 lg:px-4 py-3.5 text-right">
                       <span className={`font-bold text-sm ${isTola ? 'text-amber-900 dark:text-amber-100' : 'text-slate-900 dark:text-slate-50'}`}>
-                        {formatIndianCurrency(price24k)}
-                      </span>
-                    </td>
-                    {basePrice1g_22k && (
+                      {formatIndianCurrency(price24k)}
+                    </span>
+                  </td>
+                  {basePrice1g_22k && (
                       <td className="px-3 lg:px-4 py-3.5 text-right">
                         <span className={`font-bold text-sm ${isTola ? 'text-slate-800 dark:text-slate-200' : 'text-slate-900 dark:text-slate-50'}`}>
-                          {formatIndianCurrency(price22k!)}
-                        </span>
-                      </td>
-                    )}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                        {formatIndianCurrency(price22k!)}
+                      </span>
+                    </td>
+                  )}
+                    {basePrice1g_18k && (
+                      <td className="px-3 lg:px-4 py-3.5 text-right">
+                        <span className={`font-bold text-sm ${isTola ? 'text-slate-800 dark:text-slate-200' : 'text-slate-900 dark:text-slate-50'}`}>
+                          {formatIndianCurrency(price18k!)}
+                      </span>
+                    </td>
+                  )}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
         </div>
       </div>
 
       <div className="mt-6 pt-4 border-t border-slate-200 dark:border-slate-700">
         <p className="text-xs text-slate-500 dark:text-slate-400 text-center leading-relaxed">
-          * 24K gold is 99.9% pure. 22K gold is 91.6% pure (ideal for jewelry). Prices may vary based on location.
-        </p>
+          * 24K gold is 99.9% pure. 22K gold is 91.6% pure. 18K gold is 75% pure (jewelry grade). Prices may vary based on location.
+      </p>
       </div>
     </div>
   );

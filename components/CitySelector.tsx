@@ -78,7 +78,7 @@ export default function CitySelector({
         aria-label={`Select city. Currently selected: ${formatCityName(selectedCity)}`}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
-        className="w-full sm:w-auto flex items-center justify-between gap-3 px-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg hover:border-slate-300 dark:hover:border-slate-700 card-shadow hover:card-shadow-hover transition-all duration-200 z-10 relative focus:outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-slate-50 focus:ring-offset-2"
+        className="w-full sm:w-auto flex items-center justify-between gap-3 px-5 py-3 bg-white dark:bg-slate-900 border-2 border-slate-300 dark:border-slate-700 rounded-xl hover:border-amber-400 dark:hover:border-amber-600 card-shadow hover:card-shadow-hover transition-all duration-200 z-10 relative focus:outline-none focus:ring-2 focus:ring-amber-500 dark:focus:ring-amber-400 focus:border-amber-500 dark:focus:border-amber-400 shadow-md hover:shadow-lg"
       >
         <div className="flex items-center gap-2.5">
           <MapPin className="w-4 h-4 text-slate-600 dark:text-slate-400" />

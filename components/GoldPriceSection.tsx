@@ -131,38 +131,30 @@ function GoldPriceSection({
   };
 
   return (
-    <div className={`${getCardBg()} ${is24K || is22K || is18K ? getCardGradient() : ''} rounded-xl border-2 ${is24K ? 'border-amber-200 dark:border-amber-800' : is22K ? 'border-slate-200 dark:border-slate-800' : 'border-slate-300 dark:border-slate-600'} p-6 sm:p-8 card-shadow hover:card-shadow-hover transition-all duration-200 relative overflow-hidden`}>
-      {/* Decorative background element */}
-      {is24K && (
-        <div className="absolute top-0 right-0 w-32 h-32 bg-amber-200/10 dark:bg-amber-800/10 rounded-full -mr-16 -mt-16"></div>
-      )}
-      
+    <div className={`${getCardBg()} ${is24K || is22K || is18K ? getCardGradient() : ''} rounded-xl border-2 ${is24K ? 'border-amber-200 dark:border-amber-800' : is22K ? 'border-slate-200 dark:border-slate-800' : 'border-slate-300 dark:border-slate-600'} p-4 sm:p-5 card-shadow hover:card-shadow-hover transition-all duration-200 relative overflow-hidden`}>
       <div className="relative">
-        {/* Header */}
-        <div className="flex items-start justify-between mb-6">
-          <div className="flex items-center gap-3 flex-1 min-w-0">
-            <div className={`${getIconBg()} p-3 rounded-xl flex-shrink-0 shadow-md ${is24K ? 'ring-2 ring-amber-200 dark:ring-amber-800' : ''}`}>
-              <Award className="w-6 h-6 text-white dark:text-slate-900" />
+        {/* Compact Header */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2.5 flex-1 min-w-0">
+            <div className={`${getIconBg()} p-2 rounded-lg flex-shrink-0 shadow-sm ${is24K ? 'ring-1 ring-amber-200 dark:ring-amber-800' : ''}`}>
+              <Award className="w-4 h-4 text-white dark:text-slate-900" />
             </div>
             <div className="min-w-0 flex-1">
-              <div className="flex items-center gap-2">
-                <h3 className={`text-lg font-bold ${is24K ? 'text-amber-900 dark:text-amber-100' : is22K ? 'text-slate-900 dark:text-slate-50' : 'text-slate-800 dark:text-slate-200'} tracking-tight`}>
+              <div className="flex items-center gap-2 flex-wrap">
+                <h3 className={`text-base font-bold ${is24K ? 'text-amber-900 dark:text-amber-100' : is22K ? 'text-slate-900 dark:text-slate-50' : 'text-slate-800 dark:text-slate-200'} tracking-tight`}>
                   Gold {type}
                 </h3>
                 {is24K && (
-                  <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-200 text-xs font-semibold rounded-full">
+                  <span className="px-1.5 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-200 text-[10px] font-semibold rounded-full">
                     Purest
                   </span>
                 )}
                 {is18K && (
-                  <span className="px-2 py-0.5 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-semibold rounded-full">
+                  <span className="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 text-[10px] font-semibold rounded-full">
                     Jewelry
                   </span>
                 )}
               </div>
-              <p className="text-xs font-medium text-slate-600 dark:text-slate-400 mt-1">
-                {is24K ? '99.9% Pure Gold' : is22K ? '91.6% Pure Gold (Jewelry Grade)' : '75% Pure Gold (Jewelry Grade)'}
-              </p>
             </div>
           </div>
           <div className="flex-shrink-0 ml-2">
@@ -170,126 +162,140 @@ function GoldPriceSection({
           </div>
         </div>
 
-        {/* Prices Grid */}
-        <div className="grid grid-cols-2 gap-4 mb-6">
+        {/* Compact Prices Grid */}
+        <div className="grid grid-cols-2 gap-3 mb-4">
           {/* 1g Price */}
-          <div className={`${is24K ? 'bg-white/60 dark:bg-slate-900/60' : is22K ? 'bg-slate-50 dark:bg-slate-800/50' : 'bg-slate-100 dark:bg-slate-800/50'} rounded-lg p-4 border ${is24K ? 'border-amber-100 dark:border-amber-800/50' : is22K ? 'border-slate-200 dark:border-slate-700' : 'border-slate-300 dark:border-slate-600'}`}>
-            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wide">
+          <div className={`${is24K ? 'bg-white/60 dark:bg-slate-900/60' : is22K ? 'bg-slate-50 dark:bg-slate-800/50' : 'bg-slate-100 dark:bg-slate-800/50'} rounded-lg p-3 border ${is24K ? 'border-amber-100 dark:border-amber-800/50' : is22K ? 'border-slate-200 dark:border-slate-700' : 'border-slate-300 dark:border-slate-600'} overflow-hidden min-w-0`}>
+            <p className="text-[10px] font-semibold text-slate-500 dark:text-slate-400 mb-1.5 uppercase tracking-wide">
               1 Gram
             </p>
-            <p className={`text-2xl sm:text-3xl font-bold ${is24K ? 'text-amber-900 dark:text-amber-100' : is22K ? 'text-slate-900 dark:text-slate-50' : 'text-slate-800 dark:text-slate-200'} tracking-tight`}>
+            <p className={`text-lg sm:text-xl font-bold ${is24K ? 'text-amber-900 dark:text-amber-100' : is22K ? 'text-slate-900 dark:text-slate-50' : 'text-slate-800 dark:text-slate-200'} tracking-tight break-words overflow-hidden`}>
               {price10g !== null ? formatIndianCurrency(price10g / 10) : '—'}
             </p>
           </div>
 
           {/* 10g Price */}
-          <div className={`${is24K ? 'bg-white/60 dark:bg-slate-900/60' : is22K ? 'bg-slate-50 dark:bg-slate-800/50' : 'bg-slate-100 dark:bg-slate-800/50'} rounded-lg p-4 border ${is24K ? 'border-amber-100 dark:border-amber-800/50' : is22K ? 'border-slate-200 dark:border-slate-700' : 'border-slate-300 dark:border-slate-600'}`}>
-            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wide">
+          <div className={`${is24K ? 'bg-white/60 dark:bg-slate-900/60' : is22K ? 'bg-slate-50 dark:bg-slate-800/50' : 'bg-slate-100 dark:bg-slate-800/50'} rounded-lg p-3 border ${is24K ? 'border-amber-100 dark:border-amber-800/50' : is22K ? 'border-slate-200 dark:border-slate-700' : 'border-slate-300 dark:border-slate-600'} overflow-hidden min-w-0`}>
+            <p className="text-[10px] font-semibold text-slate-500 dark:text-slate-400 mb-1.5 uppercase tracking-wide">
               10 Grams
             </p>
-            <p className={`text-2xl sm:text-3xl font-bold ${is24K ? 'text-amber-900 dark:text-amber-100' : is22K ? 'text-slate-900 dark:text-slate-50' : 'text-slate-800 dark:text-slate-200'} tracking-tight`}>
+            <p className={`text-lg sm:text-xl font-bold ${is24K ? 'text-amber-900 dark:text-amber-100' : is22K ? 'text-slate-900 dark:text-slate-50' : 'text-slate-800 dark:text-slate-200'} tracking-tight break-words overflow-hidden`}>
               {price10g !== null ? formatIndianCurrency(price10g) : '—'}
             </p>
           </div>
         </div>
 
-        {/* Price Difference, Price Change, and Percentage Change */}
+        {/* Compact Price Change Section - Horizontal Layout */}
         {(difference || priceChange || shouldShowChange) && (
-          <div className={`${is24K ? 'bg-amber-100/50 dark:bg-amber-900/20' : is22K ? 'bg-slate-100 dark:bg-slate-800/50' : 'bg-slate-100 dark:bg-slate-800/50'} rounded-lg p-4 border-t-2 ${is24K ? 'border-amber-200 dark:border-amber-800' : is22K ? 'border-slate-200 dark:border-slate-700' : 'border-slate-300 dark:border-slate-600'}`}>
-            <div className="space-y-3">
+          <div className={`${is24K ? 'bg-gradient-to-r from-amber-50 to-amber-100/50 dark:from-amber-950/30 dark:to-amber-900/20' : is22K ? 'bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800/50 dark:to-slate-800/30' : 'bg-gradient-to-r from-slate-100 to-slate-150 dark:from-slate-800/50 dark:to-slate-800/30'} rounded-lg p-3 border ${is24K ? 'border-amber-200 dark:border-amber-800' : is22K ? 'border-slate-200 dark:border-slate-700' : 'border-slate-300 dark:border-slate-600'}`}>
+            <div className="flex items-center gap-3 flex-wrap">
               {/* Price Difference */}
               {difference && (
-                <div>
-                  <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1 uppercase tracking-wide">
-                    Price Difference
-                  </p>
-                  <div className="flex items-baseline gap-2">
-                    {difference.startsWith('+') ? (
-                      <>
-                        <TrendingUp className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                        <span className="text-xl font-bold text-emerald-600 dark:text-emerald-400">
-                          ₹{difference.substring(1)} per gram
+                <div className="flex items-center gap-1.5 min-w-0">
+                  {difference.startsWith('+') ? (
+                    <>
+                      <TrendingUp className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+                      <div className="min-w-0">
+                        <p className="text-[10px] font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide">Diff</p>
+                        <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400 break-words overflow-hidden">
+                          ₹{difference.substring(1)}/g
                         </span>
-                      </>
-                    ) : difference.startsWith('-') ? (
-                      <>
-                        <TrendingDown className="w-5 h-5 text-red-600 dark:text-red-400" />
-                        <span className="text-xl font-bold text-red-600 dark:text-red-400">
-                          ₹{difference.substring(1)} per gram
+                      </div>
+                    </>
+                  ) : difference.startsWith('-') ? (
+                    <>
+                      <TrendingDown className="w-4 h-4 text-red-600 dark:text-red-400 flex-shrink-0" />
+                      <div className="min-w-0">
+                        <p className="text-[10px] font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide">Diff</p>
+                        <span className="text-sm font-bold text-red-600 dark:text-red-400 break-words overflow-hidden">
+                          ₹{difference.substring(1)}/g
                         </span>
-                      </>
-                    ) : (
-                      <>
-                        <Minus className="w-5 h-5 text-slate-400 dark:text-slate-500" />
-                        <span className="text-xl font-bold text-slate-600 dark:text-slate-400">
-                          ₹{difference} per gram
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <Minus className="w-4 h-4 text-slate-400 dark:text-slate-500 flex-shrink-0" />
+                      <div className="min-w-0">
+                        <p className="text-[10px] font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide">Diff</p>
+                        <span className="text-sm font-bold text-slate-600 dark:text-slate-400 break-words overflow-hidden">
+                          ₹{difference}/g
                         </span>
-                      </>
-                    )}
-                  </div>
+                      </div>
+                    </>
+                  )}
                 </div>
               )}
               
               {/* Price Change (from API) */}
               {priceChange && (
-                <div>
-                  <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1 uppercase tracking-wide">
-                    Price Change
-                  </p>
-                  <div className="flex items-baseline gap-2">
-                    {priceChange.startsWith('+') ? (
-                      <>
-                        <TrendingUp className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                        <span className="text-xl font-bold text-emerald-600 dark:text-emerald-400">
+                <div className="flex items-center gap-1.5 min-w-0">
+                  {priceChange.startsWith('+') ? (
+                    <>
+                      <TrendingUp className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+                      <div className="min-w-0">
+                        <p className="text-[10px] font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide">Change</p>
+                        <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400 break-words overflow-hidden">
                           {priceChange}
                         </span>
-                      </>
-                    ) : priceChange.startsWith('-') ? (
-                      <>
-                        <TrendingDown className="w-5 h-5 text-red-600 dark:text-red-400" />
-                        <span className="text-xl font-bold text-red-600 dark:text-red-400">
+                      </div>
+                    </>
+                  ) : priceChange.startsWith('-') ? (
+                    <>
+                      <TrendingDown className="w-4 h-4 text-red-600 dark:text-red-400 flex-shrink-0" />
+                      <div className="min-w-0">
+                        <p className="text-[10px] font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide">Change</p>
+                        <span className="text-sm font-bold text-red-600 dark:text-red-400 break-words overflow-hidden">
                           {priceChange}
                         </span>
-                      </>
-                    ) : (
-                      <>
-                        <Minus className="w-5 h-5 text-slate-400 dark:text-slate-500" />
-                        <span className="text-xl font-bold text-slate-600 dark:text-slate-400">
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <Minus className="w-4 h-4 text-slate-400 dark:text-slate-500 flex-shrink-0" />
+                      <div className="min-w-0">
+                        <p className="text-[10px] font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide">Change</p>
+                        <span className="text-sm font-bold text-slate-600 dark:text-slate-400 break-words overflow-hidden">
                           {priceChange}
                         </span>
-                      </>
-                    )}
-                  </div>
+                      </div>
+                    </>
+                  )}
                 </div>
               )}
               
               {/* Percentage Change (calculated) */}
               {shouldShowChange && !priceChange && (
-                <div>
-                  <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1 uppercase tracking-wide">
-                    24h Change
-                  </p>
+                <div className="flex items-center gap-1.5 min-w-0">
                   {change > 0 ? (
-                    <div className="flex items-baseline gap-2">
-                      <TrendingUp className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                      <span className="text-xl font-bold text-emerald-600 dark:text-emerald-400">
-                        +{Math.abs(change).toFixed(2)}%
-                      </span>
-                    </div>
+                    <>
+                      <TrendingUp className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+                      <div className="min-w-0">
+                        <p className="text-[10px] font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide">24h</p>
+                        <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400">
+                          +{Math.abs(change).toFixed(2)}%
+                        </span>
+                      </div>
+                    </>
                   ) : change < 0 ? (
-                    <div className="flex items-baseline gap-2">
-                      <TrendingDown className="w-5 h-5 text-red-600 dark:text-red-400" />
-                      <span className="text-xl font-bold text-red-600 dark:text-red-400">
-                        {change.toFixed(2)}%
-                      </span>
-                    </div>
+                    <>
+                      <TrendingDown className="w-4 h-4 text-red-600 dark:text-red-400 flex-shrink-0" />
+                      <div className="min-w-0">
+                        <p className="text-[10px] font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide">24h</p>
+                        <span className="text-sm font-bold text-red-600 dark:text-red-400">
+                          {change.toFixed(2)}%
+                        </span>
+                      </div>
+                    </>
                   ) : (
-                    <div className="flex items-baseline gap-2">
-                      <Minus className="w-5 h-5 text-slate-400 dark:text-slate-500" />
-                      <span className="text-xl font-bold text-slate-600 dark:text-slate-400">
-                        0.00%
-                      </span>
-                    </div>
+                    <>
+                      <Minus className="w-4 h-4 text-slate-400 dark:text-slate-500 flex-shrink-0" />
+                      <div className="min-w-0">
+                        <p className="text-[10px] font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide">24h</p>
+                        <span className="text-sm font-bold text-slate-600 dark:text-slate-400">
+                          0.00%
+                        </span>
+                      </div>
+                    </>
                   )}
                 </div>
               )}

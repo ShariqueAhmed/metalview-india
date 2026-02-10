@@ -59,6 +59,9 @@ export interface MetalsApiResponse {
   cached: boolean;
   trendingCities?: string[];
   goldTrend?: GoldTrendPoint[];
+  goldTrend18k?: GoldTrendPoint[];
+  goldTrend22k?: GoldTrendPoint[];
+  goldTrend24k?: GoldTrendPoint[];
   percentageChange24k?: number | null;
   percentageChange22k?: number | null;
   silverTrend?: SilverTrendPoint[];
@@ -173,32 +176,62 @@ export async function GET(request: Request) {
       logError(ebullionResult.reason, { city, source: 'ebullion' });
     }
 
-    // Fetch gold price history from AngelOne API
+    // Fetch gold price history from AngelOne API for all carats
     let goldTrend: GoldTrendPoint[] | undefined = undefined;
+    let goldTrend18k: GoldTrendPoint[] | undefined = undefined;
+    let goldTrend22k: GoldTrendPoint[] | undefined = undefined;
+    let goldTrend24k: GoldTrendPoint[] | undefined = undefined;
+    
     try {
-      goldTrend = await fetchAngelOneGoldHistory(city, '24k');
-      
-      // Add today's price if not already in history
-      if (goldTrend.length > 0 && angelOneGoldData?.gold_24k_10g) {
-        const todayDate = new Date().toISOString().split('T')[0] || '';
-        const todayInHistory = goldTrend.find((item) => item.date === todayDate);
-        
-        if (!todayInHistory) {
-          goldTrend.push({
-            date: todayDate,
-            price: angelOneGoldData.gold_24k_10g,
-          });
-          // Re-sort after adding today
-          goldTrend.sort((a, b) => {
-            const dateA = new Date(a.date).getTime();
-            const dateB = new Date(b.date).getTime();
-            return dateA - dateB;
-          });
+      // Fetch all carat histories in parallel
+      const [trend18k, trend22k, trend24k] = await Promise.allSettled([
+        fetchAngelOneGoldHistory(city, '18k'),
+        fetchAngelOneGoldHistory(city, '22k'),
+        fetchAngelOneGoldHistory(city, '24k'),
+      ]);
+
+      // Process 18k history
+      if (trend18k.status === 'fulfilled') {
+        goldTrend18k = trend18k.value;
+        if (goldTrend18k.length > 0 && angelOneGoldData?.gold_18k_10g) {
+          const todayDate = new Date().toISOString().split('T')[0] || '';
+          const todayInHistory = goldTrend18k.find((item) => item.date === todayDate);
+          if (!todayInHistory) {
+            goldTrend18k.push({ date: todayDate, price: angelOneGoldData.gold_18k_10g });
+            goldTrend18k.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+          }
+        }
+      }
+
+      // Process 22k history
+      if (trend22k.status === 'fulfilled') {
+        goldTrend22k = trend22k.value;
+        if (goldTrend22k.length > 0 && angelOneGoldData?.gold_22k_10g) {
+          const todayDate = new Date().toISOString().split('T')[0] || '';
+          const todayInHistory = goldTrend22k.find((item) => item.date === todayDate);
+          if (!todayInHistory) {
+            goldTrend22k.push({ date: todayDate, price: angelOneGoldData.gold_22k_10g });
+            goldTrend22k.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+          }
+        }
+      }
+
+      // Process 24k history (default)
+      if (trend24k.status === 'fulfilled') {
+        goldTrend24k = trend24k.value;
+        goldTrend = goldTrend24k; // Keep for backward compatibility
+        if (goldTrend24k.length > 0 && angelOneGoldData?.gold_24k_10g) {
+          const todayDate = new Date().toISOString().split('T')[0] || '';
+          const todayInHistory = goldTrend24k.find((item) => item.date === todayDate);
+          if (!todayInHistory) {
+            goldTrend24k.push({ date: todayDate, price: angelOneGoldData.gold_24k_10g });
+            goldTrend24k.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+          }
         }
       }
       
-      if (goldTrend.length > 0) {
-        console.log(`Using AngelOne gold history: ${goldTrend.length} points`);
+      if (goldTrend24k && goldTrend24k.length > 0) {
+        console.log(`Using AngelOne gold history: 24k=${goldTrend24k.length}, 22k=${goldTrend22k?.length || 0}, 18k=${goldTrend18k?.length || 0} points`);
       }
     } catch (error) {
       console.error('Error fetching gold history from AngelOne:', error);
@@ -215,6 +248,7 @@ export async function GET(request: Request) {
               price: item.gold_10g,
             };
           });
+        goldTrend24k = goldTrend; // Use same data for 24k
         console.log(`Using historical storage data as fallback: ${goldTrend.length} points`);
       }
     }
@@ -302,6 +336,9 @@ export async function GET(request: Request) {
       cached: false as boolean,
       trendingCities: goldCities,
       goldTrend: goldTrend ?? undefined,
+      goldTrend18k: goldTrend18k ?? undefined,
+      goldTrend22k: goldTrend22k ?? undefined,
+      goldTrend24k: goldTrend24k ?? undefined,
       percentageChange24k: percentageChange24k,
       percentageChange22k: percentageChange22k,
       silverTrend: silverData?.silverTrend ?? undefined,

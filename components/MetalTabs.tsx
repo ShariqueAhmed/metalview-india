@@ -108,13 +108,13 @@ export default function MetalTabs({
               role="tab"
               tabIndex={isActive ? 0 : -1}
               className={`
-                relative flex items-center gap-2.5 px-5 py-3 font-medium text-sm transition-all duration-200
-                focus:outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-slate-50 focus:ring-offset-2
+                relative flex items-center gap-2.5 px-6 py-3.5 font-semibold text-sm transition-all duration-200
+                focus:outline-none focus:ring-2 focus:ring-amber-500 dark:focus:ring-amber-400 focus:ring-offset-2
                 ${isActive
                   ? 'text-slate-900 dark:text-slate-50'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-50'
                 }
-                ${!hasData ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
+                ${!hasData ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-t-lg'}
               `}
               title={!hasData ? `${metal.name} data not available` : `View ${metal.name} prices`}
             >
@@ -126,7 +126,7 @@ export default function MetalTabs({
               </span>
               <span>{metal.name}</span>
               {isActive && (
-                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-slate-900 dark:bg-slate-50" />
+                <span className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 to-amber-600 dark:from-amber-400 dark:to-amber-500 rounded-t-full shadow-lg" />
               )}
             </button>
           );

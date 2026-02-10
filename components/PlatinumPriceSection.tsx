@@ -116,19 +116,19 @@ function PlatinumPriceSection({
       </div>
 
       <div className="grid grid-cols-2 gap-4 mb-4">
-        <div>
+        <div className="overflow-hidden min-w-0">
           <div className="text-xs text-slate-500 dark:text-slate-400 mb-1">
             1 Gram
           </div>
-          <div className="text-xl font-bold text-slate-900 dark:text-slate-50">
+          <div className="text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-50 break-words overflow-hidden">
             {price1g ? formatIndianCurrency(price1g) : '—'}
           </div>
         </div>
-        <div>
+        <div className="overflow-hidden min-w-0">
           <div className="text-xs text-slate-500 dark:text-slate-400 mb-1">
             10 Grams
           </div>
-          <div className="text-xl font-bold text-slate-900 dark:text-slate-50">
+          <div className="text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-50 break-words overflow-hidden">
             {price10g ? formatIndianCurrency(price10g) : '—'}
           </div>
         </div>
