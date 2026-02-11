@@ -42,7 +42,7 @@ cp app/sitemap.ts app/sitemap.ts.backup
 # Copy content from app/sitemap-enhanced.ts to app/sitemap.ts
 
 # 3. Update base URL
-# Change: process.env.NEXT_PUBLIC_BASE_URL || 'https://supermetal.in'
+# Change: process.env.NEXT_PUBLIC_BASE_URL || 'https://metalview.in'
 # To: process.env.NEXT_PUBLIC_BASE_URL || 'https://metalview.in' (or your actual domain)
 ```
 

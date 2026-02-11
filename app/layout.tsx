@@ -6,8 +6,8 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: {
-    default: 'SuperMetal - Live Metal Prices in India | Gold, Silver, Copper, Platinum',
-    template: '%s | SuperMetal'
+    default: 'MetalView - Live Metal Prices in India | Gold, Silver, Copper, Platinum',
+    template: '%s | MetalView'
   },
   description: 'Get live metal prices in India - Gold, Silver, Copper, and Platinum. Check today\'s rates in Mumbai, Delhi, Bangalore, and other cities. Real-time price updates with historical trends.',
   keywords: [
@@ -25,37 +25,37 @@ export const metadata: Metadata = {
     'precious metal prices',
     'industrial metal prices'
   ],
-  authors: [{ name: 'SuperMetal' }],
-  creator: 'SuperMetal',
-  publisher: 'SuperMetal',
+  authors: [{ name: 'MetalView' }],
+  creator: 'MetalView',
+  publisher: 'MetalView',
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://supermetal.in'),
+  metadataBase: new URL('https://metalview.in'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
     type: 'website',
     locale: 'en_IN',
-    url: 'https://supermetal.in',
-    title: 'SuperMetal - Live Metal Prices in India | Gold, Silver, Copper, Platinum',
+    url: 'https://metalview.in',
+    title: 'MetalView - Live Metal Prices in India | Gold, Silver, Copper, Platinum',
     description: 'Get live metal prices in India - Gold, Silver, Copper, and Platinum. Check today\'s rates in major cities. Real-time updates with historical trends.',
-    siteName: 'SuperMetal',
+    siteName: 'MetalView',
     images: [
       {
         url: '/og-image.svg',
         width: 1200,
         height: 630,
-        alt: 'SuperMetal - Live Metal Prices in India',
+        alt: 'MetalView - Live Metal Prices in India',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'SuperMetal - Live Metal Prices in India',
+    title: 'MetalView - Live Metal Prices in India',
     description: 'Get live metal prices in India - Gold, Silver, Copper, and Platinum. Check today\'s rates.',
     images: ['/og-image.svg'],
   },
@@ -84,7 +84,7 @@ export default function RootLayout({
   return (
     <html lang="en-IN" suppressHydrationWarning>
       <head>
-        <link rel="canonical" href="https://supermetal.in" />
+        <link rel="canonical" href="https://metalview.in" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#f59e0b" />
         <meta name="geo.region" content="IN" />

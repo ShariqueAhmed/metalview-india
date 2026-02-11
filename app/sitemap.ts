@@ -34,7 +34,7 @@ const GUIDE_PAGES = [
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://supermetal.in';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://metalview.in';
   const now = new Date();
 
   const sitemapEntries: MetadataRoute.Sitemap = [];

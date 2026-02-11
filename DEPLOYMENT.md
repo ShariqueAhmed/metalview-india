@@ -1,6 +1,6 @@
 # Deployment Guide for Vercel
 
-This guide will help you deploy SuperMetal to Vercel in just a few minutes.
+This guide will help you deploy MetalView to Vercel in just a few minutes.
 
 ## Prerequisites
 
@@ -18,7 +18,7 @@ This guide will help you deploy SuperMetal to Vercel in just a few minutes.
    git add .
    git commit -m "Initial commit"
    git branch -M main
-   git remote add origin https://github.com/YOUR_USERNAME/supermetal.git
+   git remote add origin https://github.com/YOUR_USERNAME/metalview.git
    git push -u origin main
    ```
 
@@ -63,7 +63,7 @@ This guide will help you deploy SuperMetal to Vercel in just a few minutes.
    
    Follow the prompts:
    - Link to existing project? No (first time)
-   - Project name: supermetal (or your preferred name)
+   - Project name: metalview (or your preferred name)
    - Directory: `./`
    - Override settings? No
 
@@ -149,10 +149,10 @@ Vercel automatically deploys:
 
 ## Quick Deploy Button
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/YOUR_USERNAME/supermetal)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/YOUR_USERNAME/metalview)
 
 Replace `YOUR_USERNAME` with your GitHub username.
 
 ---
 
-**That's it!** Your SuperMetal app should now be live on Vercel! 🚀
+**That's it!** Your MetalView app should now be live on Vercel! 🚀

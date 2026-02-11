@@ -6,16 +6,16 @@ QUICK START (5 minutes):
 
 1. CREATE GITHUB REPOSITORY:
    - Go to github.com and create a new repository
-   - Name it "supermetal" (or any name you prefer)
+   - Name it "metalview" (or any name you prefer)
    - Don't initialize with README
 
 2. PUSH CODE TO GITHUB:
    cd /Users/shariquea.ansari/metalview-india
    git init
    git add .
-   git commit -m "Initial commit - SuperMetal app"
+   git commit -m "Initial commit - MetalView app"
    git branch -M main
-   git remote add origin https://github.com/YOUR_USERNAME/supermetal.git
+   git remote add origin https://github.com/YOUR_USERNAME/metalview.git
    git push -u origin main
    
    (Replace YOUR_USERNAME with your GitHub username)
@@ -24,7 +24,7 @@ QUICK START (5 minutes):
    - Go to vercel.com
    - Sign in with GitHub (free account)
    - Click "Add New Project"
-   - Select your "supermetal" repository
+   - Select your "metalview" repository
    - Click "Import"
    - Vercel will auto-detect Next.js
    - Click "Deploy"

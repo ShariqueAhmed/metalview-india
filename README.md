@@ -1,4 +1,4 @@
-# SuperMetal - Indian Metal Price Screener
+# MetalView - Indian Metal Price Screener
 
 A production-ready, serverless web application for displaying live metal prices in India. Built with Next.js 14, TypeScript, and Tailwind CSS.
 
@@ -27,7 +27,7 @@ A production-ready, serverless web application for displaying live metal prices 
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd supermetal
+   cd metalview
    ```
 
 2. **Install dependencies**
@@ -62,7 +62,7 @@ A production-ready, serverless web application for displaying live metal prices 
    git init
    git add .
    git commit -m "Initial commit"
-   git remote add origin https://github.com/YOUR_USERNAME/supermetal.git
+   git remote add origin https://github.com/YOUR_USERNAME/metalview.git
    git push -u origin main
    ```
 
@@ -110,7 +110,7 @@ Set these in Vercel Dashboard → Settings → Environment Variables:
 ## 📁 Project Structure
 
 ```
-supermetal/
+metalview/
 ├── app/
 │   ├── api/
 │   │   └── metals/
