@@ -96,11 +96,27 @@ const CITY_FAQS: Record<string, Array<{ question: string; answer: string }>> = {
   ],
 };
 
+<<<<<<< HEAD
 // Force dynamic rendering to avoid build-time fetch issues
 // Note: generateStaticParams removed to allow fully dynamic rendering
 // Pages will be generated on-demand to avoid build-time fetch timeouts
 export const dynamic = 'force-dynamic';
 export const revalidate = 600; // Revalidate every 10 minutes
+=======
+// Generate static params for top cities and metals
+export async function generateStaticParams() {
+  const metals: MetalType[] = ['gold', 'silver', 'copper', 'platinum', 'palladium'];
+  const params: Array<{ metal: string; city: string }> = [];
+
+  for (const metal of metals) {
+    for (const city of TOP_CITIES) {
+      params.push({ metal, city });
+    }
+  }
+
+  return params;
+}
+>>>>>>> 9ba5bde115d7431593c49b73b5e9ab53b5b4bad2
 
 // Generate metadata for SEO
 export async function generateMetadata({ params }: CityPageProps): Promise<Metadata> {
@@ -177,8 +193,20 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
   // Fetch data server-side
   let data = null;
   try {
+<<<<<<< HEAD
     // Use relative URL for server-side fetch (works in both dev and production)
     const apiUrl = `/api/metals?city=${encodeURIComponent(city)}`;
+=======
+    // Use absolute URL for server-side fetch
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 
+      (typeof window === 'undefined' 
+        ? process.env.VERCEL_URL 
+          ? `https://${process.env.VERCEL_URL}`
+          : 'http://localhost:3000'
+        : window.location.origin);
+    
+    const apiUrl = `${baseUrl}/api/metals?city=${encodeURIComponent(city)}`;
+>>>>>>> 9ba5bde115d7431593c49b73b5e9ab53b5b4bad2
     const response = await fetch(apiUrl, {
       next: { revalidate: 600 }, // Revalidate every 10 minutes
       headers: {
@@ -191,6 +219,10 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
     }
   } catch (error) {
     console.error('Error fetching data:', error);
+<<<<<<< HEAD
+=======
+    // Continue with null data - page will still render
+>>>>>>> 9ba5bde115d7431593c49b73b5e9ab53b5b4bad2
   }
 
   // Generate structured data

@@ -63,9 +63,18 @@ const CITY_INSIGHTS: Record<string, string> = {
   surat: 'Surat is a major diamond and gold trading center. The city has strong connections to international markets, affecting local gold prices.',
 };
 
+<<<<<<< HEAD
 // Force dynamic rendering to avoid build-time fetch issues
 export const dynamic = 'force-dynamic';
 export const revalidate = 600; // Revalidate every 10 minutes
+=======
+// Generate static params for top cities
+export async function generateStaticParams() {
+  return TOP_CITIES.map((city) => ({
+    cityName: city,
+  }));
+}
+>>>>>>> 9ba5bde115d7431593c49b73b5e9ab53b5b4bad2
 
 // Generate metadata for SEO
 export async function generateMetadata({ params }: CityPageProps): Promise<Metadata> {
@@ -149,10 +158,18 @@ export default async function CityOverviewPage({ params }: CityPageProps) {
   // Fetch data server-side
   let data = null;
   try {
+<<<<<<< HEAD
     // Use relative URL for server-side fetch (works in both dev and production)
     const apiUrl = `/api/metals?city=${encodeURIComponent(cityName)}`;
     const response = await fetch(apiUrl, {
       next: { revalidate: 600 }, // Revalidate every 10 minutes
+=======
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const apiUrl = `${baseUrl}/api/metals?city=${encodeURIComponent(cityName)}`;
+    const response = await fetch(apiUrl, {
+      next: { revalidate: 600 }, // Revalidate every 10 minutes
+      cache: 'no-store',
+>>>>>>> 9ba5bde115d7431593c49b73b5e9ab53b5b4bad2
     });
 
     if (response.ok) {
@@ -248,7 +265,11 @@ export default async function CityOverviewPage({ params }: CityPageProps) {
           </div>
 
           {/* Gold Prices Section */}
+<<<<<<< HEAD
           {data && (data.gold_10g || data.gold_1g) && (
+=======
+          {data?.gold_10g && (
+>>>>>>> 9ba5bde115d7431593c49b73b5e9ab53b5b4bad2
             <div className="mb-8">
               <div className="flex items-center gap-2 mb-4">
                 <TrendingUp className="w-5 h-5 text-amber-600 dark:text-amber-400" />
