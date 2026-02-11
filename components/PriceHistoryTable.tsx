@@ -172,19 +172,25 @@ export default function PriceHistoryTable({
       </div>
 
       <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0 rounded-lg border border-slate-200 dark:border-slate-700">
-        <table className="w-full border-collapse min-w-[280px] sm:min-w-[500px]">
+        <table className="w-full border-collapse table-fixed" style={{ minWidth: '100%' }}>
+          <colgroup>
+            <col style={{ width: '25%' }} />
+            <col style={{ width: '30%' }} />
+            <col style={{ width: '25%' }} className="hidden sm:table-column" />
+            <col style={{ width: '20%' }} />
+          </colgroup>
           <thead>
             <tr className="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 border-b-2 border-slate-300 dark:border-slate-600">
-              <th className="px-2 sm:px-3 lg:px-4 py-2 sm:py-2.5 text-left text-[10px] sm:text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+              <th className="px-1.5 sm:px-2 lg:px-3 py-2 text-left text-[10px] sm:text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
                 Date
               </th>
-              <th className="px-2 sm:px-3 lg:px-4 py-2 sm:py-2.5 text-right text-[10px] sm:text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+              <th className="px-1.5 sm:px-2 lg:px-3 py-2 text-right text-[10px] sm:text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
                 Price
               </th>
-              <th className="px-2 sm:px-3 lg:px-4 py-2 sm:py-2.5 text-right text-[10px] sm:text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider hidden sm:table-cell">
+              <th className="px-1.5 sm:px-2 lg:px-3 py-2 text-right text-[10px] sm:text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider hidden sm:table-cell">
                 Change
               </th>
-              <th className="px-2 sm:px-3 lg:px-4 py-2 sm:py-2.5 text-right text-[10px] sm:text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+              <th className="px-1.5 sm:px-2 lg:px-3 py-2 text-right text-[10px] sm:text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
                 %
               </th>
             </tr>
@@ -205,14 +211,14 @@ export default function PriceHistoryTable({
                       : 'bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800/30 hover:shadow-sm'
                   }`}
                 >
-                  <td className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 whitespace-nowrap">
+                  <td className="px-1.5 sm:px-2 lg:px-3 py-2 sm:py-2.5 whitespace-nowrap overflow-hidden">
                     <div className="flex items-center gap-1 sm:gap-1.5">
                       {isLatest && (
-                        <span className="inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded text-[10px] sm:text-xs font-semibold bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-700">
-                          Latest
+                        <span className="inline-flex items-center px-1 sm:px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] font-semibold bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-700 flex-shrink-0">
+                          New
                         </span>
                       )}
-                      <span className={`font-medium text-xs sm:text-sm ${
+                      <span className={`font-medium text-[11px] sm:text-xs truncate ${
                         isLatest 
                           ? 'text-slate-900 dark:text-slate-50' 
                           : 'text-slate-900 dark:text-slate-50'
@@ -224,17 +230,17 @@ export default function PriceHistoryTable({
                           })}
                         </span>
                         <span className="hidden sm:inline">
-                        {new Date(row.date).toLocaleDateString('en-IN', {
-                          day: 'numeric',
-                          month: 'short',
-                          year: 'numeric',
-                        })}
+                          {new Date(row.date).toLocaleDateString('en-IN', {
+                            day: 'numeric',
+                            month: 'short',
+                            year: 'numeric',
+                          })}
                         </span>
                       </span>
                     </div>
                   </td>
-                  <td className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 whitespace-nowrap text-right">
-                    <span className={`font-semibold text-xs sm:text-sm ${
+                  <td className="px-1.5 sm:px-2 lg:px-3 py-2 sm:py-2.5 whitespace-nowrap text-right overflow-hidden">
+                    <span className={`font-semibold text-[11px] sm:text-xs ${
                       isLatest 
                         ? 'text-slate-900 dark:text-slate-50' 
                         : 'text-slate-900 dark:text-slate-50'
@@ -242,20 +248,20 @@ export default function PriceHistoryTable({
                       {formatIndianCurrency(row.price)}
                     </span>
                   </td>
-                  <td className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 whitespace-nowrap text-right hidden sm:table-cell">
+                  <td className="px-1.5 sm:px-2 lg:px-3 py-2 sm:py-2.5 whitespace-nowrap text-right hidden sm:table-cell overflow-hidden">
                     {row.change !== null ? (
-                      <div className="flex items-center justify-end gap-1 sm:gap-1.5">
+                      <div className="flex items-center justify-end gap-1">
                         {row.trend === 'up' && (
-                          <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+                          <TrendingUp className="w-3 h-3 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
                         )}
                         {row.trend === 'down' && (
-                          <TrendingDown className="w-3 h-3 sm:w-4 sm:h-4 text-red-600 dark:text-red-400 flex-shrink-0" />
+                          <TrendingDown className="w-3 h-3 text-red-600 dark:text-red-400 flex-shrink-0" />
                         )}
                         {row.trend === 'neutral' && (
-                          <Minus className="w-3 h-3 sm:w-4 sm:h-4 text-slate-400 dark:text-slate-500 flex-shrink-0" />
+                          <Minus className="w-3 h-3 text-slate-400 dark:text-slate-500 flex-shrink-0" />
                         )}
                         <span
-                          className={`font-medium text-xs sm:text-sm ${
+                          className={`font-medium text-[11px] sm:text-xs ${
                             row.trend === 'up'
                               ? 'text-emerald-600 dark:text-emerald-400'
                               : row.trend === 'down'
@@ -265,25 +271,25 @@ export default function PriceHistoryTable({
                               : 'text-slate-400 dark:text-slate-500'
                           }`}
                         >
-                          {row.change > 0 ? '+' : row.change === 0 ? '' : ''}
+                          {row.change > 0 ? '+' : ''}
                           {formatIndianCurrency(Math.abs(row.change))}
                         </span>
                       </div>
                     ) : (
-                      <span className="text-slate-400 dark:text-slate-500 text-xs sm:text-sm">—</span>
+                      <span className="text-slate-400 dark:text-slate-500 text-[11px] sm:text-xs">—</span>
                     )}
                   </td>
-                  <td className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 whitespace-nowrap text-right">
+                  <td className="px-1.5 sm:px-2 lg:px-3 py-2 sm:py-2.5 whitespace-nowrap text-right overflow-hidden">
                     {row.changePercent !== null ? (
-                      <div className="flex items-center justify-end gap-1 sm:gap-1.5">
+                      <div className="flex items-center justify-end gap-1">
                         {row.trend === 'up' && (
-                          <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0 sm:hidden" />
+                          <TrendingUp className="w-3 h-3 text-emerald-600 dark:text-emerald-400 flex-shrink-0 sm:hidden" />
                         )}
                         {row.trend === 'down' && (
-                          <TrendingDown className="w-3 h-3 sm:w-4 sm:h-4 text-red-600 dark:text-red-400 flex-shrink-0 sm:hidden" />
+                          <TrendingDown className="w-3 h-3 text-red-600 dark:text-red-400 flex-shrink-0 sm:hidden" />
                         )}
                       <span
-                          className={`font-medium text-xs sm:text-sm ${
+                          className={`font-medium text-[11px] sm:text-xs ${
                           row.trend === 'up'
                             ? 'text-emerald-600 dark:text-emerald-400'
                             : row.trend === 'down'
@@ -298,7 +304,7 @@ export default function PriceHistoryTable({
                       </span>
                       </div>
                     ) : (
-                      <span className="text-slate-400 dark:text-slate-500 text-xs sm:text-sm">—</span>
+                      <span className="text-slate-400 dark:text-slate-500 text-[11px] sm:text-xs">—</span>
                     )}
                   </td>
                 </tr>
