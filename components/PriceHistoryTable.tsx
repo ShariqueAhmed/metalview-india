@@ -174,17 +174,10 @@ export default function PriceHistoryTable({
       <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0 rounded-lg border border-slate-200 dark:border-slate-700">
         <table className="w-full border-collapse table-fixed" style={{ minWidth: '100%' }}>
           <colgroup>
-<<<<<<< HEAD
-            <col style={{ width: '25%' }} />
-            <col style={{ width: '30%' }} />
-            <col style={{ width: '25%' }} className="hidden sm:table-column" />
-            <col style={{ width: '20%' }} />
-=======
             <col style={{ width: '22%' }} />
             <col style={{ width: '28%' }} />
             <col style={{ width: '28%' }} />
             <col style={{ width: '22%' }} />
->>>>>>> 9ba5bde115d7431593c49b73b5e9ab53b5b4bad2
           </colgroup>
           <thead>
             <tr className="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 border-b-2 border-slate-300 dark:border-slate-600">
@@ -194,11 +187,7 @@ export default function PriceHistoryTable({
               <th className="px-1.5 sm:px-2 lg:px-3 py-2 text-right text-[10px] sm:text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
                 Price
               </th>
-<<<<<<< HEAD
-              <th className="px-1.5 sm:px-2 lg:px-3 py-2 text-right text-[10px] sm:text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider hidden sm:table-cell">
-=======
               <th className="px-1.5 sm:px-2 lg:px-3 py-2 text-right text-[10px] sm:text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
->>>>>>> 9ba5bde115d7431593c49b73b5e9ab53b5b4bad2
                 Change
               </th>
               <th className="px-1.5 sm:px-2 lg:px-3 py-2 text-right text-[10px] sm:text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
@@ -259,15 +248,9 @@ export default function PriceHistoryTable({
                       {formatIndianCurrency(row.price)}
                     </span>
                   </td>
-<<<<<<< HEAD
-                  <td className="px-1.5 sm:px-2 lg:px-3 py-2 sm:py-2.5 whitespace-nowrap text-right hidden sm:table-cell overflow-hidden">
-                    {row.change !== null ? (
-                      <div className="flex items-center justify-end gap-1">
-=======
                   <td className="px-1.5 sm:px-2 lg:px-3 py-2 sm:py-2.5 whitespace-nowrap text-right overflow-hidden">
                     {row.change !== null ? (
                       <div className="flex items-center justify-end gap-0.5 sm:gap-1">
->>>>>>> 9ba5bde115d7431593c49b73b5e9ab53b5b4bad2
                         {row.trend === 'up' && (
                           <TrendingUp className="w-3 h-3 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
                         )}
@@ -278,11 +261,7 @@ export default function PriceHistoryTable({
                           <Minus className="w-3 h-3 text-slate-400 dark:text-slate-500 flex-shrink-0" />
                         )}
                         <span
-<<<<<<< HEAD
-                          className={`font-medium text-[11px] sm:text-xs ${
-=======
                           className={`font-medium text-[10px] sm:text-[11px] truncate ${
->>>>>>> 9ba5bde115d7431593c49b73b5e9ab53b5b4bad2
                             row.trend === 'up'
                               ? 'text-emerald-600 dark:text-emerald-400'
                               : row.trend === 'down'
@@ -297,11 +276,7 @@ export default function PriceHistoryTable({
                         </span>
                       </div>
                     ) : (
-<<<<<<< HEAD
-                      <span className="text-slate-400 dark:text-slate-500 text-[11px] sm:text-xs">—</span>
-=======
                       <span className="text-slate-400 dark:text-slate-500 text-[10px] sm:text-[11px]">—</span>
->>>>>>> 9ba5bde115d7431593c49b73b5e9ab53b5b4bad2
                     )}
                   </td>
                   <td className="px-1.5 sm:px-2 lg:px-3 py-2 sm:py-2.5 whitespace-nowrap text-right overflow-hidden">

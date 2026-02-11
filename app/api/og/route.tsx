@@ -70,19 +70,49 @@ export async function GET(request: NextRequest) {
                 style={{
                   fontSize: '48px',
                   fontWeight: 'bold',
-                  color: '#ffffff',
                   marginBottom: '8px',
+                  display: 'flex',
+                  alignItems: 'baseline',
+                  gap: '12px',
                 }}
               >
-                MetalView India
+                <span style={{ 
+                  background: 'linear-gradient(to right, #f59e0b, #eab308, #f59e0b)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  filter: 'drop-shadow(0 2px 4px rgba(245, 158, 11, 0.3))'
+                }}>Metal</span>
+                <span style={{ 
+                  background: 'linear-gradient(to right, #475569, #64748b, #475569)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text'
+                }}>View</span>
+                <span style={{ color: '#ffffff' }}> India</span>
+                <span style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  padding: '4px 8px',
+                  background: 'linear-gradient(to right, rgba(245, 158, 11, 0.2), rgba(234, 179, 8, 0.15))',
+                  border: '1px solid rgba(245, 158, 11, 0.3)',
+                  borderRadius: '12px',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  color: '#fbbf24'
+                }}>
+                  ✓ Trusted
+                </span>
               </div>
               <div
                 style={{
                   fontSize: '24px',
-                  color: '#94a3b8',
+                  color: '#cbd5e1',
+                  fontWeight: '500',
                 }}
               >
-                Real-time Precious Metals Pricing
+                Real-time Precious Metals Pricing & Market Insights
               </div>
             </div>
           </div>
@@ -163,11 +193,25 @@ export async function GET(request: NextRequest) {
             alignItems: 'center',
             justifyContent: 'center',
             backgroundColor: '#0f172a',
-            color: '#ffffff',
             fontSize: '48px',
+            fontWeight: 'bold',
+            gap: '12px',
           }}
         >
-          MetalView India
+          <span style={{ 
+            background: 'linear-gradient(to right, #f59e0b, #eab308, #f59e0b)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            filter: 'drop-shadow(0 2px 4px rgba(245, 158, 11, 0.3))'
+          }}>Metal</span>
+          <span style={{ 
+            background: 'linear-gradient(to right, #475569, #64748b, #475569)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text'
+          }}>View</span>
+          <span style={{ color: '#ffffff' }}> India</span>
         </div>
       ),
       {

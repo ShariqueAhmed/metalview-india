@@ -5,6 +5,7 @@
 
 'use client';
 
+import { useState } from 'react';
 import { Award } from 'lucide-react';
 import { formatIndianCurrency } from '@/utils/conversions';
 
@@ -42,6 +43,8 @@ export default function GoldWeightPrices({
   gold18kPrice10g,
   gold18kPrice1g
 }: GoldWeightPricesProps) {
+  const [selectedCarat, setSelectedCarat] = useState<'24k' | '22k' | '18k'>('24k');
+
   if (!goldPrice10g || goldPrice10g === 0) {
     return null;
   }
@@ -50,6 +53,14 @@ export default function GoldWeightPrices({
   const basePrice1g_24k = goldPrice1g || goldPrice10g / 10;
   const basePrice1g_22k = gold22kPrice1g || (gold22kPrice10g ? gold22kPrice10g / 10 : null);
   const basePrice1g_18k = gold18kPrice1g || (gold18kPrice10g ? gold18kPrice10g / 10 : null);
+
+  // Determine available carats
+  const availableCarats: ('24k' | '22k' | '18k')[] = ['24k'];
+  if (basePrice1g_22k) availableCarats.push('22k');
+  if (basePrice1g_18k) availableCarats.push('18k');
+
+  // Ensure selected carat is available, fallback to 24k
+  const activeCarat = availableCarats.includes(selectedCarat) ? selectedCarat : '24k';
 
   const calculatePrice = (weight: number, carat: '24k' | '22k' | '18k' = '24k'): number => {
     let basePrice = basePrice1g_24k;
@@ -63,17 +74,42 @@ export default function GoldWeightPrices({
 
   return (
     <div className="bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 p-4 sm:p-6 mb-8 sm:mb-12 card-shadow">
-      <div className="flex items-center gap-3 mb-6">
-        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-100 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30 flex items-center justify-center border-2 border-amber-200 dark:border-amber-800 flex-shrink-0 shadow-md">
-          <Award className="w-6 h-6 text-amber-700 dark:text-amber-400" />
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-100 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30 flex items-center justify-center border-2 border-amber-200 dark:border-amber-800 flex-shrink-0 shadow-md">
+            <Award className="w-6 h-6 text-amber-700 dark:text-amber-400" />
+          </div>
+          <div className="min-w-0">
+            <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">
+              Gold Prices by Weight
+            </h2>
+            <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+              Gold prices for different weights
+            </p>
+          </div>
         </div>
-        <div className="min-w-0">
-          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">
-            Gold Prices by Weight
-          </h2>
-          <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-            24K, 22K & 18K Gold prices for different weights
-          </p>
+        
+        {/* Carat Selector Dropdown */}
+        <div className="flex items-center gap-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl px-4 py-2.5 border border-slate-200 dark:border-slate-700">
+          <label htmlFor="carat-selector" className="text-sm font-semibold text-slate-700 dark:text-slate-300 whitespace-nowrap">
+            Carat:
+          </label>
+          <select
+            id="carat-selector"
+            value={activeCarat}
+            onChange={(e) => {
+              setSelectedCarat(e.target.value as '18k' | '22k' | '24k');
+            }}
+            className="px-4 py-2 text-sm font-semibold bg-white dark:bg-slate-900 border-2 border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-slate-50 focus:outline-none focus:ring-2 focus:ring-amber-500 dark:focus:ring-amber-400 focus:border-amber-500 dark:focus:border-amber-400 transition-all duration-200 hover:border-slate-400 dark:hover:border-slate-500 shadow-sm hover:shadow-md cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22currentColor%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22m6 9 6 6 6-6%22/%3E%3C/svg%3E')] bg-no-repeat bg-right pr-10"
+            style={{
+              backgroundPosition: 'right 0.75rem center',
+              backgroundSize: '1.25em 1.25em',
+            }}
+          >
+            <option value="24k">24K (Purest)</option>
+            {basePrice1g_22k && <option value="22k">22K (Jewelry)</option>}
+            {basePrice1g_18k && <option value="18k">18K (Jewelry)</option>}
+          </select>
         </div>
       </div>
 
@@ -83,41 +119,29 @@ export default function GoldWeightPrices({
           <table className="w-full border-collapse table-fixed">
             <thead>
               <tr className="bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-950/30 dark:to-yellow-950/30 border-b-2 border-amber-200 dark:border-amber-800">
-                <th className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider" style={{ width: '25%' }}>
+                <th className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider" style={{ width: '40%' }}>
                   Weight
                 </th>
-                <th className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider" style={{ width: '12%' }}>
+                <th className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider" style={{ width: '20%' }}>
                   Unit
                 </th>
-                <th className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-right text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider" style={{ width: '21%' }}>
+                <th className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-right text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider" style={{ width: '40%' }}>
                   <span className="inline-flex items-center gap-1 sm:gap-2">
-                    <span className="w-2 h-2 sm:w-3 sm:h-3 bg-amber-500 rounded-full ring-1 sm:ring-2 ring-amber-200 dark:ring-amber-800"></span>
-                    <span className="whitespace-nowrap">24K</span>
+                    <span className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full ring-1 sm:ring-2 ${
+                      activeCarat === '24k' 
+                        ? 'bg-amber-500 ring-amber-200 dark:ring-amber-800'
+                        : activeCarat === '22k'
+                        ? 'bg-slate-500 ring-slate-200 dark:ring-slate-700'
+                        : 'bg-slate-400 ring-slate-200 dark:ring-slate-700'
+                    }`}></span>
+                    <span className="whitespace-nowrap">{activeCarat.toUpperCase()}</span>
                   </span>
                 </th>
-                {basePrice1g_22k && (
-                  <th className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-right text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider" style={{ width: '21%' }}>
-                    <span className="inline-flex items-center gap-1 sm:gap-2">
-                      <span className="w-2 h-2 sm:w-3 sm:h-3 bg-slate-500 rounded-full ring-1 sm:ring-2 ring-slate-200 dark:ring-slate-700"></span>
-                      <span className="whitespace-nowrap">22K</span>
-                    </span>
-                  </th>
-                )}
-                {basePrice1g_18k && (
-                  <th className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-right text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider" style={{ width: '21%' }}>
-                    <span className="inline-flex items-center gap-1 sm:gap-2">
-                      <span className="w-2 h-2 sm:w-3 sm:h-3 bg-slate-400 rounded-full ring-1 sm:ring-2 ring-slate-200 dark:ring-slate-700"></span>
-                      <span className="whitespace-nowrap">18K</span>
-                    </span>
-                  </th>
-                )}
               </tr>
             </thead>
             <tbody className="bg-white dark:bg-slate-900 divide-y divide-slate-200 dark:divide-slate-700">
               {weightOptions.map((option, index) => {
-                const price24k = calculatePrice(option.weight, '24k');
-                const price22k = basePrice1g_22k ? calculatePrice(option.weight, '22k') : null;
-                const price18k = basePrice1g_18k ? calculatePrice(option.weight, '18k') : null;
+                const price = calculatePrice(option.weight, activeCarat);
                 const isTola = option.weight === 12;
                 const isEven = index % 2 === 0;
 
@@ -158,23 +182,9 @@ export default function GoldWeightPrices({
                     </td>
                     <td className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3.5 text-right">
                       <span className={`font-bold text-xs sm:text-sm ${isTola ? 'text-amber-900 dark:text-amber-100' : 'text-slate-900 dark:text-slate-50'} whitespace-nowrap`}>
-                        {formatIndianCurrency(price24k)}
+                        {formatIndianCurrency(price)}
                       </span>
                     </td>
-                    {basePrice1g_22k && (
-                      <td className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3.5 text-right">
-                        <span className={`font-bold text-xs sm:text-sm ${isTola ? 'text-slate-800 dark:text-slate-200' : 'text-slate-900 dark:text-slate-50'} whitespace-nowrap`}>
-                          {formatIndianCurrency(price22k!)}
-                        </span>
-                      </td>
-                    )}
-                    {basePrice1g_18k && (
-                      <td className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3.5 text-right">
-                        <span className={`font-bold text-xs sm:text-sm ${isTola ? 'text-slate-800 dark:text-slate-200' : 'text-slate-900 dark:text-slate-50'} whitespace-nowrap`}>
-                          {formatIndianCurrency(price18k!)}
-                        </span>
-                      </td>
-                    )}
                   </tr>
                 );
               })}
