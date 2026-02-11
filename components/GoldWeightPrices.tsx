@@ -77,191 +77,109 @@ export default function GoldWeightPrices({
         </div>
       </div>
 
-      {/* Mobile Card View */}
-      <div className="block md:hidden space-y-3">
-        {weightOptions.map((option) => {
-          const price24k = calculatePrice(option.weight, '24k');
-          const price22k = basePrice1g_22k ? calculatePrice(option.weight, '22k') : null;
-          const price18k = basePrice1g_18k ? calculatePrice(option.weight, '18k') : null;
-          const isTola = option.weight === 12;
-
-          return (
-            <div
-              key={option.weight}
-              className={`rounded-lg border-2 p-4 ${
-                isTola
-                  ? 'bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-950/30 dark:to-yellow-950/30 border-amber-300 dark:border-amber-700'
-                  : 'bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700'
-              }`}
-            >
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  {isTola && (
-                    <span className="flex items-center justify-center w-7 h-7 bg-amber-500 dark:bg-amber-400 rounded-full text-white text-xs font-bold flex-shrink-0 shadow-md">
-                      ⭐
-                    </span>
-                  )}
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className={`font-bold text-base ${isTola ? 'text-amber-900 dark:text-amber-100' : 'text-slate-900 dark:text-slate-50'}`}>
-                        {option.label}
-                      </span>
-                      {isTola && (
-                        <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-200 text-[10px] font-semibold rounded-full border border-amber-200 dark:border-amber-800">
-                          Traditional
-                        </span>
-                      )}
-                    </div>
-                    <span className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 block">
-                      {option.unit}
-                    </span>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="space-y-2">
-                <div className="flex items-center justify-between p-2.5 bg-white dark:bg-slate-900/50 rounded-md">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 bg-amber-500 rounded-full"></span>
-                    <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">24K</span>
-                  </div>
-                  <span className={`font-bold text-base ${isTola ? 'text-amber-900 dark:text-amber-100' : 'text-slate-900 dark:text-slate-50'}`}>
-                    {formatIndianCurrency(price24k)}
-                  </span>
-                </div>
-                
-                {basePrice1g_22k && (
-                  <div className="flex items-center justify-between p-2.5 bg-white dark:bg-slate-900/50 rounded-md">
-                    <div className="flex items-center gap-2">
-                      <span className="w-2.5 h-2.5 bg-slate-500 rounded-full"></span>
-                      <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">22K</span>
-                    </div>
-                    <span className={`font-bold text-base ${isTola ? 'text-slate-800 dark:text-slate-200' : 'text-slate-900 dark:text-slate-50'}`}>
-                      {formatIndianCurrency(price22k!)}
-                    </span>
-                  </div>
-                )}
-                
-                {basePrice1g_18k && (
-                  <div className="flex items-center justify-between p-2.5 bg-white dark:bg-slate-900/50 rounded-md">
-                    <div className="flex items-center gap-2">
-                      <span className="w-2.5 h-2.5 bg-slate-400 rounded-full"></span>
-                      <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">18K</span>
-                    </div>
-                    <span className={`font-bold text-base ${isTola ? 'text-slate-800 dark:text-slate-200' : 'text-slate-900 dark:text-slate-50'}`}>
-                      {formatIndianCurrency(price18k!)}
-                    </span>
-                  </div>
-                )}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Desktop Table View */}
-      <div className="hidden md:block w-full">
-        <div className="overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700">
-          <table className="w-full border-collapse">
-          <thead>
+      {/* Table View - Mobile & Desktop */}
+      <div className="w-full overflow-x-auto">
+        <div className="overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700 min-w-full">
+          <table className="w-full border-collapse table-fixed">
+            <thead>
               <tr className="bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-950/30 dark:to-yellow-950/30 border-b-2 border-amber-200 dark:border-amber-800">
-                <th className="px-3 lg:px-4 py-3 text-left text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider w-[25%]">
-                Weight
-              </th>
-                <th className="px-3 lg:px-4 py-3 text-left text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider w-[15%]">
-                Unit
-              </th>
-                <th className="px-3 lg:px-4 py-3 text-right text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
-                  <span className="inline-flex items-center gap-2">
-                    <span className="w-3 h-3 bg-amber-500 rounded-full ring-2 ring-amber-200 dark:ring-amber-800"></span>
-                    <span>24K Price</span>
-                </span>
-              </th>
-              {basePrice1g_22k && (
-                  <th className="px-3 lg:px-4 py-3 text-right text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
-                    <span className="inline-flex items-center gap-2">
-                      <span className="w-3 h-3 bg-slate-500 rounded-full ring-2 ring-slate-200 dark:ring-slate-700"></span>
-                      <span>22K Price</span>
+                <th className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider" style={{ width: '25%' }}>
+                  Weight
+                </th>
+                <th className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider" style={{ width: '12%' }}>
+                  Unit
+                </th>
+                <th className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-right text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider" style={{ width: '21%' }}>
+                  <span className="inline-flex items-center gap-1 sm:gap-2">
+                    <span className="w-2 h-2 sm:w-3 sm:h-3 bg-amber-500 rounded-full ring-1 sm:ring-2 ring-amber-200 dark:ring-amber-800"></span>
+                    <span className="whitespace-nowrap">24K</span>
+                  </span>
+                </th>
+                {basePrice1g_22k && (
+                  <th className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-right text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider" style={{ width: '21%' }}>
+                    <span className="inline-flex items-center gap-1 sm:gap-2">
+                      <span className="w-2 h-2 sm:w-3 sm:h-3 bg-slate-500 rounded-full ring-1 sm:ring-2 ring-slate-200 dark:ring-slate-700"></span>
+                      <span className="whitespace-nowrap">22K</span>
                     </span>
                   </th>
                 )}
                 {basePrice1g_18k && (
-                  <th className="px-3 lg:px-4 py-3 text-right text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
-                    <span className="inline-flex items-center gap-2">
-                      <span className="w-3 h-3 bg-slate-400 rounded-full ring-2 ring-slate-200 dark:ring-slate-700"></span>
-                      <span>18K Price</span>
-                  </span>
-                </th>
-              )}
-            </tr>
-          </thead>
+                  <th className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-right text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider" style={{ width: '21%' }}>
+                    <span className="inline-flex items-center gap-1 sm:gap-2">
+                      <span className="w-2 h-2 sm:w-3 sm:h-3 bg-slate-400 rounded-full ring-1 sm:ring-2 ring-slate-200 dark:ring-slate-700"></span>
+                      <span className="whitespace-nowrap">18K</span>
+                    </span>
+                  </th>
+                )}
+              </tr>
+            </thead>
             <tbody className="bg-white dark:bg-slate-900 divide-y divide-slate-200 dark:divide-slate-700">
-            {weightOptions.map((option, index) => {
+              {weightOptions.map((option, index) => {
                 const price24k = calculatePrice(option.weight, '24k');
                 const price22k = basePrice1g_22k ? calculatePrice(option.weight, '22k') : null;
                 const price18k = basePrice1g_18k ? calculatePrice(option.weight, '18k') : null;
-              const isTola = option.weight === 12;
-              const isEven = index % 2 === 0;
+                const isTola = option.weight === 12;
+                const isEven = index % 2 === 0;
 
-              return (
-                <tr
-                  key={option.weight}
+                return (
+                  <tr
+                    key={option.weight}
                     className={`transition-all ${
-                    isTola
+                      isTola
                         ? 'bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-950/30 dark:to-yellow-950/30 border-l-4 border-amber-400 dark:border-amber-600'
-                      : isEven
-                        ? 'bg-slate-50/50 dark:bg-slate-800/30'
-                        : 'bg-white dark:bg-slate-900'
+                        : isEven
+                          ? 'bg-slate-50/50 dark:bg-slate-800/30'
+                          : 'bg-white dark:bg-slate-900'
                     } hover:bg-amber-50/50 dark:hover:bg-amber-950/20`}
                   >
-                    <td className="px-3 lg:px-4 py-3.5">
-                      <div className="flex items-center gap-2">
-                      {isTola && (
-                          <span className="flex items-center justify-center w-6 h-6 bg-amber-500 dark:bg-amber-400 rounded-full text-white text-[10px] font-bold flex-shrink-0 shadow-md">
-                          ⭐
-                        </span>
-                      )}
-                        <div className="min-w-0">
-                          <div className="flex items-center gap-1.5 flex-wrap">
-                            <span className={`font-semibold text-sm ${isTola ? 'text-amber-900 dark:text-amber-100' : 'text-slate-900 dark:text-slate-50'}`}>
-                        {option.label}
-                      </span>
-                      {isTola && (
-                              <span className="px-1.5 py-0.5 bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-200 text-[10px] font-semibold rounded-full border border-amber-200 dark:border-amber-800">
-                          Traditional
-                        </span>
-                      )}
+                    <td className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3.5">
+                      <div className="flex items-center gap-1.5 sm:gap-2">
+                        {isTola && (
+                          <span className="flex items-center justify-center w-5 h-5 sm:w-6 sm:h-6 bg-amber-500 dark:bg-amber-400 rounded-full text-white text-[9px] sm:text-[10px] font-bold flex-shrink-0 shadow-md">
+                            ⭐
+                          </span>
+                        )}
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-1 sm:gap-1.5 flex-wrap">
+                            <span className={`font-semibold text-xs sm:text-sm ${isTola ? 'text-amber-900 dark:text-amber-100' : 'text-slate-900 dark:text-slate-50'} break-words`}>
+                              {option.label}
+                            </span>
+                            {isTola && (
+                              <span className="px-1 sm:px-1.5 py-0.5 bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-200 text-[9px] sm:text-[10px] font-semibold rounded-full border border-amber-200 dark:border-amber-800 whitespace-nowrap">
+                                Traditional
+                              </span>
+                            )}
                           </div>
                         </div>
-                    </div>
-                  </td>
-                    <td className="px-3 lg:px-4 py-3.5">
-                      <span className="text-sm font-medium text-slate-600 dark:text-slate-400">{option.unit}</span>
-                  </td>
-                    <td className="px-3 lg:px-4 py-3.5 text-right">
-                      <span className={`font-bold text-sm ${isTola ? 'text-amber-900 dark:text-amber-100' : 'text-slate-900 dark:text-slate-50'}`}>
-                      {formatIndianCurrency(price24k)}
-                    </span>
-                  </td>
-                  {basePrice1g_22k && (
-                      <td className="px-3 lg:px-4 py-3.5 text-right">
-                        <span className={`font-bold text-sm ${isTola ? 'text-slate-800 dark:text-slate-200' : 'text-slate-900 dark:text-slate-50'}`}>
-                        {formatIndianCurrency(price22k!)}
+                      </div>
+                    </td>
+                    <td className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3.5">
+                      <span className="text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-400 whitespace-nowrap">{option.unit}</span>
+                    </td>
+                    <td className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3.5 text-right">
+                      <span className={`font-bold text-xs sm:text-sm ${isTola ? 'text-amber-900 dark:text-amber-100' : 'text-slate-900 dark:text-slate-50'} whitespace-nowrap`}>
+                        {formatIndianCurrency(price24k)}
                       </span>
                     </td>
-                  )}
+                    {basePrice1g_22k && (
+                      <td className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3.5 text-right">
+                        <span className={`font-bold text-xs sm:text-sm ${isTola ? 'text-slate-800 dark:text-slate-200' : 'text-slate-900 dark:text-slate-50'} whitespace-nowrap`}>
+                          {formatIndianCurrency(price22k!)}
+                        </span>
+                      </td>
+                    )}
                     {basePrice1g_18k && (
-                      <td className="px-3 lg:px-4 py-3.5 text-right">
-                        <span className={`font-bold text-sm ${isTola ? 'text-slate-800 dark:text-slate-200' : 'text-slate-900 dark:text-slate-50'}`}>
+                      <td className="px-2 sm:px-3 lg:px-4 py-2 sm:py-3.5 text-right">
+                        <span className={`font-bold text-xs sm:text-sm ${isTola ? 'text-slate-800 dark:text-slate-200' : 'text-slate-900 dark:text-slate-50'} whitespace-nowrap`}>
                           {formatIndianCurrency(price18k!)}
-                      </span>
-                    </td>
-                  )}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                        </span>
+                      </td>
+                    )}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
       </div>
 

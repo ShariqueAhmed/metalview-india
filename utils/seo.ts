@@ -9,7 +9,7 @@ export interface SEOData {
   title: string;
   description: string;
   city?: string;
-  metal?: 'gold' | 'silver' | 'copper' | 'platinum';
+  metal?: 'gold' | 'silver' | 'copper' | 'platinum' | 'palladium';
   price?: number;
 }
 
@@ -20,7 +20,7 @@ export function generateMetalMetadata(data: SEOData): Metadata {
   const { title, description, city, metal } = data;
 
   const cityName = city ? formatCityName(city) : 'India';
-  const metalName = metal ? metal.charAt(0).toUpperCase() + metal.slice(1) : 'Metal';
+  const metalName = metal && typeof metal === 'string' ? metal.charAt(0).toUpperCase() + metal.slice(1) : 'Metal';
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://metalview.in';
   const ogImageUrl = `${baseUrl}/api/og?metal=${metal || 'gold'}&city=${city || 'india'}${data.price ? `&price=${data.price}` : ''}`;
@@ -42,7 +42,7 @@ export function generateMetalMetadata(data: SEOData): Metadata {
       type: 'website',
       locale: 'en_IN',
       siteName: 'MetalView India',
-      url: `${baseUrl}/${metal || 'gold'}-price-today-in-${city || 'india'}`,
+      url: `${baseUrl}/${metal || 'gold'}/price-in/${city || 'india'}`,
       images: [
         {
           url: ogImageUrl,
@@ -59,7 +59,7 @@ export function generateMetalMetadata(data: SEOData): Metadata {
       images: [ogImageUrl],
     },
     alternates: {
-      canonical: `${baseUrl}/${metal || 'gold'}-price-today-in-${city || 'india'}`,
+      canonical: `${baseUrl}/${metal || 'gold'}/price-in/${city || 'india'}`,
     },
   };
 }
@@ -67,7 +67,7 @@ export function generateMetalMetadata(data: SEOData): Metadata {
 /**
  * Format city name for display
  */
-function formatCityName(city: string | null | undefined): string {
+export function formatCityName(city: string | null | undefined): string {
   if (!city) return 'India';
   return city
     .split(/[\s-]+/)
@@ -86,6 +86,9 @@ export function generateStructuredData(data: {
   updatedAt: string;
 }): object {
   const { metal, price, unit, city, updatedAt } = data;
+  if (!metal || typeof metal !== 'string') {
+    throw new Error('Metal must be a valid string');
+  }
   const cityName = formatCityName(city);
 
   return {

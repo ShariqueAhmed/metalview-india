@@ -14,7 +14,7 @@ const TOP_CITIES = [
   'rajkot', 'varanasi', 'srinagar', 'amritsar', 'jodhpur',
 ];
 
-const METALS = ['gold', 'silver', 'copper', 'platinum'];
+const METALS = ['gold', 'silver', 'copper', 'platinum', 'palladium'];
 
 const BLOG_SLUGS = [
   'understanding-gold-purity-24k-vs-22k',
@@ -55,14 +55,36 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.9,
   });
 
-  // Metal-city combinations for top cities
+  // City overview pages (all metals for a city)
+  TOP_CITIES.forEach((city) => {
+    sitemapEntries.push({
+      url: `${baseUrl}/city/${city}`,
+      lastModified: now,
+      changeFrequency: 'hourly' as const,
+      priority: 0.9,
+    });
+  });
+
+  // Metal-city combinations (new route structure)
+  TOP_CITIES.forEach((city) => {
+    METALS.forEach((metal) => {
+      sitemapEntries.push({
+        url: `${baseUrl}/${metal}/price-in/${city}`,
+        lastModified: now,
+        changeFrequency: 'hourly' as const,
+        priority: 0.85,
+      });
+    });
+  });
+
+  // Legacy metal-city routes (for backward compatibility)
   TOP_CITIES.forEach((city) => {
     METALS.forEach((metal) => {
       sitemapEntries.push({
         url: `${baseUrl}/${metal}-price-today-in-${city}`,
         lastModified: now,
         changeFrequency: 'hourly' as const,
-        priority: 0.85,
+        priority: 0.8,
       });
     });
   });
