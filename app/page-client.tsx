@@ -52,7 +52,7 @@ import RelatedSearches from '@/components/RelatedSearches';
 import TrendingKeywords from '@/components/TrendingKeywords';
 import YouMayAlsoLike from '@/components/YouMayAlsoLike';
 import Breadcrumbs from '@/components/Breadcrumbs';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, ChevronDown, ChevronUp } from 'lucide-react';
 
 interface GoldTrendPoint {
   date: string;
@@ -125,6 +125,7 @@ function HomeContent() {
   const [selectedCity, setSelectedCity] = useState<string>('mumbai');
   const [selectedMetal, setSelectedMetal] = useState<MetalType>('gold');
   const [data, setData] = useState<MetalsData | null>(null);
+  const [showFullContent, setShowFullContent] = useState<boolean>(false);
   const [previousData, setPreviousData] = useState<MetalsData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -363,16 +364,40 @@ function HomeContent() {
               <p>
                 Stay informed with <strong>live metal prices in India</strong> updated every 10 minutes. Whether you're tracking <strong>gold prices today</strong>, <strong>silver rates</strong>, or other precious metals, MetalView provides accurate, real-time pricing data from trusted sources across major Indian cities including Mumbai, Delhi, Bangalore, Kolkata, and Chennai.
               </p>
-              <p>
-                <strong>Gold prices in India</strong> are influenced by multiple factors including international market rates, currency exchange fluctuations (USD/INR), import duties, local demand during festivals and wedding seasons, and government policies. Our platform tracks <strong>24K gold price</strong>, <strong>22K gold price</strong>, and <strong>18K gold price</strong> per gram and per 10 grams, giving you comprehensive pricing information for both investment and jewelry purposes.
-              </p>
-              <p>
-                <strong>Silver prices in India</strong> are quoted per kilogram and reflect both industrial demand and investment interest. Similarly, <strong>copper prices</strong>, <strong>platinum prices</strong>, and <strong>palladium prices</strong> are tracked to provide a complete view of the metals market. Understanding these prices is crucial for making informed investment decisions, planning purchases during auspicious occasions, or simply staying updated with market trends.
-              </p>
-              <p>
-                Our real-time price tracking helps you identify the best time to buy or sell, compare rates across different cities, and make data-driven decisions. With historical price trends, city-wise comparisons, and regular updates, MetalView is your comprehensive resource for all metal pricing information in India.
-              </p>
+              
+              {showFullContent && (
+                <>
+                  <p>
+                    <strong>Gold prices in India</strong> are influenced by multiple factors including international market rates, currency exchange fluctuations (USD/INR), import duties, local demand during festivals and wedding seasons, and government policies. Our platform tracks <strong>24K gold price</strong>, <strong>22K gold price</strong>, and <strong>18K gold price</strong> per gram and per 10 grams, giving you comprehensive pricing information for both investment and jewelry purposes.
+                  </p>
+                  <p>
+                    <strong>Silver prices in India</strong> are quoted per kilogram and reflect both industrial demand and investment interest. Similarly, <strong>copper prices</strong>, <strong>platinum prices</strong>, and <strong>palladium prices</strong> are tracked to provide a complete view of the metals market. Understanding these prices is crucial for making informed investment decisions, planning purchases during auspicious occasions, or simply staying updated with market trends.
+                  </p>
+                  <p>
+                    Our real-time price tracking helps you identify the best time to buy or sell, compare rates across different cities, and make data-driven decisions. With historical price trends, city-wise comparisons, and regular updates, MetalView is your comprehensive resource for all metal pricing information in India.
+                  </p>
+                </>
+              )}
             </div>
+            
+            <button
+              onClick={() => setShowFullContent(!showFullContent)}
+              className="mt-4 flex items-center gap-2 text-sm font-medium text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors"
+              aria-expanded={showFullContent}
+              aria-label={showFullContent ? 'Show less content' : 'Show more content'}
+            >
+              {showFullContent ? (
+                <>
+                  <span>Show less</span>
+                  <ChevronUp className="w-4 h-4" aria-hidden="true" />
+                </>
+              ) : (
+                <>
+                  <span>Show more</span>
+                  <ChevronDown className="w-4 h-4" aria-hidden="true" />
+                </>
+              )}
+            </button>
           </div>
         </section>
 
