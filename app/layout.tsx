@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import { Analytics } from './analytics';
 
 // Optimize font loading with display swap to prevent FOIT (Flash of Invisible Text)
 const inter = Inter({ 
@@ -185,6 +186,7 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
+        <Analytics />
         {children}
       </body>
     </html>
