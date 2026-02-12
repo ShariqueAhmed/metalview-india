@@ -372,17 +372,20 @@ function HomeContent() {
                     </h2>
                     <div className="text-slate-700 dark:text-slate-300 space-y-4 leading-relaxed">
                       <p>
-                        Get <strong>live gold prices today</strong> updated every 10 minutes from trusted sources. MetalView provides accurate <strong>gold prices in India</strong> across major cities including Mumbai, Delhi, Bangalore, Kolkata, and Chennai, helping you make informed investment and purchase decisions.
+                        {data?.gold_1g != null && data?.gold_22k_1g != null && data?.gold_18k_1g != null && 
+                         typeof data.gold_1g === 'number' && typeof data.gold_22k_1g === 'number' && typeof data.gold_18k_1g === 'number' ? (
+                          <>
+                            The <strong>price of gold in India today</strong> is <strong>₹{data.gold_1g.toLocaleString('en-IN')} per gram</strong> for <strong>24 karat gold (24K gold, also called 999 gold)</strong>, <strong>₹{data.gold_22k_1g.toLocaleString('en-IN')} per gram</strong> for <strong>22 karat gold (22K gold)</strong>, and <strong>₹{data.gold_18k_1g.toLocaleString('en-IN')} per gram</strong> for <strong>18 karat gold (18K gold)</strong>.
+                          </>
+                        ) : (
+                          <>
+                            Get <strong>live gold prices today</strong> updated every 10 minutes from trusted sources. MetalView provides accurate <strong>gold prices in India</strong> across major cities including Mumbai, Delhi, Bangalore, Kolkata, and Chennai, helping you make informed investment and purchase decisions.
+                          </>
+                        )}
                       </p>
                       
                       {showFullContent && (
                         <>
-                          {data?.gold_1g != null && data?.gold_22k_1g != null && data?.gold_18k_1g != null && 
-                           typeof data.gold_1g === 'number' && typeof data.gold_22k_1g === 'number' && typeof data.gold_18k_1g === 'number' && (
-                            <p>
-                              The <strong>price of gold in India today</strong> is <strong>₹{data.gold_1g.toLocaleString('en-IN')} per gram</strong> for <strong>24 karat gold (24K gold, also called 999 gold)</strong>, <strong>₹{data.gold_22k_1g.toLocaleString('en-IN')} per gram</strong> for <strong>22 karat gold (22K gold)</strong>, and <strong>₹{data.gold_18k_1g.toLocaleString('en-IN')} per gram</strong> for <strong>18 karat gold (18K gold)</strong>.
-                            </p>
-                          )}
                           <p>
                             <strong>Gold prices in India</strong> are influenced by multiple factors including international market rates, currency exchange fluctuations (USD/INR), import duties, local demand during festivals and wedding seasons, and government policies. Our platform tracks <strong>24K gold price</strong>, <strong>22K gold price</strong>, and <strong>18K gold price</strong> per gram and per 10 grams, giving you comprehensive pricing information for both investment and jewelry purposes.
                           </p>
