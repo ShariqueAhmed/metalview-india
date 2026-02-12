@@ -8,7 +8,6 @@ import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
   const url = request.nextUrl.clone();
-  const hostname = request.headers.get('host') || '';
 
   // Ensure ads.txt is accessible on both www and non-www
   // The route handler will handle serving the content
@@ -21,12 +20,14 @@ export function middleware(request: NextRequest) {
   // Uncomment and modify based on your preference:
   
   // Redirect www to non-www (recommended for SEO)
+  // const hostname = request.headers.get('host') || '';
   // if (hostname.startsWith('www.')) {
   //   url.hostname = hostname.replace('www.', '');
   //   return NextResponse.redirect(url, 301);
   // }
 
   // Or redirect non-www to www
+  // const hostname = request.headers.get('host') || '';
   // if (!hostname.startsWith('www.') && hostname.includes('metalview.in')) {
   //   url.hostname = `www.${hostname}`;
   //   return NextResponse.redirect(url, 301);
