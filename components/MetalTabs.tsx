@@ -28,31 +28,31 @@ const metalOptions: Array<{
   {
     id: 'gold',
     name: 'Gold',
-    icon: <Award className="w-5 h-5" />,
+    icon: <Award className="w-5 h-5" aria-hidden="true" />,
     color: 'amber',
   },
   {
     id: 'silver',
     name: 'Silver',
-    icon: <DollarSign className="w-5 h-5" />,
+    icon: <DollarSign className="w-5 h-5" aria-hidden="true" />,
     color: 'gray',
   },
   {
     id: 'copper',
     name: 'Copper',
-    icon: <Zap className="w-5 h-5" />,
+    icon: <Zap className="w-5 h-5" aria-hidden="true" />,
     color: 'orange',
   },
   {
     id: 'platinum',
     name: 'Platinum',
-    icon: <Gem className="w-5 h-5" />,
+    icon: <Gem className="w-5 h-5" aria-hidden="true" />,
     color: 'blue',
   },
   {
     id: 'palladium',
     name: 'Palladium',
-    icon: <Gem className="w-5 h-5" />,
+    icon: <Gem className="w-5 h-5" aria-hidden="true" />,
     color: 'purple',
   },
 ];

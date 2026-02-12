@@ -166,7 +166,11 @@ export default function ChartSection({
       </div>
 
         {/* Chart Container */}
-        <div className="w-full h-72 sm:h-96 bg-white/40 dark:bg-slate-900/40 rounded-lg p-4 border border-slate-200/50 dark:border-slate-700/50">
+        <div 
+          role="img" 
+          aria-label={chartSubtitle + '. Interactive chart showing price trends over time. Use keyboard navigation to explore data points.'}
+          className="w-full h-72 sm:h-96 bg-white/40 dark:bg-slate-900/40 rounded-lg p-4 border border-slate-200/50 dark:border-slate-700/50"
+        >
         <ResponsiveContainer width="100%" height="100%">
             {isCopperChart ? (
               <AreaChart data={chartData} margin={{ top: 10, right: 30, left: 20, bottom: 10 }}>

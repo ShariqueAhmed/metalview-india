@@ -51,20 +51,20 @@ function PalladiumPriceSection({
 
     if (trend === 'up') {
       return (
-        <div className="flex items-center gap-1 px-2 py-1 bg-emerald-50 dark:bg-emerald-950/30 rounded">
-          <TrendingUp className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+        <div className="flex items-center gap-1 px-2 py-1 bg-emerald-50 dark:bg-emerald-950/30 rounded" role="img" aria-label="Price increased">
+          <TrendingUp className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
         </div>
       );
     } else if (trend === 'down') {
       return (
-        <div className="flex items-center gap-1 px-2 py-1 bg-red-50 dark:bg-red-950/30 rounded">
-          <TrendingDown className="w-3.5 h-3.5 text-red-600 dark:text-red-400" />
+        <div className="flex items-center gap-1 px-2 py-1 bg-red-50 dark:bg-red-950/30 rounded" role="img" aria-label="Price decreased">
+          <TrendingDown className="w-3.5 h-3.5 text-red-600 dark:text-red-400" aria-hidden="true" />
         </div>
       );
     } else {
       return (
-        <div className="flex items-center gap-1 px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded">
-          <Minus className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
+        <div className="flex items-center gap-1 px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded" role="img" aria-label="Price unchanged">
+          <Minus className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" aria-hidden="true" />
         </div>
       );
     }
@@ -101,7 +101,7 @@ function PalladiumPriceSection({
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-3">
           <div className={`w-12 h-12 rounded-lg bg-purple-50 dark:bg-purple-950/30 flex items-center justify-center border border-purple-200 dark:border-purple-800`}>
-            <Gem className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+            <Gem className="w-6 h-6 text-purple-600 dark:text-purple-400" aria-hidden="true" />
           </div>
           <div>
             <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-50">

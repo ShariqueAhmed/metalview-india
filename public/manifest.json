@@ -1,0 +1,53 @@
+{
+  "name": "MetalView - Live Metal Prices in India",
+  "short_name": "MetalView",
+  "description": "Get live metal prices in India - Gold, Silver, Copper, and Platinum. Check today's rates in major cities with real-time updates.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#f59e0b",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["finance", "business", "utilities"],
+  "lang": "en-IN",
+  "dir": "ltr",
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "Gold Prices",
+      "short_name": "Gold",
+      "description": "View live gold prices",
+      "url": "/gold/price-in/mumbai",
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Silver Prices",
+      "short_name": "Silver",
+      "description": "View live silver prices",
+      "url": "/silver/price-in/mumbai",
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+    }
+  ],
+  "screenshots": [],
+  "related_applications": []
+}

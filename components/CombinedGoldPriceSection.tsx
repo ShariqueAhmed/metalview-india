@@ -46,14 +46,14 @@ function CombinedGoldPriceSection({
     
     if (value.startsWith('+')) {
       return (
-        <div className="flex items-center gap-1 px-1.5 py-0.5 bg-emerald-50 dark:bg-emerald-950/30 rounded">
-          <TrendingUp className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
+        <div className="flex items-center gap-1 px-1.5 py-0.5 bg-emerald-50 dark:bg-emerald-950/30 rounded" role="img" aria-label="Price increased">
+          <TrendingUp className="w-3 h-3 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
         </div>
       );
     } else if (value.startsWith('-')) {
       return (
-        <div className="flex items-center gap-1 px-1.5 py-0.5 bg-red-50 dark:bg-red-950/30 rounded">
-          <TrendingDown className="w-3 h-3 text-red-600 dark:text-red-400" />
+        <div className="flex items-center gap-1 px-1.5 py-0.5 bg-red-50 dark:bg-red-950/30 rounded" role="img" aria-label="Price decreased">
+          <TrendingDown className="w-3 h-3 text-red-600 dark:text-red-400" aria-hidden="true" />
         </div>
       );
     }
@@ -125,7 +125,7 @@ function CombinedGoldPriceSection({
       <div className="bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 p-6 card-shadow opacity-60">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center border border-slate-200 dark:border-slate-700 flex-shrink-0">
-            <Award className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+            <Award className="w-5 h-5 text-slate-600 dark:text-slate-400" aria-hidden="true" />
           </div>
           <div>
             <h3 className="text-lg font-bold text-gray-900 dark:text-white tracking-tight">

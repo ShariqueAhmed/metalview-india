@@ -46,20 +46,20 @@ function CopperPriceSection({
 
     if (trend === 'up') {
       return (
-        <div className="flex items-center gap-1 px-2 py-1 bg-emerald-50 dark:bg-emerald-950/30 rounded">
-          <TrendingUp className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+        <div className="flex items-center gap-1 px-2 py-1 bg-emerald-50 dark:bg-emerald-950/30 rounded" role="img" aria-label="Price increased">
+          <TrendingUp className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
         </div>
       );
     } else if (trend === 'down') {
       return (
-        <div className="flex items-center gap-1 px-2 py-1 bg-red-50 dark:bg-red-950/30 rounded">
-          <TrendingDown className="w-3.5 h-3.5 text-red-600 dark:text-red-400" />
+        <div className="flex items-center gap-1 px-2 py-1 bg-red-50 dark:bg-red-950/30 rounded" role="img" aria-label="Price decreased">
+          <TrendingDown className="w-3.5 h-3.5 text-red-600 dark:text-red-400" aria-hidden="true" />
         </div>
       );
     } else {
       return (
-        <div className="flex items-center gap-1 px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded">
-          <Minus className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
+        <div className="flex items-center gap-1 px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded" role="img" aria-label="Price unchanged">
+          <Minus className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" aria-hidden="true" />
         </div>
       );
     }
@@ -162,17 +162,17 @@ function CopperPriceSection({
               </span>
               {change > 0 ? (
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 rounded text-xs font-medium">
-                  <TrendingUp className="w-3.5 h-3.5" />
+                  <TrendingUp className="w-3.5 h-3.5" aria-hidden="true" />
                   +{Math.abs(change).toFixed(2)}%
                 </span>
               ) : change < 0 ? (
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-400 rounded text-xs font-medium">
-                  <TrendingDown className="w-3.5 h-3.5" />
+                  <TrendingDown className="w-3.5 h-3.5" aria-hidden="true" />
                   {change.toFixed(2)}%
                 </span>
               ) : (
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded text-xs font-medium">
-                  <Minus className="w-3.5 h-3.5" />
+                  <Minus className="w-3.5 h-3.5" aria-hidden="true" />
                   0.00%
                 </span>
               )}

@@ -1,3 +1,13 @@
 User-agent: *
 Allow: /
+Crawl-delay: 1
+Disallow: /api/
+Disallow: /_next/
+Disallow: /dashboard
+
+# Sitemaps
 Sitemap: https://metalview.in/sitemap.xml
+Sitemap: https://metalview.in/sitemap-index.xml
+Sitemap: https://metalview.in/sitemap-metals.xml
+Sitemap: https://metalview.in/sitemap-cities.xml
+Sitemap: https://metalview.in/sitemap-blog.xml

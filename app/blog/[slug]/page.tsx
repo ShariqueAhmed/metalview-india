@@ -2,6 +2,8 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight, Calendar, Clock, MapPin } from 'lucide-react';
+import { generateHowToSchema } from '@/utils/howToSchema';
+import Breadcrumbs from '@/components/Breadcrumbs';
 
 interface BlogPost {
   slug: string;
@@ -251,6 +253,29 @@ Understanding how gold prices are calculated is essential for making informed pu
 The basic formula for calculating gold price is:
 
 **Total Price = (Gold Rate × Weight) + Making Charges + GST**
+
+## Step-by-Step Guide
+
+### Step 1: Check Current Gold Rate
+Visit MetalView to check current gold prices in your city. Gold rates vary by purity (24K, 22K, 18K) and update daily based on market conditions. Check the latest rates at /gold/price-in/mumbai or your city.
+
+### Step 2: Determine the Weight
+Measure the gold weight in grams. Common weights include 1gm, 8gm, 10gm, 12gm (Tola), 25gm, 50gm, and 100gm. Ensure accurate weighing using certified scales.
+
+### Step 3: Calculate Base Gold Value
+Multiply the current gold rate per gram by the weight in grams. For example: Gold Rate (₹6,000/g) × Weight (10g) = ₹60,000.
+
+### Step 4: Add Making Charges (for jewelry)
+Making charges are fees for crafting jewelry, typically 10-15% of gold value. Calculate: Gold Value × Making Charge Percentage. For example: ₹60,000 × 12% = ₹7,200.
+
+### Step 5: Calculate Subtotal
+Add the gold value and making charges: Gold Value + Making Charges = Subtotal. Example: ₹60,000 + ₹7,200 = ₹67,200.
+
+### Step 6: Add GST
+Apply 3% GST on the subtotal (including making charges). Calculate: Subtotal × 3%. Example: ₹67,200 × 3% = ₹2,016.
+
+### Step 7: Calculate Final Total
+Add GST to subtotal to get the final price. Example: ₹67,200 + ₹2,016 = ₹69,216.
 
 ## Components of Gold Price
 
@@ -1135,9 +1160,86 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
     notFound();
   }
 
+  // Generate HowTo schema if applicable
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://metalview.in';
+  const howToSchema = generateHowToSchema(post.title, post.content, post.slug, baseUrl);
+
+  // Generate Article schema
+  const articleSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.title,
+    description: post.excerpt,
+    image: [
+      {
+        '@type': 'ImageObject',
+        url: `${baseUrl}/api/og?title=${encodeURIComponent(post.title)}`,
+        width: 1200,
+        height: 630,
+      },
+      {
+        '@type': 'ImageObject',
+        url: `${baseUrl}/og-image.svg`,
+        width: 1200,
+        height: 630,
+      },
+    ],
+    author: {
+      '@type': 'Organization',
+      name: 'MetalView India',
+      url: baseUrl,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'MetalView India',
+      logo: {
+        '@type': 'ImageObject',
+        url: `${baseUrl}/og-image.svg`,
+        width: 1200,
+        height: 630,
+      },
+    },
+    datePublished: new Date(post.date).toISOString(),
+    dateModified: new Date(post.date).toISOString(), // Can be updated when post is modified
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `${baseUrl}/blog/${post.slug}`,
+    },
+    articleSection: post.category,
+    wordCount: post.content.split(/\s+/).length,
+    timeRequired: post.readTime,
+    keywords: [
+      post.category.toLowerCase(),
+      'metal prices',
+      'gold prices',
+      'precious metals',
+      'india',
+      ...post.title.toLowerCase().split(' ').filter((word) => word.length > 3),
+    ],
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      {howToSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
+        />
+      )}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Breadcrumb Navigation */}
+        <Breadcrumbs
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Blog', href: '/blog' },
+            { label: post.title, href: `/blog/${post.slug}` },
+          ]}
+        />
+        
         <Link
           href="/blog"
           className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 mb-8 transition-colors"

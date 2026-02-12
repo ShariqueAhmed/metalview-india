@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
     const metalName = metal.charAt(0).toUpperCase() + metal.slice(1);
     const cityName = city.charAt(0).toUpperCase() + city.slice(1);
 
-    return new ImageResponse(
+    const imageResponse = new ImageResponse(
       (
         <div
           style={{
@@ -102,7 +102,7 @@ export async function GET(request: NextRequest) {
                   fontWeight: '600',
                   color: '#fbbf24'
                 }}>
-                  ✓ Trusted
+                  Trusted
                 </span>
               </div>
               <div
@@ -180,10 +180,21 @@ export async function GET(request: NextRequest) {
         height: 630,
       }
     );
+
+    // Add optimized headers for successful image generation
+    return new Response(imageResponse.body, {
+      status: imageResponse.status,
+      statusText: imageResponse.statusText,
+      headers: {
+        ...Object.fromEntries(imageResponse.headers.entries()),
+        'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+        'X-Content-Type-Options': 'nosniff',
+      },
+    });
   } catch (error) {
     console.error('OG image generation error:', error);
     // Return a simple fallback image
-    return new ImageResponse(
+    const fallbackResponse = new ImageResponse(
       (
         <div
           style={{
@@ -219,5 +230,28 @@ export async function GET(request: NextRequest) {
         height: 630,
       }
     );
+
+    // Add optimized headers for fallback image
+    return new Response(fallbackResponse.body, {
+      status: fallbackResponse.status,
+      statusText: fallbackResponse.statusText,
+      headers: {
+        ...Object.fromEntries(fallbackResponse.headers.entries()),
+        'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+        'X-Content-Type-Options': 'nosniff',
+      },
+    });
   }
+}
+
+// Add optimized headers for OG images (HEAD request)
+export async function HEAD(_request: NextRequest) {
+  return new Response(null, {
+    status: 200,
+    headers: {
+      'Content-Type': 'image/png',
+      'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+      'X-Content-Type-Options': 'nosniff',
+    },
+  });
 }

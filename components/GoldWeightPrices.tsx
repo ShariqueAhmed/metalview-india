@@ -76,14 +76,14 @@ export default function GoldWeightPrices({
     <div className="bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 p-4 sm:p-6 mb-8 sm:mb-12 card-shadow">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-100 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30 flex items-center justify-center border-2 border-amber-200 dark:border-amber-800 flex-shrink-0 shadow-md">
-            <Award className="w-6 h-6 text-amber-700 dark:text-amber-400" />
-          </div>
-          <div className="min-w-0">
-            <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50">
-              Gold Prices by Weight
-            </h2>
-            <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-100 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30 flex items-center justify-center border-2 border-amber-200 dark:border-amber-800 flex-shrink-0 shadow-md">
+          <Award className="w-6 h-6 text-amber-700 dark:text-amber-400" aria-hidden="true" />
+        </div>
+        <div className="min-w-0">
+          <h3 className="text-xl font-bold text-slate-900 dark:text-slate-50">
+            Gold Prices by Weight
+          </h3>
+          <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
               Gold prices for different weights
             </p>
           </div>

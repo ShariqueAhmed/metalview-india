@@ -54,7 +54,7 @@ export default function PriceHistoryTable({
     return (
       <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 p-6 card-shadow">
         <div className="text-center py-8 text-slate-500 dark:text-slate-400">
-          <Calendar className="w-12 h-12 mx-auto mb-3 opacity-50" />
+          <Calendar className="w-12 h-12 mx-auto mb-3 opacity-50" aria-hidden="true" />
           <p>No historical data available</p>
         </div>
       </div>
@@ -133,12 +133,12 @@ export default function PriceHistoryTable({
       <div className="flex items-center justify-between mb-6 sm:mb-8 flex-wrap gap-4">
         <div className="flex items-center gap-3 sm:gap-4">
           <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-amber-100 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30 flex items-center justify-center border-2 border-amber-200 dark:border-amber-800 flex-shrink-0 shadow-md">
-            <Calendar className="w-5 h-5 sm:w-6 sm:h-6 text-amber-700 dark:text-amber-400" />
+            <Calendar className="w-5 h-5 sm:w-6 sm:h-6 text-amber-700 dark:text-amber-400" aria-hidden="true" />
         </div>
         <div className="min-w-0">
-            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-50 tracking-tight">
+            <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-50 tracking-tight">
             {title}
-          </h2>
+          </h3>
             <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
             Historical {metalName} prices with daily changes
               {itemsPerPage && ` (${totalItems} total records)`}
@@ -250,15 +250,15 @@ export default function PriceHistoryTable({
                   </td>
                   <td className="px-1.5 sm:px-2 lg:px-3 py-2 sm:py-2.5 whitespace-nowrap text-right overflow-hidden">
                     {row.change !== null ? (
-                      <div className="flex items-center justify-end gap-0.5 sm:gap-1">
+                      <div className="flex items-center justify-end gap-0.5 sm:gap-1" role="img" aria-label={row.trend === 'up' ? 'Price increased' : row.trend === 'down' ? 'Price decreased' : 'Price unchanged'}>
                         {row.trend === 'up' && (
-                          <TrendingUp className="w-3 h-3 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+                          <TrendingUp className="w-3 h-3 text-emerald-600 dark:text-emerald-400 flex-shrink-0" aria-hidden="true" />
                         )}
                         {row.trend === 'down' && (
-                          <TrendingDown className="w-3 h-3 text-red-600 dark:text-red-400 flex-shrink-0" />
+                          <TrendingDown className="w-3 h-3 text-red-600 dark:text-red-400 flex-shrink-0" aria-hidden="true" />
                         )}
                         {row.trend === 'neutral' && (
-                          <Minus className="w-3 h-3 text-slate-400 dark:text-slate-500 flex-shrink-0" />
+                          <Minus className="w-3 h-3 text-slate-400 dark:text-slate-500 flex-shrink-0" aria-hidden="true" />
                         )}
                         <span
                           className={`font-medium text-[10px] sm:text-[11px] truncate ${
@@ -281,12 +281,12 @@ export default function PriceHistoryTable({
                   </td>
                   <td className="px-1.5 sm:px-2 lg:px-3 py-2 sm:py-2.5 whitespace-nowrap text-right overflow-hidden">
                     {row.changePercent !== null ? (
-                      <div className="flex items-center justify-end gap-1">
+                      <div className="flex items-center justify-end gap-1" role="img" aria-label={row.trend === 'up' ? 'Price increased' : row.trend === 'down' ? 'Price decreased' : 'Price unchanged'}>
                         {row.trend === 'up' && (
-                          <TrendingUp className="w-3 h-3 text-emerald-600 dark:text-emerald-400 flex-shrink-0 sm:hidden" />
+                          <TrendingUp className="w-3 h-3 text-emerald-600 dark:text-emerald-400 flex-shrink-0 sm:hidden" aria-hidden="true" />
                         )}
                         {row.trend === 'down' && (
-                          <TrendingDown className="w-3 h-3 text-red-600 dark:text-red-400 flex-shrink-0 sm:hidden" />
+                          <TrendingDown className="w-3 h-3 text-red-600 dark:text-red-400 flex-shrink-0 sm:hidden" aria-hidden="true" />
                         )}
                       <span
                           className={`font-medium text-[11px] sm:text-xs ${
@@ -402,11 +402,11 @@ export default function PriceHistoryTable({
           </div>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1.5">
-              <TrendingUp className="w-3 h-3 text-emerald-600" />
+              <TrendingUp className="w-3 h-3 text-emerald-600" aria-hidden="true" />
               <span>Price increase</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <TrendingDown className="w-3 h-3 text-red-600" />
+              <TrendingDown className="w-3 h-3 text-red-600" aria-hidden="true" />
               <span>Price decrease</span>
             </div>
           </div>

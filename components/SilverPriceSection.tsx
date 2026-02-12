@@ -44,20 +44,20 @@ function SilverPriceSection({
 
     if (trend === 'up') {
       return (
-        <div className="flex items-center gap-1 px-2 py-1 bg-emerald-50 dark:bg-emerald-950/30 rounded">
-          <TrendingUp className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+        <div className="flex items-center gap-1 px-2 py-1 bg-emerald-50 dark:bg-emerald-950/30 rounded" role="img" aria-label="Price increased">
+          <TrendingUp className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
         </div>
       );
     } else if (trend === 'down') {
       return (
-        <div className="flex items-center gap-1 px-2 py-1 bg-red-50 dark:bg-red-950/30 rounded">
-          <TrendingDown className="w-3.5 h-3.5 text-red-600 dark:text-red-400" />
+        <div className="flex items-center gap-1 px-2 py-1 bg-red-50 dark:bg-red-950/30 rounded" role="img" aria-label="Price decreased">
+          <TrendingDown className="w-3.5 h-3.5 text-red-600 dark:text-red-400" aria-hidden="true" />
         </div>
       );
     } else {
       return (
-        <div className="flex items-center gap-1 px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded">
-          <Minus className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
+        <div className="flex items-center gap-1 px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded" role="img" aria-label="Price unchanged">
+          <Minus className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" aria-hidden="true" />
         </div>
       );
     }
@@ -161,21 +161,21 @@ function SilverPriceSection({
                 </p>
                 {change > 0 ? (
                   <div className="flex items-baseline gap-2">
-                    <TrendingUp className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                    <TrendingUp className="w-5 h-5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
                     <span className="text-xl font-bold text-emerald-600 dark:text-emerald-400">
                       +{Math.abs(change).toFixed(2)}%
                     </span>
                   </div>
                 ) : change < 0 ? (
                   <div className="flex items-baseline gap-2">
-                    <TrendingDown className="w-5 h-5 text-red-600 dark:text-red-400" />
+                    <TrendingDown className="w-5 h-5 text-red-600 dark:text-red-400" aria-hidden="true" />
                     <span className="text-xl font-bold text-red-600 dark:text-red-400">
                       {change.toFixed(2)}%
                     </span>
                   </div>
                 ) : (
                   <div className="flex items-baseline gap-2">
-                    <Minus className="w-5 h-5 text-slate-400 dark:text-slate-500" />
+                    <Minus className="w-5 h-5 text-slate-400 dark:text-slate-500" aria-hidden="true" />
                     <span className="text-xl font-bold text-slate-600 dark:text-slate-400">
                       0.00%
                     </span>

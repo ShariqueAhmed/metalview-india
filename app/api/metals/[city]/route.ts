@@ -267,8 +267,8 @@ export async function GET(
       copperPercentageChange: copperData.percentageChange || null,
       copperTrend: copperData.copperTrend,
       platinum: ebullionData?.platinum?.rate || null,
-      platinum_10g: ebullionData?.platinum?.rate || null,
-      platinum_1g: ebullionData?.platinum?.rate ? ebullionData.platinum.rate / 10 : null,
+      platinum_1g: ebullionData?.platinum?.rate || null,
+      platinum_10g: ebullionData?.platinum?.rate ? ebullionData.platinum.rate * 10 : null,
       platinumPercentageChange: ebullionData?.platinum?.rate && ebullionData.platinum.variation
         ? (parseFloat(ebullionData.platinum.variation) / (ebullionData.platinum.rate - parseFloat(ebullionData.platinum.variation))) * 100
         : null,

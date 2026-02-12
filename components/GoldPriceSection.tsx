@@ -62,20 +62,20 @@ function GoldPriceSection({
 
     if (trend === 'up') {
       return (
-        <div className="flex items-center gap-1 px-2 py-1 bg-emerald-50 dark:bg-emerald-950/30 rounded">
-          <TrendingUp className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+        <div className="flex items-center gap-1 px-2 py-1 bg-emerald-50 dark:bg-emerald-950/30 rounded" role="img" aria-label="Price increased">
+          <TrendingUp className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
         </div>
       );
     } else if (trend === 'down') {
       return (
-        <div className="flex items-center gap-1 px-2 py-1 bg-red-50 dark:bg-red-950/30 rounded">
-          <TrendingDown className="w-3.5 h-3.5 text-red-600 dark:text-red-400" />
+        <div className="flex items-center gap-1 px-2 py-1 bg-red-50 dark:bg-red-950/30 rounded" role="img" aria-label="Price decreased">
+          <TrendingDown className="w-3.5 h-3.5 text-red-600 dark:text-red-400" aria-hidden="true" />
         </div>
       );
     } else {
       return (
-        <div className="flex items-center gap-1 px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded">
-          <Minus className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
+        <div className="flex items-center gap-1 px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded" role="img" aria-label="Price unchanged">
+          <Minus className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" aria-hidden="true" />
         </div>
       );
     }
@@ -103,7 +103,7 @@ function GoldPriceSection({
         <div className="flex items-start justify-between mb-4 sm:mb-6">
           <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
             <div className={`${getIconBg()} p-2.5 sm:p-3 lg:p-3.5 rounded-lg sm:rounded-xl shadow-lg flex-shrink-0`}>
-              <Award className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+              <Award className="w-5 h-5 sm:w-6 sm:h-6 text-white" aria-hidden="true" />
             </div>
             <div className="min-w-0 flex-1">
               <h3 className="text-sm sm:text-base font-bold text-gray-900 dark:text-white tracking-tight">
@@ -194,7 +194,7 @@ function GoldPriceSection({
                 <div className="flex items-center gap-1.5 min-w-0">
                   {difference.startsWith('+') ? (
                     <>
-                      <TrendingUp className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+                      <TrendingUp className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" aria-hidden="true" />
                       <div className="min-w-0">
                         <p className="text-[10px] font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide">Diff</p>
                         <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400 break-words overflow-hidden">
@@ -204,7 +204,7 @@ function GoldPriceSection({
                     </>
                   ) : difference.startsWith('-') ? (
                     <>
-                      <TrendingDown className="w-4 h-4 text-red-600 dark:text-red-400 flex-shrink-0" />
+                      <TrendingDown className="w-4 h-4 text-red-600 dark:text-red-400 flex-shrink-0" aria-hidden="true" />
                       <div className="min-w-0">
                         <p className="text-[10px] font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide">Diff</p>
                         <span className="text-sm font-bold text-red-600 dark:text-red-400 break-words overflow-hidden">
@@ -214,7 +214,7 @@ function GoldPriceSection({
                     </>
                   ) : (
                     <>
-                      <Minus className="w-4 h-4 text-slate-400 dark:text-slate-500 flex-shrink-0" />
+                      <Minus className="w-4 h-4 text-slate-400 dark:text-slate-500 flex-shrink-0" aria-hidden="true" />
                       <div className="min-w-0">
                         <p className="text-[10px] font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide">Diff</p>
                         <span className="text-sm font-bold text-slate-600 dark:text-slate-400 break-words overflow-hidden">
@@ -231,7 +231,7 @@ function GoldPriceSection({
                 <div className="flex items-center gap-1.5 min-w-0">
                   {priceChange.startsWith('+') ? (
                     <>
-                      <TrendingUp className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+                      <TrendingUp className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" aria-hidden="true" />
                       <div className="min-w-0">
                         <p className="text-[10px] font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide">Change</p>
                         <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400 break-words overflow-hidden">
@@ -241,7 +241,7 @@ function GoldPriceSection({
                     </>
                   ) : priceChange.startsWith('-') ? (
                     <>
-                      <TrendingDown className="w-4 h-4 text-red-600 dark:text-red-400 flex-shrink-0" />
+                      <TrendingDown className="w-4 h-4 text-red-600 dark:text-red-400 flex-shrink-0" aria-hidden="true" />
                       <div className="min-w-0">
                         <p className="text-[10px] font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide">Change</p>
                         <span className="text-sm font-bold text-red-600 dark:text-red-400 break-words overflow-hidden">
@@ -251,7 +251,7 @@ function GoldPriceSection({
                     </>
                   ) : (
                     <>
-                      <Minus className="w-4 h-4 text-slate-400 dark:text-slate-500 flex-shrink-0" />
+                      <Minus className="w-4 h-4 text-slate-400 dark:text-slate-500 flex-shrink-0" aria-hidden="true" />
                       <div className="min-w-0">
                         <p className="text-[10px] font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide">Change</p>
                         <span className="text-sm font-bold text-slate-600 dark:text-slate-400 break-words overflow-hidden">
@@ -268,7 +268,7 @@ function GoldPriceSection({
                 <div className="flex items-center gap-1.5 min-w-0">
                   {change > 0 ? (
                     <>
-                      <TrendingUp className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+                      <TrendingUp className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" aria-hidden="true" />
                       <div className="min-w-0">
                         <p className="text-[10px] font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide">24h</p>
                         <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400">
@@ -278,7 +278,7 @@ function GoldPriceSection({
                     </>
                   ) : change < 0 ? (
                     <>
-                      <TrendingDown className="w-4 h-4 text-red-600 dark:text-red-400 flex-shrink-0" />
+                      <TrendingDown className="w-4 h-4 text-red-600 dark:text-red-400 flex-shrink-0" aria-hidden="true" />
                       <div className="min-w-0">
                         <p className="text-[10px] font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide">24h</p>
                         <span className="text-sm font-bold text-red-600 dark:text-red-400">
@@ -288,7 +288,7 @@ function GoldPriceSection({
                     </>
                   ) : (
                     <>
-                      <Minus className="w-4 h-4 text-slate-400 dark:text-slate-500 flex-shrink-0" />
+                      <Minus className="w-4 h-4 text-slate-400 dark:text-slate-500 flex-shrink-0" aria-hidden="true" />
                       <div className="min-w-0">
                         <p className="text-[10px] font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide">24h</p>
                         <span className="text-sm font-bold text-slate-600 dark:text-slate-400">

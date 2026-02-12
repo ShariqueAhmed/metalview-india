@@ -15,11 +15,17 @@ import PalladiumPriceSection from '@/components/PalladiumPriceSection';
 import GoldWeightPrices from '@/components/GoldWeightPrices';
 import PriceHistoryTable from '@/components/PriceHistoryTable';
 import ChartSection from '@/components/ChartSection';
-import { generateMetalMetadata, generateStructuredData } from '@/utils/seo';
+import { generateMetalMetadata, generateStructuredData, generateDatasetSchema } from '@/utils/seo';
 import { formatCityName } from '@/utils/conversions';
 import Link from 'next/link';
-import { ChevronRight, Info, HelpCircle } from 'lucide-react';
+import { Info, HelpCircle } from 'lucide-react';
 import CityNavigationClient from './CityNavigationClient';
+import PeopleAlsoAsk from '@/components/PeopleAlsoAsk';
+import { getPeopleAlsoAskQuestions } from '@/utils/peopleAlsoAsk';
+import FAQSchema from '@/components/FAQSchema';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import LastUpdated from '@/components/LastUpdated';
+import YouMayAlsoLike from '@/components/YouMayAlsoLike';
 
 interface CityPageProps {
   params: Promise<{
@@ -96,14 +102,8 @@ const CITY_FAQS: Record<string, Array<{ question: string; answer: string }>> = {
   ],
 };
 
-<<<<<<< HEAD
-// Force dynamic rendering to avoid build-time fetch issues
-// Note: generateStaticParams removed to allow fully dynamic rendering
-// Pages will be generated on-demand to avoid build-time fetch timeouts
-export const dynamic = 'force-dynamic';
-export const revalidate = 600; // Revalidate every 10 minutes
-=======
 // Generate static params for top cities and metals
+// Pages will be generated on-demand (ISR) to avoid build-time fetch timeouts
 export async function generateStaticParams() {
   const metals: MetalType[] = ['gold', 'silver', 'copper', 'platinum', 'palladium'];
   const params: Array<{ metal: string; city: string }> = [];
@@ -116,7 +116,29 @@ export async function generateStaticParams() {
 
   return params;
 }
->>>>>>> 9ba5bde115d7431593c49b73b5e9ab53b5b4bad2
+
+// Use ISR (Incremental Static Regeneration) for better performance
+export const revalidate = 600; // Revalidate every 10 minutes
+
+// Helper function to get metal price from data
+function getMetalPriceForMetadata(data: any, metal: MetalType): { price: number | null; unit: string } {
+  if (!data) return { price: null, unit: '' };
+  
+  switch (metal) {
+    case 'gold':
+      return { price: data.gold_10g || null, unit: '10g' };
+    case 'silver':
+      return { price: data.silver_1kg || null, unit: '1kg' };
+    case 'copper':
+      return { price: data.copper_1kg || data.copper || null, unit: '1kg' };
+    case 'platinum':
+      return { price: data.platinum_10g || data.platinum || null, unit: '10g' };
+    case 'palladium':
+      return { price: data.palladium_10g || data.palladium || null, unit: '10g' };
+    default:
+      return { price: null, unit: '' };
+  }
+}
 
 // Generate metadata for SEO
 export async function generateMetadata({ params }: CityPageProps): Promise<Metadata> {
@@ -131,11 +153,103 @@ export async function generateMetadata({ params }: CityPageProps): Promise<Metad
   const cityName = formatCityName(city);
   const metalName = metal.charAt(0).toUpperCase() + metal.slice(1);
 
+  // Try to fetch price data for metadata (non-blocking, with timeout)
+  let priceData: { price: number | null; unit: string } = { price: null, unit: '' };
+  let priceRange: { min: number; max: number } | undefined = undefined;
+  
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 
+      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
+    
+    // Fetch current city price
+    const apiUrl = `${baseUrl}/api/metals?city=${encodeURIComponent(city)}`;
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 2000); // 2 second timeout
+    
+    const response = await fetch(apiUrl, {
+      signal: controller.signal,
+      next: { revalidate: 600 },
+      headers: { 'Content-Type': 'application/json' },
+    });
+    
+    clearTimeout(timeoutId);
+    
+    if (response.ok) {
+      const data = await response.json();
+      priceData = getMetalPriceForMetadata(data, metal as MetalType);
+      
+      // Fetch prices for top cities to calculate price range
+      // Use a subset of top cities for faster metadata generation
+      const citiesForRange = TOP_CITIES.slice(0, 5); // Top 5 cities
+      const cityPrices: number[] = [];
+      
+      // Add current city price if available
+      if (priceData.price && priceData.price > 0) {
+        cityPrices.push(priceData.price);
+      }
+      
+      // Fetch prices for other cities (with timeout to avoid blocking)
+      try {
+        const rangeController = new AbortController();
+        const rangeTimeoutId = setTimeout(() => rangeController.abort(), 3000); // 3 second timeout for range
+        
+        const rangePromises = citiesForRange
+          .filter((c) => c !== city)
+          .slice(0, 4) // Limit to 4 additional cities for speed
+          .map(async (otherCity) => {
+            try {
+              const cityResponse = await fetch(`${baseUrl}/api/metals?city=${encodeURIComponent(otherCity)}`, {
+                signal: rangeController.signal,
+                next: { revalidate: 600 },
+                headers: { 'Content-Type': 'application/json' },
+              });
+              
+              if (cityResponse.ok) {
+                const cityData = await cityResponse.json();
+                const cityPriceData = getMetalPriceForMetadata(cityData, metal as MetalType);
+                return cityPriceData.price;
+              }
+            } catch (err) {
+              // Silently fail for individual cities
+            }
+            return null;
+          });
+        
+        const rangeResults = await Promise.allSettled(rangePromises);
+        clearTimeout(rangeTimeoutId);
+        
+        // Collect valid prices
+        rangeResults.forEach((result) => {
+          if (result.status === 'fulfilled' && result.value && result.value > 0) {
+            cityPrices.push(result.value);
+          }
+        });
+        
+        // Calculate price range if we have at least 2 prices
+        if (cityPrices.length >= 2) {
+          priceRange = {
+            min: Math.min(...cityPrices),
+            max: Math.max(...cityPrices),
+          };
+        }
+      } catch (rangeError) {
+        // Silently fail - will use single price instead
+        console.error('Error fetching price range for metadata:', rangeError);
+      }
+    }
+  } catch (error) {
+    // Silently fail - metadata will work without price
+    console.error('Error fetching price for metadata:', error);
+  }
+
   return generateMetalMetadata({
     title: `${metalName} Price Today in ${cityName} – Live ${metalName} Rate`,
     description: `Get live ${metal} prices in ${cityName}, India. Check today's ${metal} rate, historical trends, and market insights. Real-time updates from trusted sources.`,
     city: city,
     metal: metal as MetalType,
+    price: priceData.price || undefined,
+    unit: priceData.unit || undefined,
+    priceRange: priceRange,
   });
 }
 
@@ -193,10 +307,6 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
   // Fetch data server-side
   let data = null;
   try {
-<<<<<<< HEAD
-    // Use relative URL for server-side fetch (works in both dev and production)
-    const apiUrl = `/api/metals?city=${encodeURIComponent(city)}`;
-=======
     // Use absolute URL for server-side fetch
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 
       (typeof window === 'undefined' 
@@ -206,7 +316,6 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
         : window.location.origin);
     
     const apiUrl = `${baseUrl}/api/metals?city=${encodeURIComponent(city)}`;
->>>>>>> 9ba5bde115d7431593c49b73b5e9ab53b5b4bad2
     const response = await fetch(apiUrl, {
       next: { revalidate: 600 }, // Revalidate every 10 minutes
       headers: {
@@ -219,10 +328,7 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
     }
   } catch (error) {
     console.error('Error fetching data:', error);
-<<<<<<< HEAD
-=======
     // Continue with null data - page will still render
->>>>>>> 9ba5bde115d7431593c49b73b5e9ab53b5b4bad2
   }
 
   // Generate structured data
@@ -233,6 +339,22 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
         unit: metalType === 'gold' ? '10g' : metalType === 'silver' ? '1kg' : '1kg',
         city: city,
         updatedAt: data.updated_at || new Date().toISOString(),
+      })
+    : null;
+
+  // Generate Dataset schema for historical price data
+  const priceHistoryData = data ? getPriceHistoryData(data, metalType) : [];
+  const datasetSchema = priceHistoryData.length > 0
+    ? generateDatasetSchema({
+        metal: metalType,
+        city: city,
+        dataPoints: priceHistoryData,
+        baseUrl: process.env.NEXT_PUBLIC_BASE_URL || 
+          (typeof window === 'undefined' 
+            ? process.env.VERCEL_URL 
+              ? `https://${process.env.VERCEL_URL}`
+              : 'http://localhost:3000'
+            : typeof window !== 'undefined' ? window.location.origin : 'https://metalview.in'),
       })
     : null;
 
@@ -247,33 +369,43 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
       )}
+      {datasetSchema && Object.keys(datasetSchema).length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(datasetSchema) }}
+        />
+      )}
       <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950">
         <Header />
 
         <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 w-full">
           {/* Breadcrumb Navigation */}
-          <nav className="mb-6 flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
-            <Link href="/" className="hover:text-slate-900 dark:hover:text-slate-50 transition-colors">
-              Home
-            </Link>
-            <ChevronRight className="w-4 h-4" />
-            <Link
-              href={`/${metal}/price-in/${city}`}
-              className="text-slate-900 dark:text-slate-50 font-medium"
-            >
-              {metal.charAt(0).toUpperCase() + metal.slice(1)} Price in {cityName}
-            </Link>
-          </nav>
+          <Breadcrumbs
+            items={[
+              { label: 'Home', href: '/' },
+              { 
+                label: `${metal.charAt(0).toUpperCase() + metal.slice(1)} Prices`, 
+                href: `/${metal}/price-in/${city}` 
+              },
+              { 
+                label: `${cityName}`, 
+                href: `/${metal}/price-in/${city}` 
+              },
+            ]}
+          />
 
           {/* SEO Content Header */}
           <div className="mb-8">
             <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-slate-50 mb-4">
               {metal.charAt(0).toUpperCase() + metal.slice(1)} Price Today in {cityName}
             </h1>
-            <p className="text-lg text-slate-600 dark:text-slate-400 mb-6">
+            <p className="text-lg text-slate-600 dark:text-slate-400 mb-4">
               Get live {metal} prices in {cityName}, India. Check today's {metal} rate, historical
               trends, and market insights. Prices are updated in real-time from trusted sources.
             </p>
+            {data?.updated_at && (
+              <LastUpdated date={data.updated_at} />
+            )}
           </div>
 
           {/* City Selector */}
@@ -316,10 +448,10 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
                 percentageChange={data.copperPercentageChange}
               />
             )}
-            {metalType === 'platinum' && data?.platinum_10g && (
+            {metalType === 'platinum' && (data?.platinum_10g || data?.platinum) && (
               <PlatinumPriceSection
-                price1g={data.platinum_1g}
-                price10g={data.platinum_10g}
+                price1g={data.platinum_1g ?? data.platinum ?? null}
+                price10g={data.platinum_10g ?? null}
                 percentageChange={data.platinumPercentageChange}
                 variationType={data.platinumVariationType}
                 variation={data.platinumVariation}
@@ -357,6 +489,7 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
                 data={getPriceHistoryData(data, metalType)}
                 title={`${metal.charAt(0).toUpperCase() + metal.slice(1)} Price History`}
                 metalName={metal.charAt(0).toUpperCase() + metal.slice(1)}
+                itemsPerPage={metalType === 'copper' ? 15 : undefined}
                 showCaratSelector={metalType === 'gold'}
                 caratData={
                   metalType === 'gold'
@@ -413,6 +546,24 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
             </div>
           </div>
 
+          {/* You May Also Like Section */}
+          <YouMayAlsoLike
+            currentMetal={metalType}
+            currentCity={city}
+            pageType="metal-city"
+          />
+
+          {/* People Also Ask Section */}
+          <section aria-labelledby="people-also-ask" className="mb-8">
+            <h2 id="people-also-ask" className="sr-only">
+              People Also Ask
+            </h2>
+            <PeopleAlsoAsk
+              questions={getPeopleAlsoAskQuestions(metalType)}
+              title="People Also Ask"
+            />
+          </section>
+
           {/* City-Specific FAQs */}
           {cityFAQs.length > 0 && (
             <div className="mb-8 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 p-6 sm:p-8 card-shadow">
@@ -440,43 +591,86 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
             </div>
           )}
 
+          {/* FAQ Schema for People Also Ask */}
+          <FAQSchema
+            faqs={[
+              ...getPeopleAlsoAskQuestions(metalType),
+              ...cityFAQs,
+            ]}
+            metal={metalType}
+            city={city}
+          />
+
           {/* Related Cities Section */}
-          <div className="mb-8 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 p-6 sm:p-8 card-shadow">
-            <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-4">
+          <section aria-labelledby="related-cities" className="mb-8 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 p-6 sm:p-8 card-shadow">
+            <h2 id="related-cities" className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-4">
               {metal.charAt(0).toUpperCase() + metal.slice(1)} Prices in Other Cities
-            </h3>
-            <div className="flex flex-wrap gap-2">
+            </h2>
+            <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
+              Compare {metal} prices across major Indian cities. Prices may vary based on local demand, transportation costs, and regional market conditions.
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
               {TOP_CITIES.filter((c) => c !== city).slice(0, 12).map((otherCity) => (
                 <Link
                   key={otherCity}
                   href={`/${metal}/price-in/${otherCity}`}
-                  className="px-4 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                  className="px-4 py-2.5 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-amber-50 dark:hover:bg-amber-950/20 hover:border-amber-300 dark:hover:border-amber-800 hover:text-amber-700 dark:hover:text-amber-400 transition-all duration-200 text-center"
                 >
                   {formatCityName(otherCity)}
                 </Link>
               ))}
             </div>
-          </div>
+            <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700">
+              <Link
+                href={`/${metal}/price-in`}
+                className="text-sm font-medium text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors"
+              >
+                View all cities →
+              </Link>
+            </div>
+          </section>
 
           {/* Related Metals Section */}
-          <div className="mb-8 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 p-6 sm:p-8 card-shadow">
-            <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-4">
+          <section aria-labelledby="other-metals" className="mb-8 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 p-6 sm:p-8 card-shadow">
+            <h2 id="other-metals" className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-4">
               Other Metal Prices in {cityName}
-            </h3>
-            <div className="flex flex-wrap gap-2">
+            </h2>
+            <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
+              Explore prices for other precious and industrial metals in {cityName}. All prices are updated in real-time.
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
               {(['gold', 'silver', 'copper', 'platinum', 'palladium'] as MetalType[])
                 .filter((m) => m !== metalType)
-                .map((otherMetal) => (
-                  <Link
-                    key={otherMetal}
-                    href={`/${otherMetal}/price-in/${city}`}
-                    className="px-4 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
-                  >
-                    {otherMetal.charAt(0).toUpperCase() + otherMetal.slice(1)}
-                  </Link>
-                ))}
+                .map((otherMetal) => {
+                  const getMetalStyles = (metal: MetalType) => {
+                    switch (metal) {
+                      case 'gold':
+                        return 'bg-amber-50 dark:bg-amber-950/20 border-amber-300 dark:border-amber-800 text-amber-700 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-950/30 hover:border-amber-400 dark:hover:border-amber-700';
+                      case 'silver':
+                        return 'bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 hover:border-slate-400 dark:hover:border-slate-600';
+                      case 'copper':
+                        return 'bg-orange-50 dark:bg-orange-950/20 border-orange-300 dark:border-orange-800 text-orange-700 dark:text-orange-400 hover:bg-orange-100 dark:hover:bg-orange-950/30 hover:border-orange-400 dark:hover:border-orange-700';
+                      case 'platinum':
+                        return 'bg-blue-50 dark:bg-blue-950/20 border-blue-300 dark:border-blue-800 text-blue-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-950/30 hover:border-blue-400 dark:hover:border-blue-700';
+                      case 'palladium':
+                        return 'bg-purple-50 dark:bg-purple-950/20 border-purple-300 dark:border-purple-800 text-purple-700 dark:text-purple-400 hover:bg-purple-100 dark:hover:bg-purple-950/30 hover:border-purple-400 dark:hover:border-purple-700';
+                      default:
+                        return 'bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700';
+                    }
+                  };
+                  
+                  return (
+                    <Link
+                      key={otherMetal}
+                      href={`/${otherMetal}/price-in/${city}`}
+                      className={`px-4 py-2.5 border rounded-lg text-sm font-medium transition-all duration-200 text-center ${getMetalStyles(otherMetal)}`}
+                    >
+                      {otherMetal.charAt(0).toUpperCase() + otherMetal.slice(1)}
+                    </Link>
+                  );
+                })}
             </div>
-          </div>
+          </section>
         </main>
 
         <Footer />
