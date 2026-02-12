@@ -372,7 +372,8 @@ function HomeContent() {
                     </h2>
                     <div className="text-slate-700 dark:text-slate-300 space-y-4 leading-relaxed">
                       <p>
-                        {data?.gold_1g && data?.gold_22k_1g && data?.gold_18k_1g ? (
+                        {data?.gold_1g != null && data?.gold_22k_1g != null && data?.gold_18k_1g != null && 
+                         typeof data.gold_1g === 'number' && typeof data.gold_22k_1g === 'number' && typeof data.gold_18k_1g === 'number' ? (
                           <>
                             The <strong>price of gold in India today</strong> is <strong>₹{data.gold_1g.toLocaleString('en-IN')} per gram</strong> for <strong>24 karat gold (24K gold, also called 999 gold)</strong>, <strong>₹{data.gold_22k_1g.toLocaleString('en-IN')} per gram</strong> for <strong>22 karat gold (22K gold)</strong>, and <strong>₹{data.gold_18k_1g.toLocaleString('en-IN')} per gram</strong> for <strong>18 karat gold (18K gold)</strong>. Get <strong>live gold prices today</strong> updated every 10 minutes from trusted sources. MetalView provides accurate <strong>gold prices in India</strong> across major cities including Mumbai, Delhi, Bangalore, Kolkata, and Chennai, helping you make informed investment and purchase decisions.
                           </>
@@ -407,7 +408,7 @@ function HomeContent() {
                     </h2>
                     <div className="text-slate-700 dark:text-slate-300 space-y-4 leading-relaxed">
                       <p>
-                        {data?.silver_1kg ? (
+                        {data?.silver_1kg != null && typeof data.silver_1kg === 'number' ? (
                           <>
                             The <strong>silver price in India today</strong> is <strong>₹{data.silver_1kg.toLocaleString('en-IN')} per kilogram</strong>. Get <strong>live silver prices today</strong> and <strong>real-time silver rates</strong> updated every 10 minutes from trusted sources. MetalView provides accurate <strong>silver prices in India</strong> across major cities including Mumbai, Delhi, Bangalore, Kolkata, and Chennai, helping you make informed investment and purchase decisions.
                           </>
@@ -442,7 +443,7 @@ function HomeContent() {
                     </h2>
                     <div className="text-slate-700 dark:text-slate-300 space-y-4 leading-relaxed">
                       <p>
-                        {data?.copper_1kg ? (
+                        {data?.copper_1kg != null && typeof data.copper_1kg === 'number' ? (
                           <>
                             The <strong>copper price in India today</strong> is <strong>₹{data.copper_1kg.toLocaleString('en-IN')} per kilogram</strong>. Get <strong>live copper prices today</strong> and <strong>real-time copper rates</strong> updated every 10 minutes from trusted sources. MetalView provides accurate <strong>copper prices in India</strong> across major cities including Mumbai, Delhi, Bangalore, Kolkata, and Chennai, helping you make informed investment and purchase decisions.
                           </>
@@ -477,9 +478,9 @@ function HomeContent() {
                     </h2>
                     <div className="text-slate-700 dark:text-slate-300 space-y-4 leading-relaxed">
                       <p>
-                        {data?.platinum_10g ? (
+                        {data?.platinum_10g != null && typeof data.platinum_10g === 'number' ? (
                           <>
-                            The <strong>platinum price in India today</strong> is <strong>₹{data.platinum_10g.toLocaleString('en-IN')} per 10 grams</strong>. {data?.platinum_1g && (
+                            The <strong>platinum price in India today</strong> is <strong>₹{data.platinum_10g.toLocaleString('en-IN')} per 10 grams</strong>. {data?.platinum_1g != null && typeof data.platinum_1g === 'number' && (
                               <>That's <strong>₹{data.platinum_1g.toLocaleString('en-IN')} per gram</strong>. </>
                             )}Get <strong>live platinum prices today</strong> and <strong>real-time platinum rates</strong> updated every 10 minutes from trusted sources. MetalView provides accurate <strong>platinum prices in India</strong> across major cities including Mumbai, Delhi, Bangalore, Kolkata, and Chennai, helping you make informed investment and purchase decisions.
                           </>
@@ -514,9 +515,9 @@ function HomeContent() {
                     </h2>
                     <div className="text-slate-700 dark:text-slate-300 space-y-4 leading-relaxed">
                       <p>
-                        {data?.palladium_10g ? (
+                        {data?.palladium_10g != null && typeof data.palladium_10g === 'number' ? (
                           <>
-                            The <strong>palladium price in India today</strong> is <strong>₹{data.palladium_10g.toLocaleString('en-IN')} per 10 grams</strong>. {data?.palladium_1g && (
+                            The <strong>palladium price in India today</strong> is <strong>₹{data.palladium_10g.toLocaleString('en-IN')} per 10 grams</strong>. {data?.palladium_1g != null && typeof data.palladium_1g === 'number' && (
                               <>That's <strong>₹{data.palladium_1g.toLocaleString('en-IN')} per gram</strong>. </>
                             )}Get <strong>live palladium prices today</strong> and <strong>real-time palladium rates</strong> updated every 10 minutes from trusted sources. MetalView provides accurate <strong>palladium prices in India</strong> across major cities including Mumbai, Delhi, Bangalore, Kolkata, and Chennai, helping you make informed investment and purchase decisions.
                           </>
