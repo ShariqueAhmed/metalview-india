@@ -362,15 +362,56 @@ function HomeContent() {
             </h2>
             <div className="text-slate-700 dark:text-slate-300 space-y-4 leading-relaxed">
               <p>
-                {data?.gold_1g && data?.gold_22k_1g && data?.gold_18k_1g ? (
-                  <>
-                    The <strong>price of gold in India today</strong> is <strong>₹{data.gold_1g.toLocaleString('en-IN')} per gram</strong> for <strong>24 karat gold (24K gold, also called 999 gold)</strong>, <strong>₹{data.gold_22k_1g.toLocaleString('en-IN')} per gram</strong> for <strong>22 karat gold (22K gold)</strong>, and <strong>₹{data.gold_18k_1g.toLocaleString('en-IN')} per gram</strong> for <strong>18 karat gold (18K gold)</strong>. Get <strong>live gold prices today</strong> and <strong>real-time silver rates</strong> updated every 10 minutes from trusted sources. MetalView provides accurate <strong>metal prices in India</strong> across major cities including Mumbai, Delhi, Bangalore, Kolkata, and Chennai, helping you make informed investment and purchase decisions.
-                  </>
-                ) : (
-                  <>
-                    Get <strong>live gold prices today</strong> and <strong>real-time silver rates</strong> updated every 10 minutes from trusted sources. MetalView provides accurate <strong>metal prices in India</strong> across major cities including Mumbai, Delhi, Bangalore, Kolkata, and Chennai, helping you make informed investment and purchase decisions.
-                  </>
-                )}
+                {(() => {
+                  const hasGoldPrices = data?.gold_1g && data?.gold_22k_1g && data?.gold_18k_1g;
+                  const hasSilverPrice = data?.silver_1kg;
+                  const hasCopperPrice = data?.copper_1kg;
+                  const hasPlatinumPrice = data?.platinum_10g;
+                  const hasPalladiumPrice = data?.palladium_10g;
+                  
+                  if (hasGoldPrices || hasSilverPrice || hasCopperPrice || hasPlatinumPrice || hasPalladiumPrice) {
+                    return (
+                      <>
+                        {hasGoldPrices && (
+                          <>
+                            The <strong>price of gold in India today</strong> is <strong>₹{data.gold_1g!.toLocaleString('en-IN')} per gram</strong> for <strong>24 karat gold (24K gold, also called 999 gold)</strong>, <strong>₹{data.gold_22k_1g!.toLocaleString('en-IN')} per gram</strong> for <strong>22 karat gold (22K gold)</strong>, and <strong>₹{data.gold_18k_1g!.toLocaleString('en-IN')} per gram</strong> for <strong>18 karat gold (18K gold)</strong>.
+                            {hasSilverPrice || hasCopperPrice || hasPlatinumPrice || hasPalladiumPrice ? ' ' : ''}
+                          </>
+                        )}
+                        {hasSilverPrice && (
+                          <>
+                            The <strong>silver price in India today</strong> is <strong>₹{data.silver_1kg!.toLocaleString('en-IN')} per kilogram</strong>.
+                            {hasCopperPrice || hasPlatinumPrice || hasPalladiumPrice ? ' ' : ''}
+                          </>
+                        )}
+                        {hasCopperPrice && (
+                          <>
+                            The <strong>copper price in India today</strong> is <strong>₹{data.copper_1kg!.toLocaleString('en-IN')} per kilogram</strong>.
+                            {hasPlatinumPrice || hasPalladiumPrice ? ' ' : ''}
+                          </>
+                        )}
+                        {hasPlatinumPrice && (
+                          <>
+                            The <strong>platinum price in India today</strong> is <strong>₹{data.platinum_10g!.toLocaleString('en-IN')} per 10 grams</strong>.
+                            {hasPalladiumPrice ? ' ' : ''}
+                          </>
+                        )}
+                        {hasPalladiumPrice && (
+                          <>
+                            The <strong>palladium price in India today</strong> is <strong>₹{data.palladium_10g!.toLocaleString('en-IN')} per 10 grams</strong>.
+                          </>
+                        )}
+                        {' '}Get <strong>live metal prices today</strong> and <strong>real-time rates</strong> updated every 10 minutes from trusted sources. MetalView provides accurate <strong>metal prices in India</strong> across major cities including Mumbai, Delhi, Bangalore, Kolkata, and Chennai, helping you make informed investment and purchase decisions.
+                      </>
+                    );
+                  } else {
+                    return (
+                      <>
+                        Get <strong>live gold prices today</strong> and <strong>real-time silver rates</strong> updated every 10 minutes from trusted sources. MetalView provides accurate <strong>metal prices in India</strong> across major cities including Mumbai, Delhi, Bangalore, Kolkata, and Chennai, helping you make informed investment and purchase decisions.
+                      </>
+                    );
+                  }
+                })()}
               </p>
               
               {showFullContent && (
@@ -379,7 +420,15 @@ function HomeContent() {
                     <strong>Gold prices in India</strong> are influenced by multiple factors including international market rates, currency exchange fluctuations (USD/INR), import duties, local demand during festivals and wedding seasons, and government policies. Our platform tracks <strong>24K gold price</strong>, <strong>22K gold price</strong>, and <strong>18K gold price</strong> per gram and per 10 grams, giving you comprehensive pricing information for both investment and jewelry purposes.
                   </p>
                   <p>
-                    <strong>Silver prices in India</strong> are quoted per kilogram and reflect both industrial demand and investment interest. Similarly, <strong>copper prices</strong>, <strong>platinum prices</strong>, and <strong>palladium prices</strong> are tracked to provide a complete view of the metals market. Understanding these prices is crucial for making informed investment decisions, planning purchases during auspicious occasions, or simply staying updated with market trends.
+                    <strong>Silver prices in India</strong> are quoted per kilogram and reflect both industrial demand and investment interest. {data?.silver_1kg && (
+                      <>Currently, <strong>silver price per kg</strong> stands at <strong>₹{data.silver_1kg.toLocaleString('en-IN')}</strong>, making it an accessible investment option compared to gold.</>
+                    )} Similarly, <strong>copper prices</strong> {data?.copper_1kg && (
+                      <>are currently at <strong>₹{data.copper_1kg.toLocaleString('en-IN')} per kg</strong>, </>
+                    )}while <strong>platinum prices</strong> {data?.platinum_10g && (
+                      <>stand at <strong>₹{data.platinum_10g.toLocaleString('en-IN')} per 10 grams</strong>, </>
+                    )}and <strong>palladium prices</strong> {data?.palladium_10g && (
+                      <>are at <strong>₹{data.palladium_10g.toLocaleString('en-IN')} per 10 grams</strong>. </>
+                    )}Understanding these prices is crucial for making informed investment decisions, planning purchases during auspicious occasions, or simply staying updated with market trends.
                   </p>
                   <p>
                     Our real-time price tracking helps you identify the best time to buy or sell, compare rates across different cities, and make data-driven decisions. With historical price trends, city-wise comparisons, and regular updates, MetalView is your comprehensive resource for all metal pricing information in India.
