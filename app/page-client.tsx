@@ -362,7 +362,15 @@ function HomeContent() {
             </h2>
             <div className="text-slate-700 dark:text-slate-300 space-y-4 leading-relaxed">
               <p>
-                Stay informed with <strong>live metal prices in India</strong> updated every 10 minutes. Whether you're tracking <strong>gold prices today</strong>, <strong>silver rates</strong>, or other precious metals, MetalView provides accurate, real-time pricing data from trusted sources across major Indian cities including Mumbai, Delhi, Bangalore, Kolkata, and Chennai.
+                {data?.gold_1g && data?.gold_22k_1g && data?.gold_18k_1g ? (
+                  <>
+                    The <strong>price of gold in India today</strong> is <strong>₹{data.gold_1g.toLocaleString('en-IN')} per gram</strong> for <strong>24 karat gold (24K gold, also called 999 gold)</strong>, <strong>₹{data.gold_22k_1g.toLocaleString('en-IN')} per gram</strong> for <strong>22 karat gold (22K gold)</strong>, and <strong>₹{data.gold_18k_1g.toLocaleString('en-IN')} per gram</strong> for <strong>18 karat gold (18K gold)</strong>. Get <strong>live gold prices today</strong> and <strong>real-time silver rates</strong> updated every 10 minutes from trusted sources. MetalView provides accurate <strong>metal prices in India</strong> across major cities including Mumbai, Delhi, Bangalore, Kolkata, and Chennai, helping you make informed investment and purchase decisions.
+                  </>
+                ) : (
+                  <>
+                    Get <strong>live gold prices today</strong> and <strong>real-time silver rates</strong> updated every 10 minutes from trusted sources. MetalView provides accurate <strong>metal prices in India</strong> across major cities including Mumbai, Delhi, Bangalore, Kolkata, and Chennai, helping you make informed investment and purchase decisions.
+                  </>
+                )}
               </p>
               
               {showFullContent && (
