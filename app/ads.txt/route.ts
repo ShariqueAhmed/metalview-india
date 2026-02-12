@@ -8,6 +8,7 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   // Google AdSense ads.txt content
+  // This route handler ensures ads.txt works on both www and non-www domains
   const adsTxtContent = `google.com, pub-7313067850150544, DIRECT, f08c47fec0942fa0
 `;
 
@@ -15,7 +16,8 @@ export async function GET() {
     status: 200,
     headers: {
       'Content-Type': 'text/plain; charset=utf-8',
-      'Cache-Control': 'public, max-age=3600, s-maxage=3600', // Cache for 1 hour
+      'Cache-Control': 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400', // Cache for 1 hour, stale for 24 hours
+      'Access-Control-Allow-Origin': '*', // Allow CORS for ad verification
     },
   });
 }

@@ -1,5 +1,0 @@
-# ads.txt file for MetalView India
-# This file authorizes Google AdSense to serve ads on this domain
-# Format: <Domain>, <Publisher ID>, <Relationship>, <Certification Authority ID>
-
-google.com, pub-7313067850150544, DIRECT, f08c47fec0942fa0
