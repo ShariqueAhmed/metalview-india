@@ -765,7 +765,7 @@ export default async function CityOverviewPage({ params }: CityPageProps) {
                   </Link>
                 );
               })}
-            </div>
+          </div>
           </section>
 
           {/* You May Also Like Section */}
