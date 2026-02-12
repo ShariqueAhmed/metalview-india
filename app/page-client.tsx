@@ -363,9 +363,6 @@ function HomeContent() {
         <section className="mb-8 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 card-shadow">
           <div className="prose prose-slate dark:prose-invert max-w-none">
             {(() => {
-              const metalName = selectedMetal.charAt(0).toUpperCase() + selectedMetal.slice(1);
-              const cityName = data?.city ? formatCityName(data.city) : formatCityName(selectedCity);
-              
               // Gold content
               if (selectedMetal === 'gold') {
                 return (
