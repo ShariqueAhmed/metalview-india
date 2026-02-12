@@ -42,6 +42,7 @@ import PriceHistoryTable from '@/components/PriceHistoryTable';
 import TrendingCities from '@/components/TrendingCities';
 import Footer from '@/components/Footer';
 import StructuredData from '@/components/StructuredData';
+import { AdSenseResponsive } from '@/components/AdSense';
 import FAQSchema from '@/components/FAQSchema';
 import FAQSection from '@/components/FAQSection';
 import PeopleAlsoAsk from '@/components/PeopleAlsoAsk';
@@ -568,6 +569,11 @@ function HomeContent() {
           </div>
         </section>
 
+        {/* AdSense Ad - After SEO Content */}
+        <div className="mb-8 flex justify-center">
+          <AdSenseResponsive className="min-h-[100px] max-w-full" />
+        </div>
+
         {/* Error Banner */}
         {error && (
           <div className="mb-6 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 rounded-lg p-4 flex items-start gap-3">
@@ -604,6 +610,13 @@ function HomeContent() {
           hasPlatinumData={!!data?.platinum}
           hasPalladiumData={!!data?.palladium}
         />
+
+        {/* AdSense Ad - After Metal Tabs */}
+        {data && (
+          <div className="mb-6 flex justify-center">
+            <AdSenseResponsive className="min-h-[100px] max-w-full" />
+          </div>
+        )}
 
         {/* Loading State - Enhanced skeleton to prevent layout shift */}
         {isLoading && !data && (
@@ -854,6 +867,13 @@ function HomeContent() {
               </section>
             )}
 
+            {/* AdSense Ad - After Price History */}
+            {data && (
+              <div className="mb-8 flex justify-center">
+                <AdSenseResponsive className="min-h-[100px] max-w-full" />
+              </div>
+            )}
+
             {/* Historical Trends Chart */}
             {data && (
               <section aria-labelledby="price-trends" className="mb-8">
@@ -994,6 +1014,11 @@ function HomeContent() {
           currentCity={data?.city || selectedCity}
           pageType="home"
         />
+
+        {/* AdSense Ad - Before Footer */}
+        <div className="mb-8 flex justify-center">
+          <AdSenseResponsive className="min-h-[100px] max-w-full" />
+        </div>
       </main>
 
       <Footer />

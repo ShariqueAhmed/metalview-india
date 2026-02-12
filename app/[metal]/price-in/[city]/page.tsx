@@ -26,6 +26,7 @@ import FAQSchema from '@/components/FAQSchema';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import LastUpdated from '@/components/LastUpdated';
 import YouMayAlsoLike from '@/components/YouMayAlsoLike';
+import { AdSenseResponsive } from '@/components/AdSense';
 
 interface CityPageProps {
   params: Promise<{
@@ -417,6 +418,11 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
             />
           </div>
 
+          {/* AdSense Ad - After Header */}
+          <div className="mb-8 flex justify-center">
+            <AdSenseResponsive className="min-h-[100px] max-w-full" />
+          </div>
+
           {/* Main Price Section */}
           <div className="mb-8">
             {metalType === 'gold' && data?.gold_10g && (
@@ -601,6 +607,11 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
             city={city}
           />
 
+          {/* AdSense Ad - Before Related Sections */}
+          <div className="mb-8 flex justify-center">
+            <AdSenseResponsive className="min-h-[100px] max-w-full" />
+          </div>
+
           {/* Related Cities Section */}
           <section aria-labelledby="related-cities" className="mb-8 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 p-6 sm:p-8 card-shadow">
             <h2 id="related-cities" className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-4">
@@ -671,6 +682,11 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
                 })}
             </div>
           </section>
+
+          {/* AdSense Ad - Before Footer */}
+          <div className="mb-8 flex justify-center">
+            <AdSenseResponsive className="min-h-[100px] max-w-full" />
+          </div>
         </main>
 
         <Footer />

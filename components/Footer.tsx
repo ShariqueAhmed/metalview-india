@@ -3,6 +3,8 @@
  * Displays disclaimer and data source information
  */
 
+import Link from 'next/link';
+
 export default function Footer() {
   return (
     <footer className="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 mt-12 py-8">
@@ -28,6 +30,14 @@ export default function Footer() {
           <p className="text-xs text-slate-500 dark:text-slate-500 mt-4">
             Data Sources: Groww.in, AngelOne | Not financial advice
           </p>
+          <div className="mt-4 flex items-center justify-center gap-4 text-xs">
+            <Link
+              href="/privacy-policy"
+              className="text-slate-600 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
+            >
+              Privacy Policy
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

@@ -177,6 +177,16 @@ export default function RootLayout({
         {process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION && (
           <meta name="google-site-verification" content={process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION} />
         )}
+        
+        {/* Google AdSense Account Verification */}
+        <meta name="google-adsense-account" content="ca-pub-7313067850150544" />
+        
+        {/* Google AdSense Script */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7313067850150544"
+          crossOrigin="anonymous"
+        />
       </head>
       <body className={inter.className}>
         {/* Skip to main content link for screen readers */}
