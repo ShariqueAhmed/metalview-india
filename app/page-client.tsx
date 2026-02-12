@@ -408,16 +408,19 @@ function HomeContent() {
                     </h2>
                     <div className="text-slate-700 dark:text-slate-300 space-y-4 leading-relaxed">
                       <p>
-                        Get <strong>live silver prices today</strong> and <strong>real-time silver rates</strong> updated every 10 minutes from trusted sources. MetalView provides accurate <strong>silver prices in India</strong> across major cities including Mumbai, Delhi, Bangalore, Kolkata, and Chennai, helping you make informed investment and purchase decisions.
+                        {data?.silver_1kg != null && typeof data.silver_1kg === 'number' ? (
+                          <>
+                            The <strong>silver price in India today</strong> is <strong>₹{data.silver_1kg.toLocaleString('en-IN')} per kilogram</strong>.
+                          </>
+                        ) : (
+                          <>
+                            Get <strong>live silver prices today</strong> and <strong>real-time silver rates</strong> updated every 10 minutes from trusted sources. MetalView provides accurate <strong>silver prices in India</strong> across major cities including Mumbai, Delhi, Bangalore, Kolkata, and Chennai, helping you make informed investment and purchase decisions.
+                          </>
+                        )}
                       </p>
                       
                       {showFullContent && (
                         <>
-                          {data?.silver_1kg != null && typeof data.silver_1kg === 'number' && (
-                            <p>
-                              The <strong>silver price in India today</strong> is <strong>₹{data.silver_1kg.toLocaleString('en-IN')} per kilogram</strong>.
-                            </p>
-                          )}
                           <p>
                             <strong>Silver prices in India</strong> are quoted per kilogram and reflect both industrial demand and investment interest. Silver is widely used in electronics, solar panels, jewelry, and as an investment asset. The <strong>silver price per kg</strong> fluctuates based on international market rates, currency exchange rates, import duties, and local demand.
                           </p>
@@ -440,16 +443,19 @@ function HomeContent() {
                     </h2>
                     <div className="text-slate-700 dark:text-slate-300 space-y-4 leading-relaxed">
                       <p>
-                        Get <strong>live copper prices today</strong> and <strong>real-time copper rates</strong> updated every 10 minutes from trusted sources. MetalView provides accurate <strong>copper prices in India</strong> across major cities including Mumbai, Delhi, Bangalore, Kolkata, and Chennai, helping you make informed investment and purchase decisions.
+                        {data?.copper_1kg != null && typeof data.copper_1kg === 'number' ? (
+                          <>
+                            The <strong>copper price in India today</strong> is <strong>₹{data.copper_1kg.toLocaleString('en-IN')} per kilogram</strong>.
+                          </>
+                        ) : (
+                          <>
+                            Get <strong>live copper prices today</strong> and <strong>real-time copper rates</strong> updated every 10 minutes from trusted sources. MetalView provides accurate <strong>copper prices in India</strong> across major cities including Mumbai, Delhi, Bangalore, Kolkata, and Chennai, helping you make informed investment and purchase decisions.
+                          </>
+                        )}
                       </p>
                       
                       {showFullContent && (
                         <>
-                          {data?.copper_1kg != null && typeof data.copper_1kg === 'number' && (
-                            <p>
-                              The <strong>copper price in India today</strong> is <strong>₹{data.copper_1kg.toLocaleString('en-IN')} per kilogram</strong>.
-                            </p>
-                          )}
                           <p>
                             <strong>Copper prices in India</strong> are quoted per kilogram and are primarily driven by industrial demand. Copper is essential in construction, electrical wiring, electronics, and renewable energy systems. The <strong>copper price per kg</strong> fluctuates based on global supply and demand, economic growth indicators, and currency exchange rates.
                           </p>
@@ -472,18 +478,21 @@ function HomeContent() {
                     </h2>
                     <div className="text-slate-700 dark:text-slate-300 space-y-4 leading-relaxed">
                       <p>
-                        Get <strong>live platinum prices today</strong> and <strong>real-time platinum rates</strong> updated every 10 minutes from trusted sources. MetalView provides accurate <strong>platinum prices in India</strong> across major cities including Mumbai, Delhi, Bangalore, Kolkata, and Chennai, helping you make informed investment and purchase decisions.
+                        {data?.platinum_10g != null && typeof data.platinum_10g === 'number' ? (
+                          <>
+                            The <strong>platinum price in India today</strong> is <strong>₹{data.platinum_10g.toLocaleString('en-IN')} per 10 grams</strong>{data?.platinum_1g != null && typeof data.platinum_1g === 'number' ? (
+                              <>. That's <strong>₹{data.platinum_1g.toLocaleString('en-IN')} per gram</strong>.</>
+                            ) : '.'}
+                          </>
+                        ) : (
+                          <>
+                            Get <strong>live platinum prices today</strong> and <strong>real-time platinum rates</strong> updated every 10 minutes from trusted sources. MetalView provides accurate <strong>platinum prices in India</strong> across major cities including Mumbai, Delhi, Bangalore, Kolkata, and Chennai, helping you make informed investment and purchase decisions.
+                          </>
+                        )}
                       </p>
                       
                       {showFullContent && (
                         <>
-                          {data?.platinum_10g != null && typeof data.platinum_10g === 'number' && (
-                            <p>
-                              The <strong>platinum price in India today</strong> is <strong>₹{data.platinum_10g.toLocaleString('en-IN')} per 10 grams</strong>{data?.platinum_1g != null && typeof data.platinum_1g === 'number' ? (
-                                <>. That's <strong>₹{data.platinum_1g.toLocaleString('en-IN')} per gram</strong>.</>
-                              ) : '.'}
-                            </p>
-                          )}
                           <p>
                             <strong>Platinum prices in India</strong> are quoted per 10 grams and reflect both industrial demand and investment interest. Platinum is used in automotive catalysts, jewelry, electronics, and as an investment asset. The <strong>platinum price per 10g</strong> fluctuates based on international market rates, currency exchange rates, import duties, and industrial demand.
                           </p>
@@ -506,18 +515,21 @@ function HomeContent() {
                     </h2>
                     <div className="text-slate-700 dark:text-slate-300 space-y-4 leading-relaxed">
                       <p>
-                        Get <strong>live palladium prices today</strong> and <strong>real-time palladium rates</strong> updated every 10 minutes from trusted sources. MetalView provides accurate <strong>palladium prices in India</strong> across major cities including Mumbai, Delhi, Bangalore, Kolkata, and Chennai, helping you make informed investment and purchase decisions.
+                        {data?.palladium_10g != null && typeof data.palladium_10g === 'number' ? (
+                          <>
+                            The <strong>palladium price in India today</strong> is <strong>₹{data.palladium_10g.toLocaleString('en-IN')} per 10 grams</strong>{data?.palladium_1g != null && typeof data.palladium_1g === 'number' ? (
+                              <>. That's <strong>₹{data.palladium_1g.toLocaleString('en-IN')} per gram</strong>.</>
+                            ) : '.'}
+                          </>
+                        ) : (
+                          <>
+                            Get <strong>live palladium prices today</strong> and <strong>real-time palladium rates</strong> updated every 10 minutes from trusted sources. MetalView provides accurate <strong>palladium prices in India</strong> across major cities including Mumbai, Delhi, Bangalore, Kolkata, and Chennai, helping you make informed investment and purchase decisions.
+                          </>
+                        )}
                       </p>
                       
                       {showFullContent && (
                         <>
-                          {data?.palladium_10g != null && typeof data.palladium_10g === 'number' && (
-                            <p>
-                              The <strong>palladium price in India today</strong> is <strong>₹{data.palladium_10g.toLocaleString('en-IN')} per 10 grams</strong>{data?.palladium_1g != null && typeof data.palladium_1g === 'number' ? (
-                                <>. That's <strong>₹{data.palladium_1g.toLocaleString('en-IN')} per gram</strong>.</>
-                              ) : '.'}
-                            </p>
-                          )}
                           <p>
                             <strong>Palladium prices in India</strong> are quoted per 10 grams and reflect both industrial demand and investment interest. Palladium is primarily used in automotive catalytic converters, electronics, jewelry, and as an investment asset. The <strong>palladium price per 10g</strong> fluctuates based on international market rates, currency exchange rates, import duties, and industrial demand, particularly from the automotive sector.
                           </p>
