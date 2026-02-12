@@ -84,7 +84,7 @@ export async function generateMetadata(): Promise<Metadata> {
   
   // Default metadata for homepage - Optimized for SEO
   return {
-    title: 'Gold & Silver Price Today in India - Live Rates 2025 | MetalView',
+    title: 'Gold & Silver Price Today in India - Live Rates 2026 | MetalView',
     description: 'Get live gold and silver prices in India today. Real-time rates for Mumbai, Delhi, Bangalore. Check 24K, 22K gold prices, silver per kg. Updated every 10 minutes.',
     keywords: [
       'metal price in india',
@@ -105,7 +105,7 @@ export async function generateMetadata(): Promise<Metadata> {
         type: 'website',
         locale: 'en_IN',
         url: baseUrl,
-        title: 'Gold & Silver Price Today in India - Live Rates 2025 | MetalView',
+        title: 'Gold & Silver Price Today in India - Live Rates 2026 | MetalView',
         description: 'Get live gold and silver prices in India today. Real-time rates for Mumbai, Delhi, Bangalore. Check 24K, 22K gold prices, silver per kg. Updated every 10 minutes.',
       siteName: 'MetalView',
       images: [
@@ -119,7 +119,7 @@ export async function generateMetadata(): Promise<Metadata> {
     },
       twitter: {
         card: 'summary_large_image',
-        title: 'Gold & Silver Price Today in India - Live Rates 2025 | MetalView',
+        title: 'Gold & Silver Price Today in India - Live Rates 2026 | MetalView',
         description: 'Get live gold and silver prices in India today. Real-time rates for Mumbai, Delhi, Bangalore. Check 24K, 22K gold prices, silver per kg. Updated every 10 minutes.',
       images: [`${baseUrl}/api/og`],
     },
