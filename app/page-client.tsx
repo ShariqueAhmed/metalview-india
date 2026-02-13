@@ -5,7 +5,7 @@
 
 'use client';
 
-import { useState, useEffect, useCallback, Suspense } from 'react';
+import { useState, useEffect, useCallback, Suspense, useMemo, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
@@ -164,9 +164,13 @@ function HomeContent() {
       const result: MetalsData = await response.json();
       
       if (isRefresh) {
-        setPreviousData(data);
+        setData((prevData) => {
+          setPreviousData(prevData);
+          return result;
+        });
+      } else {
+        setData(result);
       }
-      setData(result);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
       console.error('Error fetching metal prices:', err);
@@ -174,7 +178,7 @@ function HomeContent() {
       setIsLoading(false);
       setIsRefreshing(false);
     }
-  }, [data]);
+  }, []); // Removed 'data' dependency to prevent infinite loops
 
   useEffect(() => {
     fetchData(selectedCity);
@@ -317,6 +321,34 @@ function HomeContent() {
     fetchData(selectedCity, true);
   }, [selectedCity, fetchData]);
 
+  // Memoize formatted gold prices to prevent constant re-renders
+  // Only update when the actual numeric values change, not on every data object reference change
+  const formattedGoldPrices = useMemo(() => {
+    if (!data || selectedMetal !== 'gold') return null;
+    
+    const gold24kValue = data.gold_1g;
+    const gold22kValue = data.gold_22k_1g;
+    const gold18kValue = data.gold_18k_1g;
+    
+    // Only format if values are valid numbers
+    const gold24k = gold24kValue != null && typeof gold24kValue === 'number' && !isNaN(gold24kValue)
+      ? gold24kValue.toLocaleString('en-IN') 
+      : null;
+    const gold22k = gold22kValue != null && typeof gold22kValue === 'number' && !isNaN(gold22kValue)
+      ? gold22kValue.toLocaleString('en-IN') 
+      : null;
+    const gold18k = gold18kValue != null && typeof gold18kValue === 'number' && !isNaN(gold18kValue)
+      ? gold18kValue.toLocaleString('en-IN') 
+      : null;
+    
+    return { gold24k, gold22k, gold18k };
+  }, [
+    data?.gold_1g, 
+    data?.gold_22k_1g, 
+    data?.gold_18k_1g, 
+    selectedMetal
+  ]);
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950">
       <Header />
@@ -373,10 +405,9 @@ function HomeContent() {
                     </h2>
                     <div className="text-slate-700 dark:text-slate-300 space-y-4 leading-relaxed">
                       <p>
-                        {data?.gold_1g != null && data?.gold_22k_1g != null && data?.gold_18k_1g != null && 
-                         typeof data.gold_1g === 'number' && typeof data.gold_22k_1g === 'number' && typeof data.gold_18k_1g === 'number' ? (
+                        {formattedGoldPrices?.gold24k && formattedGoldPrices?.gold22k && formattedGoldPrices?.gold18k ? (
                           <>
-                            The <strong>price of gold in India today</strong> is <strong>₹{data.gold_1g.toLocaleString('en-IN')} per gram</strong> for <strong>24 karat gold (24K gold, also called 999 gold)</strong>, <strong>₹{data.gold_22k_1g.toLocaleString('en-IN')} per gram</strong> for <strong>22 karat gold (22K gold)</strong>, and <strong>₹{data.gold_18k_1g.toLocaleString('en-IN')} per gram</strong> for <strong>18 karat gold (18K gold)</strong>.
+                            The <strong>price of gold in India today</strong> is <strong>₹{formattedGoldPrices.gold24k} per gram</strong> for <strong>24 karat gold (24K gold, also called 999 gold)</strong>, <strong>₹{formattedGoldPrices.gold22k} per gram</strong> for <strong>22 karat gold (22K gold)</strong>, and <strong>₹{formattedGoldPrices.gold18k} per gram</strong> for <strong>18 karat gold (18K gold)</strong>.
                           </>
                         ) : (
                           <>
