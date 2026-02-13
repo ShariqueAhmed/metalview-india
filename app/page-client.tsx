@@ -5,7 +5,7 @@
 
 'use client';
 
-import { useState, useEffect, useCallback, Suspense, useMemo, useRef } from 'react';
+import { useState, useEffect, useCallback, Suspense, useMemo } from 'react';
 import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
