@@ -12,15 +12,22 @@ import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 
 interface SilverPriceSectionProps {
   price1kg: number | null;
+  price1g?: number | null;
   previousPrice1kg?: number | null;
   percentageChange?: number | null;
 }
 
 function SilverPriceSection({
   price1kg,
+  price1g,
   previousPrice1kg,
   percentageChange,
 }: SilverPriceSectionProps) {
+  const perGram = price1g != null && typeof price1g === 'number' && !isNaN(price1g)
+    ? price1g
+    : price1kg != null && typeof price1kg === 'number' && !isNaN(price1kg)
+      ? price1kg / 1000
+      : null;
   const getCardBg = () => {
     return 'bg-white dark:bg-slate-900';
   };
@@ -137,7 +144,18 @@ function SilverPriceSection({
         </div>
 
         {/* Prices Grid */}
-        <div className="grid grid-cols-1 gap-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+          {/* 1g Price */}
+          {perGram !== null && (
+            <div className="bg-white/60 dark:bg-slate-900/60 rounded-lg p-4 border border-slate-200 dark:border-slate-700 overflow-hidden min-w-0">
+              <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wide">
+                1 Gram
+              </p>
+              <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900 dark:text-slate-50 tracking-tight break-words overflow-hidden">
+                {formatIndianCurrency(perGram)}
+              </p>
+            </div>
+          )}
           {/* 1kg Price */}
           {price1kg !== null && (
             <div className="bg-white/60 dark:bg-slate-900/60 rounded-lg p-4 border border-slate-200 dark:border-slate-700 overflow-hidden min-w-0">
@@ -193,6 +211,7 @@ function SilverPriceSection({
 export default memo(SilverPriceSection, (prevProps, nextProps) => {
   return (
     prevProps.price1kg === nextProps.price1kg &&
+    prevProps.price1g === nextProps.price1g &&
     prevProps.previousPrice1kg === nextProps.previousPrice1kg &&
     prevProps.percentageChange === nextProps.percentageChange
   );

@@ -7,12 +7,10 @@
 import { Metadata } from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import CombinedGoldPriceSection from '@/components/CombinedGoldPriceSection';
 import SilverPriceSection from '@/components/SilverPriceSection';
 import CopperPriceSection from '@/components/CopperPriceSection';
 import PlatinumPriceSection from '@/components/PlatinumPriceSection';
 import PalladiumPriceSection from '@/components/PalladiumPriceSection';
-import GoldWeightPrices from '@/components/GoldWeightPrices';
 import PriceHistoryTable from '@/components/PriceHistoryTable';
 import ChartSection from '@/components/ChartSection';
 import { generateMetalMetadata, generateStructuredData, generateDatasetSchema } from '@/utils/seo';
@@ -27,6 +25,7 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import LastUpdated from '@/components/LastUpdated';
 import YouMayAlsoLike from '@/components/YouMayAlsoLike';
 import { AdSenseResponsive } from '@/components/AdSense';
+import { GoldPriceCityBlock } from './GoldPriceCityBlock';
 
 interface CityPageProps {
   params: Promise<{
@@ -425,25 +424,13 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
 
           {/* Main Price Section */}
           <div className="mb-8">
-            {metalType === 'gold' && data?.gold_10g && (
-              <CombinedGoldPriceSection
-                gold24k_10g={data.gold_10g}
-                gold22k_10g={data.gold_22k_10g}
-                gold18k_10g={data.gold_18k_10g}
-                gold24k_1g={data.gold_1g}
-                gold22k_1g={data.gold_22k_1g}
-                gold18k_1g={data.gold_18k_1g}
-                gold24k_difference={data.gold_24k_difference}
-                gold22k_difference={data.gold_22k_difference}
-                gold18k_difference={data.gold_18k_difference}
-                gold24k_percentage={data.gold_24k_percentage}
-                gold22k_percentage={data.gold_22k_percentage}
-                gold18k_percentage={data.gold_18k_percentage}
-              />
+            {metalType === 'gold' && (
+              <GoldPriceCityBlock city={city} initialData={data} />
             )}
             {metalType === 'silver' && data?.silver_1kg && (
               <SilverPriceSection
                 price1kg={data.silver_1kg}
+                price1g={data.silver_1g}
                 percentageChange={data.silverPercentageChange}
               />
             )}
@@ -473,20 +460,6 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
               />
             )}
           </div>
-
-          {/* Gold Prices by Weight (only for gold) */}
-          {metalType === 'gold' && data?.gold_10g && (
-            <div className="mb-8">
-              <GoldWeightPrices
-                goldPrice10g={data.gold_10g}
-                goldPrice1g={data.gold_1g}
-                gold22kPrice10g={data.gold_22k_10g}
-                gold22kPrice1g={data.gold_22k_1g}
-                gold18kPrice10g={data.gold_18k_10g}
-                gold18kPrice1g={data.gold_18k_1g}
-              />
-            </div>
-          )}
 
           {/* Price History Table */}
           {data && (

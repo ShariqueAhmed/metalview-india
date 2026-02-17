@@ -519,6 +519,7 @@ export default async function CityOverviewPage({ params }: CityPageProps) {
               </div>
               <SilverPriceSection
                 price1kg={data.silver_1kg}
+                price1g={data.silver_1g}
                 percentageChange={data.silverPercentageChange}
               />
             </div>

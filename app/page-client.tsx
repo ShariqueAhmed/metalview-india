@@ -743,6 +743,7 @@ function HomeContent() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <SilverPriceSection
                     price1kg={data.silver_1kg}
+                    price1g={data.silver_1g}
                     previousPrice1kg={previousData?.silver_1kg || null}
                     percentageChange={data.silverPercentageChange || null}
                   />
