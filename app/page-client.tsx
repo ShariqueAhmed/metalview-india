@@ -285,11 +285,15 @@ function HomeContent() {
 
   const generateFAQs = () => {
     const cityName = data?.city ? data.city.charAt(0).toUpperCase() + data.city.slice(1) : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
+    const priceKey = selectedMetal === 'gold' ? 'gold_10g' : selectedMetal === 'silver' ? 'silver_1kg' : selectedMetal === 'copper' ? 'copper_1kg' : selectedMetal === 'platinum' ? 'platinum_10g' : 'palladium_10g';
+    const priceValue = data?.[priceKey as keyof typeof data];
+    const isValidPrice = typeof priceValue === 'number' && !isNaN(priceValue);
+    const unit = selectedMetal === 'gold' || selectedMetal === 'platinum' || selectedMetal === 'palladium' ? '10 grams' : 'kilogram';
     const baseFAQs = [
       {
         question: `What is the current ${selectedMetal} price in ${cityName}?`,
-        answer: data?.[selectedMetal === 'gold' ? 'gold_10g' : selectedMetal === 'silver' ? 'silver_1kg' : selectedMetal === 'copper' ? 'copper_1kg' : selectedMetal === 'platinum' ? 'platinum_10g' : 'palladium_10g']
-          ? `The current ${selectedMetal} price in ${cityName} is ₹${data[selectedMetal === 'gold' ? 'gold_10g' : selectedMetal === 'silver' ? 'silver_1kg' : selectedMetal === 'copper' ? 'copper_1kg' : selectedMetal === 'platinum' ? 'platinum_10g' : 'palladium_10g']?.toLocaleString('en-IN')} per ${selectedMetal === 'gold' || selectedMetal === 'platinum' || selectedMetal === 'palladium' ? '10 grams' : selectedMetal === 'silver' ? 'kilogram' : 'kilogram'}. Prices are updated in real-time from trusted sources.`
+        answer: isValidPrice
+          ? `The current ${selectedMetal} price in ${cityName} is ₹${(priceValue as number).toLocaleString('en-IN')} per ${unit}. Prices are updated in real-time from trusted sources.`
           : `Check the current ${selectedMetal} price in ${cityName} above. Prices are updated in real-time and may vary throughout the day based on market conditions.`,
       },
       {
@@ -1046,6 +1050,24 @@ function HomeContent() {
           currentCity={data?.city || selectedCity}
           pageType="home"
         />
+
+        {/* About MetalView & How We Get Prices - Improves content quality for users and AdSense */}
+        <section className="mb-8 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 card-shadow">
+          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50 mb-4">
+            About MetalView & How We Get Our Prices
+          </h2>
+          <div className="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-400 space-y-4">
+            <p>
+              MetalView is a free resource for live precious and industrial metal prices in India. We help you check today&apos;s gold rate, silver price, and rates for copper, platinum, and palladium across major Indian cities so you can make informed decisions whether you&apos;re buying jewellery, investing, or tracking commodity markets.
+            </p>
+            <p>
+              Our gold and silver prices are sourced from Angel One (AngelOne), a trusted financial services platform. We use their APIs to fetch live rates for multiple cities and purities (24K, 22K, 18K gold). Copper, platinum, and palladium data come from established financial and commodity data providers. Prices are updated every few minutes during market hours. We do not set or manipulate rates; we aggregate and display them for your convenience.
+            </p>
+            <p>
+              Prices shown here are indicative and for informational purposes only. They may differ from actual dealer rates due to making charges, taxes, and local conditions. Always verify with your local jeweller or broker before making a purchase. For more details, see our <Link href="/about" className="text-amber-600 dark:text-amber-400 hover:underline font-medium">About MetalView</Link> page.
+            </p>
+          </div>
+        </section>
 
         {/* AdSense Ad - Before Footer */}
         <div className="mb-8 flex justify-center">

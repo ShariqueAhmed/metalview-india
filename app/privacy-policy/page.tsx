@@ -178,7 +178,7 @@ export default function PrivacyPolicyPage() {
           </section>
 
           {/* Contact Information */}
-          <section className="mb-8">
+          <section id="contact" className="mb-8 scroll-mt-6">
             <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-50 mb-4">
               Contact Us
             </h2>

@@ -455,6 +455,9 @@ export default async function CityOverviewPage({ params }: CityPageProps) {
                 <p className="text-lg text-slate-600 dark:text-slate-400 mb-2">
                   Real-time prices for Gold, Silver, Copper, Platinum, and Palladium
                 </p>
+                <p className="text-slate-600 dark:text-slate-400 mb-2">
+                  This page shows live metal rates in {city} so you can compare gold, silver, copper, platinum, and palladium prices in one place. Use the city selector to switch locations, and click any metal below or in the links at the bottom for detailed rates and history. Prices are indicative; verify with local dealers before buying.
+                </p>
                 {data?.updated_at && (
                   <LastUpdated date={data.updated_at} />
                 )}
@@ -598,6 +601,9 @@ export default async function CityOverviewPage({ params }: CityPageProps) {
             </h2>
             <div className="prose prose-sm max-w-none dark:prose-invert">
               <p className="text-slate-600 dark:text-slate-400 mb-4">{cityInsight}</p>
+              <p className="text-slate-600 dark:text-slate-400 mb-4">
+                In {city}, gold and silver rates often move with national trends, but local demand during festivals and weddings can create short-term differences. Copper, platinum, and palladium are more influenced by global commodity markets and exchange rates. The chart above helps you see how prices have moved over time.
+              </p>
               <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-3">
                 Key Factors Affecting Prices
               </h3>
@@ -609,6 +615,9 @@ export default async function CityOverviewPage({ params }: CityPageProps) {
                 <li>Regional economic conditions</li>
                 <li>Proximity to major trading hubs</li>
               </ul>
+              <p className="text-slate-600 dark:text-slate-400">
+                Prices on this page are for reference only. Actual dealer rates may include making charges, taxes, and premiums. Always confirm with your jeweller or broker before making a purchase.
+              </p>
             </div>
           </div>
 

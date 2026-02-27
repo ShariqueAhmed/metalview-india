@@ -28,14 +28,26 @@ export default function Footer() {
             any purchase decisions.
           </p>
           <p className="text-xs text-slate-500 dark:text-slate-500 mt-4">
-            Data Sources: Groww.in, AngelOne | Not financial advice
+            Data Sources: Angel One (gold, silver), commodity data providers (copper, platinum, palladium). Not financial advice.
           </p>
           <div className="mt-4 flex items-center justify-center gap-4 text-xs">
+            <Link
+              href="/about"
+              className="text-slate-600 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
+            >
+              About
+            </Link>
             <Link
               href="/privacy-policy"
               className="text-slate-600 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
             >
               Privacy Policy
+            </Link>
+            <Link
+              href="/privacy-policy#contact"
+              className="text-slate-600 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
+            >
+              Contact
             </Link>
           </div>
         </div>

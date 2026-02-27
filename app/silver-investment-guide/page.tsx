@@ -108,6 +108,9 @@ export default function SilverInvestmentGuidePage() {
                 Unlike gold, silver has significant industrial applications, making its price more volatile 
                 but also offering unique investment opportunities.
               </p>
+              <p className="text-slate-600 dark:text-slate-400 mb-4">
+                On MetalView you can check the live silver rate per gram and per kilogram for major cities, compare trends over time, and read how silver compares to gold as an investment. The guides and links on this page are for general information only; always do your own research or consult a financial advisor before investing.
+              </p>
 
               <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-3 mt-6">
                 Key Factors Affecting Silver Prices

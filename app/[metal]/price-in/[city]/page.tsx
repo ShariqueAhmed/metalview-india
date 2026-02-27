@@ -403,6 +403,9 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
               Get live {metal} prices in {cityName}, India. Check today's {metal} rate, historical
               trends, and market insights. Prices are updated in real-time from trusted sources.
             </p>
+            <p className="text-slate-600 dark:text-slate-400 mb-4">
+              Use this page to see the current {metal} rate in {cityName}, compare with other cities using the table and chart below, and understand why prices vary by location. All rates are indicative; confirm with local dealers before buying.
+            </p>
             {data?.updated_at && (
               <LastUpdated date={data.updated_at} />
             )}
@@ -517,6 +520,9 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
                 <li>Regional economic conditions</li>
                 <li>Proximity to major trading hubs</li>
               </ul>
+              <p className="text-slate-600 dark:text-slate-400 mb-4">
+                In {cityName}, {metal} rates are also influenced by local festivals, wedding demand, and the presence of refineries or wholesale markets. Checking the price history on this page can help you spot seasonal patterns before you buy or sell.
+              </p>
               <p className="text-slate-600 dark:text-slate-400">
                 Prices displayed are indicative and may vary slightly from actual market rates due
                 to making charges, taxes, and dealer margins. Always verify with local dealers
