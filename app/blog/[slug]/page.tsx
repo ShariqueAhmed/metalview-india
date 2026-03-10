@@ -1128,33 +1128,65 @@ Stay updated with Surat gold prices on MetalView.
 };
 
 interface BlogPostPageProps {
-  params: {
-    slug: string;
-  };
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
-  const post = blogPosts[params.slug];
-  
+  const { slug } = await params;
+  const post = blogPosts[slug];
+
   if (!post) {
     return {
       title: 'Post Not Found',
     };
   }
 
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://metalview.in';
+  const postUrl = `/blog/${slug}`;
+  const publishedTime = new Date(post.date).toISOString();
+
   return {
     title: `${post.title} | MetalView Blog`,
     description: post.excerpt,
+    alternates: {
+      canonical: postUrl,
+    },
     openGraph: {
+      type: 'article',
       title: post.title,
       description: post.excerpt,
-      url: `https://metalview.in/blog/${params.slug}`,
+      url: `${baseUrl}${postUrl}`,
+      siteName: 'MetalView',
+      publishedTime,
+      authors: ['MetalView'],
+      section: post.category,
+      images: [
+        {
+          url: `${baseUrl}/api/og?title=${encodeURIComponent(post.title)}`,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt,
     },
   };
 }
 
-export default function BlogPostPage({ params }: BlogPostPageProps) {
-  const post = blogPosts[params.slug];
+function getRelatedPosts(currentSlug: string, currentCategory: string, limit = 3): BlogPost[] {
+  const entries = Object.values(blogPosts).filter((p) => p.slug !== currentSlug);
+  const sameCategory = entries.filter((p) => p.category === currentCategory);
+  const others = entries.filter((p) => p.category !== currentCategory);
+  return [...sameCategory, ...others].slice(0, limit);
+}
+
+export default async function BlogPostPage({ params }: BlogPostPageProps) {
+  const { slug } = await params;
+  const post = blogPosts[slug];
 
   if (!post) {
     notFound();
@@ -1164,10 +1196,11 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://metalview.in';
   const howToSchema = generateHowToSchema(post.title, post.content, post.slug, baseUrl);
 
-  // Generate Article schema
+  // Generate Article schema (full fields for rich results)
   const articleSchema = {
     '@context': 'https://schema.org',
     '@type': 'Article',
+    '@id': `${baseUrl}/blog/${post.slug}#article`,
     headline: post.title,
     description: post.excerpt,
     image: [
@@ -1309,6 +1342,40 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
               return null;
             })}
           </div>
+
+          <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-800">
+            <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Check live metal prices</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">View today&apos;s rates and historical trends.</p>
+            <div className="flex flex-wrap gap-3">
+              <Link href="/" className="text-amber-600 dark:text-amber-400 hover:underline font-medium text-sm">All metals</Link>
+              <Link href="/gold" className="text-amber-600 dark:text-amber-400 hover:underline font-medium text-sm">Gold</Link>
+              <Link href="/silver" className="text-amber-600 dark:text-amber-400 hover:underline font-medium text-sm">Silver</Link>
+              <Link href="/guides" className="text-amber-600 dark:text-amber-400 hover:underline font-medium text-sm">Guides</Link>
+            </div>
+          </div>
+
+          {(() => {
+            const related = getRelatedPosts(post.slug, post.category, 3);
+            if (related.length === 0) return null;
+            return (
+              <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-800">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Related posts</h2>
+                <ul className="space-y-2">
+                  {related.map((p) => (
+                    <li key={p.slug}>
+                      <Link href={`/blog/${p.slug}`} className="text-amber-600 dark:text-amber-400 hover:underline font-medium text-sm">
+                        {p.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-3 text-sm text-gray-600 dark:text-gray-400">
+                  <Link href="/guides" className="text-amber-600 dark:text-amber-400 hover:underline font-medium">Related guides</Link>
+                  {' – '}Purity, investment, and city buying guides.
+                </p>
+              </div>
+            );
+          })()}
         </article>
       </div>
     </div>

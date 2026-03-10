@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     locale: 'en_IN',
   },
   alternates: {
-    canonical: 'https://metalview.in/guides',
+    canonical: '/guides',
   },
 };
 

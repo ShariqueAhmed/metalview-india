@@ -11,6 +11,23 @@ import { Info, RefreshCw, Shield, BarChart3, BookOpen, Sparkles } from 'lucide-r
 export const metadata: Metadata = {
   title: 'About MetalView - How We Get Gold & Silver Prices in India',
   description: 'Learn how MetalView provides live gold, silver, copper, platinum, and palladium prices in India. Our data sources, update frequency, and commitment to accurate metal pricing.',
+  keywords: [
+    'about MetalView',
+    'metal prices India',
+    'gold silver price source',
+    'live metal rates',
+    'precious metal data',
+  ],
+  openGraph: {
+    title: 'About MetalView - How We Get Metal Prices in India',
+    description: 'How MetalView provides live gold, silver, copper, platinum, and palladium prices. Data sources and update frequency.',
+    type: 'website',
+    locale: 'en_IN',
+    url: 'https://metalview.in/about',
+  },
+  alternates: {
+    canonical: '/about',
+  },
 };
 
 const SECTIONS = [

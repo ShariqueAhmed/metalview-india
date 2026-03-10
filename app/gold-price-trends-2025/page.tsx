@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     description: 'Expert analysis of gold price trends for 2025 in India with predictions and market insights.',
     type: 'article',
     locale: 'en_IN',
-    url: 'https://metalview.in/gold-price-trends-2025',
+    url: '/gold-price-trends-2025',
   },
   twitter: {
     card: 'summary_large_image',
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     description: 'Expert analysis of gold price trends for 2025 in India.',
   },
   alternates: {
-    canonical: 'https://metalview.in/gold-price-trends-2025',
+    canonical: '/gold-price-trends-2025',
   },
 };
 

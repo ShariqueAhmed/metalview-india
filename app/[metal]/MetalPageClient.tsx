@@ -208,10 +208,10 @@ export default function MetalPageClient({ metal, initialCity }: MetalPageClientP
       <Header />
       <main id="main-content" className="flex-1 relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 w-full" role="main">
         <Breadcrumbs items={breadcrumbItems} />
-        <h1 className="sr-only">{metalName} Price Today in India - Live Rates</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-50 mb-2">{metalName} Price Today in India – Live Rates</h1>
 
-        <section className="mb-8 pb-6 border-b border-slate-200/80 dark:border-slate-700/80">
-          <h2 className="text-lg font-bold text-slate-900 dark:text-slate-50 mb-1">{metalName} – Market Overview</h2>
+        <section className="mb-8 pb-6 border-b border-slate-200/80 dark:border-slate-700/80" aria-labelledby="market-overview">
+          <h2 id="market-overview" className="text-lg font-bold text-slate-900 dark:text-slate-50 mb-1">{metalName} – Market Overview</h2>
           <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">Real-time {metalName.toLowerCase()} pricing across Indian cities</p>
           {data?.updated_at && <LastUpdated date={data.updated_at} className="mt-1" />}
         </section>
@@ -237,6 +237,15 @@ export default function MetalPageClient({ metal, initialCity }: MetalPageClientP
                 <p>The <strong>palladium price in India today</strong> is <strong>₹{data.palladium_10g.toLocaleString('en-IN')} per 10 grams</strong>.</p>
               )}
               <p>MetalView provides accurate <strong>{metalName.toLowerCase()} prices in India</strong> across major cities. Prices are updated in real-time from trusted sources.</p>
+              {metal === 'gold' && (
+                <p>Learn more in our <Link href="/24k-vs-22k-vs-18k-gold" className="text-amber-600 dark:text-amber-400 hover:underline font-medium">24K vs 22K vs 18K gold guide</Link> and <Link href="/gold-price-guide" className="text-amber-600 dark:text-amber-400 hover:underline font-medium">gold price guide</Link>.</p>
+              )}
+              {metal === 'silver' && (
+                <p>Read our <Link href="/silver-investment-guide" className="text-amber-600 dark:text-amber-400 hover:underline font-medium">silver investment guide</Link> for context on rates and trends.</p>
+              )}
+              {(metal === 'copper' || metal === 'platinum' || metal === 'palladium') && (
+                <p>For more on metal prices and investment, see our <Link href="/guides" className="text-amber-600 dark:text-amber-400 hover:underline font-medium">Guides &amp; Resources</Link>.</p>
+              )}
             </div>
           </div>
         </section>
@@ -414,7 +423,8 @@ export default function MetalPageClient({ metal, initialCity }: MetalPageClientP
 
             <section className="mb-8 content-card p-6 sm:p-8">
               <h2 className="section-title mb-4">About MetalView &amp; How We Get Our Prices</h2>
-              <p className="text-slate-600 dark:text-slate-400">MetalView is a free resource for live metal prices in India. Data is sourced from trusted platforms and updated regularly. See our <Link href="/about" className="text-amber-600 dark:text-amber-400 hover:underline">About</Link> page for details.</p>
+              <p className="text-slate-600 dark:text-slate-400 mb-3">MetalView is a free resource for live metal prices in India. Data is sourced from trusted platforms and updated regularly. See our <Link href="/about" className="text-amber-600 dark:text-amber-400 hover:underline">About</Link> page for details.</p>
+              <p className="text-slate-600 dark:text-slate-400">For guides on purity, investment, and city-wise buying, visit our <Link href="/guides" className="text-amber-600 dark:text-amber-400 hover:underline font-medium">Guides &amp; Resources</Link>.</p>
             </section>
             <div className="mb-8 flex justify-center"><AdSenseResponsive className="min-h-[100px] max-w-full" /></div>
           </div>

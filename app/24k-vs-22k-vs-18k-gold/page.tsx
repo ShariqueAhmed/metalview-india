@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     description: 'Compare 24K, 22K, and 18K gold. Understand purity, prices, and which is best for your needs.',
     type: 'article',
     locale: 'en_IN',
-    url: 'https://metalview.in/24k-vs-22k-vs-18k-gold',
+    url: '/24k-vs-22k-vs-18k-gold',
   },
   twitter: {
     card: 'summary_large_image',
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     description: 'Compare gold purities and find which is best for investment vs jewelry.',
   },
   alternates: {
-    canonical: 'https://metalview.in/24k-vs-22k-vs-18k-gold',
+    canonical: '/24k-vs-22k-vs-18k-gold',
   },
 };
 

@@ -13,6 +13,16 @@ export const metadata: Metadata = {
   title: 'Privacy Policy | MetalView India',
   description: 'Privacy Policy for MetalView India - Learn how we collect, use, and protect your data.',
   robots: 'index, follow',
+  openGraph: {
+    title: 'Privacy Policy | MetalView India',
+    description: 'How MetalView collects, uses, and protects your data.',
+    type: 'website',
+    locale: 'en_IN',
+    url: 'https://metalview.in/privacy-policy',
+  },
+  alternates: {
+    canonical: '/privacy-policy',
+  },
 };
 
 export default function PrivacyPolicyPage() {

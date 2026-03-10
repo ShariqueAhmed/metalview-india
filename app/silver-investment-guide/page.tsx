@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     description: 'Complete guide to silver prices, investment strategies, and market trends in India.',
     type: 'article',
     locale: 'en_IN',
-    url: 'https://metalview.in/silver-investment-guide',
+    url: '/silver-investment-guide',
   },
   twitter: {
     card: 'summary_large_image',
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     description: 'Learn everything about silver prices and investment in India.',
   },
   alternates: {
-    canonical: 'https://metalview.in/silver-investment-guide',
+    canonical: '/silver-investment-guide',
   },
 };
 

@@ -2,6 +2,10 @@
  * SEO-optimized sitemap for MetalView India
  * Covers: homepage, metal hubs, cities, metal+city, guides, blog, static pages.
  * Uses correct priorities, changeFrequency, and lastmod for best crawl efficiency.
+ *
+ * Note: Google limits a single sitemap to 50,000 URLs. If this sitemap grows beyond
+ * that, split into a sitemap index (e.g. sitemap-index.xml) and multiple sitemaps
+ * (sitemap-pages.xml, sitemap-cities.xml, sitemap-blog.xml).
  */
 
 import { MetadataRoute } from 'next';

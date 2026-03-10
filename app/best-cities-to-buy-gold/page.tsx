@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     description: 'Compare gold prices across major Indian cities and find the best rates.',
     type: 'article',
     locale: 'en_IN',
-    url: 'https://metalview.in/best-cities-to-buy-gold',
+    url: '/best-cities-to-buy-gold',
   },
   twitter: {
     card: 'summary_large_image',
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     description: 'Compare gold prices and find the best rates across major cities.',
   },
   alternates: {
-    canonical: 'https://metalview.in/best-cities-to-buy-gold',
+    canonical: '/best-cities-to-buy-gold',
   },
 };
 

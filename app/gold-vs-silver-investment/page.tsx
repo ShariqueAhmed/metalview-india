@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     description: 'Compare gold vs silver investment in India. Expert analysis of returns, risks, and liquidity.',
     type: 'article',
     locale: 'en_IN',
-    url: 'https://metalview.in/gold-vs-silver-investment',
+    url: '/gold-vs-silver-investment',
   },
   twitter: {
     card: 'summary_large_image',
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     description: 'Compare gold vs silver investment in India. Expert analysis.',
   },
   alternates: {
-    canonical: 'https://metalview.in/gold-vs-silver-investment',
+    canonical: '/gold-vs-silver-investment',
   },
 };
 

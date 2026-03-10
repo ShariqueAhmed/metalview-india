@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     description: 'Complete guide to metal investments, strategies, and market trends in India.',
     type: 'article',
     locale: 'en_IN',
-    url: 'https://metalview.in/investment-guide',
+    url: '/investment-guide',
   },
   twitter: {
     card: 'summary_large_image',
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     description: 'Learn everything about metal investments and strategies in India.',
   },
   alternates: {
-    canonical: 'https://metalview.in/investment-guide',
+    canonical: '/investment-guide',
   },
 };
 

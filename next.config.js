@@ -1,6 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // 301 redirect legacy gold city URLs to canonical metal/city format
+  async redirects() {
+    return [
+      {
+        source: '/gold-price-today-in-:city',
+        destination: '/gold/price-in/:city',
+        permanent: true,
+      },
+    ];
+  },
   env: {
     METALS_API_KEY: process.env.METALS_API_KEY,
   },

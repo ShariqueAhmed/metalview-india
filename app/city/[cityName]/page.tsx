@@ -27,9 +27,7 @@ import YouMayAlsoLike from '@/components/YouMayAlsoLike';
 import { AdSenseResponsive } from '@/components/AdSense';
 
 interface CityPageProps {
-  params: {
-    cityName: string;
-  };
+  params: Promise<{ cityName: string }>;
 }
 
 // Top Indian cities for static generation
@@ -253,7 +251,7 @@ export const revalidate = 600; // Revalidate every 10 minutes
 
 // Generate metadata for SEO
 export async function generateMetadata({ params }: CityPageProps): Promise<Metadata> {
-  const { cityName } = params;
+  const { cityName } = await params;
   if (!cityName || typeof cityName !== 'string') {
     return {
       title: 'City Metal Prices | MetalView India',
@@ -299,13 +297,13 @@ export async function generateMetadata({ params }: CityPageProps): Promise<Metad
       images: [`${baseUrl}/api/og?city=${cityName}`],
     },
     alternates: {
-      canonical: `${baseUrl}/city/${cityName}`,
+      canonical: `/city/${cityName}`,
     },
   };
 }
 
 export default async function CityOverviewPage({ params }: CityPageProps) {
-  const { cityName } = params;
+  const { cityName } = await params;
 
   if (!cityName || typeof cityName !== 'string') {
     return (

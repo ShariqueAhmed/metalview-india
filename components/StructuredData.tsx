@@ -451,129 +451,9 @@ export default function StructuredData({
     },
   };
 
-  // VideoObject Schema for Price Trend Charts
   const metalName = metalType.charAt(0).toUpperCase() + metalType.slice(1);
-  const videoSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'VideoObject',
-    name: `${metalName} Price Trends - ${cityName}`,
-    description: `Historical ${metalName} price trends and market analysis in ${cityName}, India. View real-time price movements, historical data, and market insights.`,
-    thumbnailUrl: `${baseUrl}/api/og?metal=${metalType}&city=${location || 'india'}`,
-    uploadDate: formatDate(lastUpdated),
-    duration: 'PT30S', // 30 seconds - represents the time to view the chart
-    contentUrl: `${baseUrl}/${metalType}${location ? `?city=${location}` : ''}`,
-    embedUrl: `${baseUrl}/${metalType}${location ? `?city=${location}` : ''}`,
-    publisher: {
-      '@type': 'Organization',
-      name: 'MetalView India',
-      logo: {
-        '@type': 'ImageObject',
-        url: `${baseUrl}/og-image.svg`,
-      },
-    },
-    about: {
-      '@type': 'FinancialProduct',
-      name: `${metalName} Price in ${cityName}`,
-    },
-  };
 
-  // Review/Rating Schema for the service
-  const reviewSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'Product',
-    name: 'MetalView India - Live Metal Prices',
-    description: 'Real-time precious metals pricing platform providing accurate gold, silver, copper, platinum, and palladium prices across major Indian cities',
-    brand: {
-      '@type': 'Brand',
-      name: 'MetalView India',
-    },
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.8',
-      reviewCount: '1250',
-      bestRating: '5',
-      worstRating: '1',
-    },
-    review: [
-      {
-        '@type': 'Review',
-        author: {
-          '@type': 'Person',
-          name: 'Rajesh Kumar',
-        },
-        datePublished: '2025-01-15',
-        reviewRating: {
-          '@type': 'Rating',
-          ratingValue: '5',
-          bestRating: '5',
-          worstRating: '1',
-        },
-        reviewBody: 'Accurate and real-time gold prices. Very helpful for tracking market trends. The interface is clean and easy to use.',
-      },
-      {
-        '@type': 'Review',
-        author: {
-          '@type': 'Person',
-          name: 'Priya Sharma',
-        },
-        datePublished: '2025-01-20',
-        reviewRating: {
-          '@type': 'Rating',
-          ratingValue: '5',
-          bestRating: '5',
-          worstRating: '1',
-        },
-        reviewBody: 'Excellent platform for checking metal prices across different cities. The historical data and charts are very useful for making investment decisions.',
-      },
-      {
-        '@type': 'Review',
-        author: {
-          '@type': 'Person',
-          name: 'Amit Patel',
-        },
-        datePublished: '2025-01-22',
-        reviewRating: {
-          '@type': 'Rating',
-          ratingValue: '4',
-          bestRating: '5',
-          worstRating: '1',
-        },
-        reviewBody: 'Great service for real-time metal prices. Prices are updated frequently and the city-wise comparison feature is very helpful.',
-      },
-      {
-        '@type': 'Review',
-        author: {
-          '@type': 'Person',
-          name: 'Sneha Reddy',
-        },
-        datePublished: '2025-01-25',
-        reviewRating: {
-          '@type': 'Rating',
-          ratingValue: '5',
-          bestRating: '5',
-          worstRating: '1',
-        },
-        reviewBody: 'Reliable source for metal prices in India. The platform provides comprehensive information including price trends and market insights.',
-      },
-      {
-        '@type': 'Review',
-        author: {
-          '@type': 'Person',
-          name: 'Vikram Singh',
-        },
-        datePublished: '2025-01-26',
-        reviewRating: {
-          '@type': 'Rating',
-          ratingValue: '5',
-          bestRating: '5',
-          worstRating: '1',
-        },
-        reviewBody: 'Best metal price tracking website I have used. Accurate prices, easy navigation, and helpful historical data. Highly recommended!',
-      },
-    ],
-  };
-
-  // SoftwareApplication Schema for PWA
+  // SoftwareApplication Schema for PWA (no fake ratings - policy-safe)
   const appSchema = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
@@ -587,13 +467,6 @@ export default function StructuredData({
       price: '0',
       priceCurrency: 'INR',
       availability: 'https://schema.org/InStock',
-    },
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.8',
-      ratingCount: '1250',
-      bestRating: '5',
-      worstRating: '1',
     },
     screenshot: `${baseUrl}/og-image.svg`,
     softwareVersion: '1.0',
@@ -613,8 +486,8 @@ export default function StructuredData({
     downloadUrl: baseUrl,
     softwareHelp: {
       '@type': 'CreativeWork',
-      url: `${baseUrl}/help`,
-      name: 'MetalView Help & Support',
+      url: `${baseUrl}/guides`,
+      name: 'MetalView Guides & Resources',
     },
     author: {
       '@type': 'Organization',
@@ -656,14 +529,6 @@ export default function StructuredData({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(videoSchema) }}
       />
       <script
         type="application/ld+json"

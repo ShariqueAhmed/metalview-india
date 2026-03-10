@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     description: 'Complete guide to gold prices, purity, and investment strategies in India.',
     type: 'article',
     locale: 'en_IN',
-    url: 'https://metalview.in/gold-price-guide',
+    url: '/gold-price-guide',
   },
   twitter: {
     card: 'summary_large_image',
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     description: 'Learn everything about gold prices, purity, and investment in India.',
   },
   alternates: {
-    canonical: 'https://metalview.in/gold-price-guide',
+    canonical: '/gold-price-guide',
   },
 };
 

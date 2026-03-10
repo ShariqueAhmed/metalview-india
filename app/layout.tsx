@@ -109,7 +109,7 @@ export default function RootLayout({
   return (
     <html lang="en-IN" suppressHydrationWarning>
       <head>
-        <link rel="canonical" href="https://metalview.in" />
+        {/* Canonical is set per-page via metadata alternates.canonical; do not add a static canonical here. */}
         {/* Hreflang tags for regional targeting */}
         <link rel="alternate" hrefLang="en-IN" href="https://metalview.in" />
         <link rel="alternate" hrefLang="en" href="https://metalview.in" />

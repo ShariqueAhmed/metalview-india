@@ -27,13 +27,35 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `${name} Price Today in India - Live Rates | MetalView`,
     description: `Get live ${name} prices in India today. Check ${name} rate per gram, 10g or kg. Real-time updates for Mumbai, Delhi, Bangalore and more.`,
+    keywords: [
+      `${name.toLowerCase()} price in india`,
+      `${name.toLowerCase()} rate today`,
+      `live ${name.toLowerCase()} price`,
+      `${name.toLowerCase()} price per gram`,
+      `metal price india`,
+    ],
     openGraph: {
       title: `${name} Price Today in India | MetalView`,
       description: `Live ${name} prices in India. Real-time rates and historical trends.`,
       url: `${baseUrl}/${metal}`,
       siteName: 'MetalView',
+      type: 'website',
+      locale: 'en_IN',
+      images: [
+        {
+          url: `${baseUrl}/api/og?metal=${metal}`,
+          width: 1200,
+          height: 630,
+          alt: `${name} Price in India - MetalView`,
+        },
+      ],
     },
-    alternates: { canonical: `${baseUrl}/${metal}` },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${name} Price Today in India | MetalView`,
+      description: `Live ${name} prices in India. Real-time rates and historical trends.`,
+    },
+    alternates: { canonical: `/${metal}` },
   };
 }
 
