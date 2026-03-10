@@ -78,87 +78,45 @@ export interface CopperData {
   copperTrend?: CopperTrendPoint[];
 }
 
+/** Build list of expiry dates to try (MCX: often month-end or last Thu) */
+function getExpiryDatesToTry(): string[] {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth(); // 0-indexed
+  const dates: string[] = [];
+  for (let m = 0; m <= 2; m++) {
+    const d = new Date(year, month + m + 1, 0); // last day of month
+    const lastDay = d.getDate();
+    const ym = `${year}-${String(month + m + 1).padStart(2, '0')}`;
+    dates.push(`${ym}-${String(lastDay).padStart(2, '0')}`);
+    if (lastDay >= 27) {
+      dates.push(`${ym}-27`);
+      dates.push(`${ym}-28`);
+    }
+  }
+  return Array.from(new Set(dates));
+}
+
 /**
- * Fetches copper prices from MoneyControl API
+ * Fetches copper prices from MoneyControl API (live), with fallback from historical trend API
  * @returns Normalized copper price data
  */
 export async function fetchCopperPrices(): Promise<CopperData> {
-  try {
-    // Try multiple expiry dates - MCX futures typically expire on last Thursday of the month
-    // We'll try current month and next month expiry dates
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth() + 1;
-    
-    // Common expiry dates to try (last Thursday of month, typically around 27-28)
-    const expiryDates = [
-      `${year}-${String(month).padStart(2, '0')}-27`, // Current month
-      `${year}-${String(month).padStart(2, '0')}-28`, // Current month alternative
-      `${year}-${String(month + 1).padStart(2, '0')}-27`, // Next month
-      `${year}-${String(month + 1).padStart(2, '0')}-28`, // Next month alternative
-    ];
-    
-    let data: CopperApiResponse | null = null;
-    let lastError: Error | null = null;
-    
-    // Try each expiry date until we get a successful response
-    for (const expiryDate of expiryDates) {
-      try {
-        const url = `https://priceapi.moneycontrol.com/pricefeed/mcx/commodityfutures/COPPER?expiry=${expiryDate}`;
-        
-        const response = await fetch(url, {
-          headers: {
-            'accept': 'application/json, text/plain, */*',
-            'accept-language': 'en-US,en;q=0.9',
-            'cache-control': 'no-cache',
-            'origin': 'https://www.moneycontrol.com',
-            'pragma': 'no-cache',
-            'referer': 'https://www.moneycontrol.com/',
-            'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36',
-          },
-          next: { revalidate: 600 }, // Cache for 10 minutes
-        });
+  const expiryDates = getExpiryDatesToTry();
 
-        if (!response.ok) {
-          continue; // Try next expiry date
-        }
+  // 1) Try live price API with multiple expiry dates
+  let data: CopperApiResponse | null = null;
+  let lastError: Error | null = null;
 
-        const responseData: CopperApiResponse = await response.json();
-        
-        if (responseData && responseData.code === '200' && responseData.data && responseData.data.lastPrice) {
-          data = responseData;
-          break; // Success, exit loop
-        }
-      } catch (error) {
-        lastError = error as Error;
-        continue; // Try next expiry date
-      }
-    }
-    
-    if (!data) {
-      throw lastError || new Error('Could not fetch copper prices from any expiry date');
-    }
+  // Also try without expiry (some APIs return front-month by default)
+  const urlsToTry = [
+    ...expiryDates.map((expiry) => `https://priceapi.moneycontrol.com/pricefeed/mcx/commodityfutures/COPPER?expiry=${expiry}`),
+    'https://priceapi.moneycontrol.com/pricefeed/mcx/commodityfutures/COPPER',
+  ];
 
-    // Extract prices (all prices are per kg)
-    const copper_1kg = parseFloat(data.data.lastPrice);
-    const copper_100g = copper_1kg / 10; // 1kg = 1000g, so 100g = 1kg/10
-    const copper_10g = copper_1kg / 100; // 10g = 1kg/100
-    const copper_1g = copper_1kg / 1000; // 1g = 1kg/1000
-
-    // Extract percentage change and other metrics
-    const percentageChange = parseFloat(data.data.perChange) || null;
-    const change = parseFloat(data.data.change) || null;
-    const openPrice = parseFloat(data.data.openPrice) || null;
-    const highPrice = parseFloat(data.data.highPrice) || null;
-    const lowPrice = parseFloat(data.data.lowPrice) || null;
-    const prevClose = parseFloat(data.data.prevClose) || null;
-
-    // Fetch historical data
-    let copperTrend: CopperTrendPoint[] | undefined = undefined;
+  for (const url of urlsToTry) {
     try {
-      const historyUrl = 'https://priceapi.moneycontrol.com/technicalCompanyData/commodity/getHistoricalTrend?type=FUTCOM&symbol=COPPER&exchange=MCX&expiry=ALLEXPIRY&deviceType=W';
-      
-      const historyResponse = await fetch(historyUrl, {
+      const response = await fetch(url, {
         headers: {
           'accept': 'application/json, text/plain, */*',
           'accept-language': 'en-US,en;q=0.9',
@@ -166,78 +124,156 @@ export async function fetchCopperPrices(): Promise<CopperData> {
           'origin': 'https://www.moneycontrol.com',
           'pragma': 'no-cache',
           'referer': 'https://www.moneycontrol.com/',
-          'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36',
+          'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
         },
-        next: { revalidate: 600 }, // Cache for 10 minutes
+        next: { revalidate: 600 },
       });
 
-      if (historyResponse.ok) {
-        const historyData: CopperHistoricalResponse = await historyResponse.json();
-        
-        if (historyData && historyData.response === 200 && historyData.data) {
-          // Convert object to array and process
-          copperTrend = Object.entries(historyData.data)
-            .map(([date, item]) => {
-              const price = parseFloat(item.priceCurrent.replace(/,/g, '')); // Remove commas from price
-              const perChange = parseFloat(item.perPriceChange);
-              
-              return {
-                date: item.tranDate || date, // Use tranDate if available, otherwise use key
-                price: !isNaN(price) ? price : 0,
-                percentageChange: !isNaN(perChange) ? perChange : undefined,
-              };
-            })
-            .filter((item) => item.price > 0) // Filter out invalid prices
-            .sort((a, b) => {
-              // Sort by date (oldest first)
-              const dateA = new Date(a.date).getTime();
-              const dateB = new Date(b.date).getTime();
-              return dateA - dateB;
-            });
-          
-          // Add today's price if not already in trend
-          const todayDate: string = new Date().toISOString().split('T')[0] || '';
-          const todayInTrend = copperTrend.find((item) => item.date === todayDate);
-          
-          if (!todayInTrend && copper_1kg) {
-            copperTrend.push({
-              date: todayDate,
-              price: copper_1kg,
-              percentageChange: percentageChange || undefined,
-            });
-            
-            // Re-sort after adding today
-            copperTrend.sort((a, b) => {
-              const dateA = new Date(a.date).getTime();
-              const dateB = new Date(b.date).getTime();
-              return dateA - dateB;
-            });
-          }
-          
-          console.log(`Fetched ${copperTrend.length} copper trend points`);
-        }
+      if (!response.ok) continue;
+
+      const raw = await response.json();
+      const code = raw?.code;
+      const ok = code === '200' || code === 200;
+      const responseData = raw?.data;
+      const priceStr = responseData?.lastPrice ?? responseData?.avgPrice ?? responseData?.bidPrice ?? responseData?.askPrice;
+      if (ok && responseData && priceStr && !Number.isNaN(parseFloat(String(priceStr)))) {
+        data = raw as CopperApiResponse;
+        if (!data.data.lastPrice && priceStr) data.data.lastPrice = String(priceStr);
+        break;
       }
     } catch (error) {
-      console.warn('Error fetching copper historical data:', error);
-      // Continue without historical data
+      lastError = error as Error;
     }
+  }
 
-    return {
-      copper_1kg: Math.round(copper_1kg * 100) / 100,
-      copper_100g: Math.round(copper_100g * 100) / 100,
-      copper_10g: Math.round(copper_10g * 100) / 100,
-      copper_1g: Math.round(copper_1g * 100) / 100,
-      updated_at: new Date().toISOString(),
-      percentageChange: percentageChange !== null && !isNaN(percentageChange) ? percentageChange : null,
-      change: change !== null && !isNaN(change) ? change : null,
-      openPrice: openPrice !== null && !isNaN(openPrice) ? openPrice : null,
-      highPrice: highPrice !== null && !isNaN(highPrice) ? highPrice : null,
-      lowPrice: lowPrice !== null && !isNaN(lowPrice) ? lowPrice : null,
-      prevClose: prevClose !== null && !isNaN(prevClose) ? prevClose : null,
-      copperTrend: copperTrend && copperTrend.length > 0 ? copperTrend : undefined,
-    };
-  } catch (error) {
-    console.error('Copper API error:', error);
-    throw error;
+  // 2) Fallback: get latest price from historical trend API
+  let copper_1kg: number;
+  let percentageChange: number | null = null;
+  let copperTrend: CopperTrendPoint[] | undefined;
+  let change: number | null = null;
+  let openPrice: number | null = null;
+  let highPrice: number | null = null;
+  let lowPrice: number | null = null;
+  let prevClose: number | null = null;
+
+  if (data?.data?.lastPrice) {
+    copper_1kg = parseFloat(data.data.lastPrice);
+    percentageChange = parseFloat(data.data.perChange) || null;
+    change = parseFloat(data.data.change) || null;
+    openPrice = parseFloat(data.data.openPrice) || null;
+    highPrice = parseFloat(data.data.highPrice) || null;
+    lowPrice = parseFloat(data.data.lowPrice) || null;
+    prevClose = parseFloat(data.data.prevClose) || null;
+  } else {
+    const fallback = await fetchCopperFromHistoricalApi();
+    if (fallback) {
+      copper_1kg = fallback.price;
+      copperTrend = fallback.trend;
+      percentageChange = fallback.percentageChange ?? null;
+    } else {
+      throw lastError || new Error('Could not fetch copper prices from MoneyControl');
+    }
+  }
+
+  if (typeof copper_1kg !== 'number' || Number.isNaN(copper_1kg) || copper_1kg <= 0) {
+    throw lastError || new Error('Invalid copper price from API');
+  }
+
+  const copper_100g = copper_1kg / 10;
+  const copper_10g = copper_1kg / 100;
+  const copper_1g = copper_1kg / 1000;
+
+  // Fetch historical trend if not already from fallback
+  if (!copperTrend) {
+    const trendResult = await fetchCopperHistoricalTrend(copper_1kg, percentageChange);
+    copperTrend = trendResult;
+  }
+
+  return {
+    copper_1kg: Math.round(copper_1kg * 100) / 100,
+    copper_100g: Math.round(copper_100g * 100) / 100,
+    copper_10g: Math.round(copper_10g * 100) / 100,
+    copper_1g: Math.round(copper_1g * 100) / 100,
+    updated_at: new Date().toISOString(),
+    percentageChange: percentageChange !== null && !isNaN(percentageChange) ? percentageChange : null,
+    change: change !== null && !isNaN(change) ? change : null,
+    openPrice: openPrice !== null && !isNaN(openPrice) ? openPrice : null,
+    highPrice: highPrice !== null && !isNaN(highPrice) ? highPrice : null,
+    lowPrice: lowPrice !== null && !isNaN(lowPrice) ? lowPrice : null,
+    prevClose: prevClose !== null && !isNaN(prevClose) ? prevClose : null,
+    copperTrend: copperTrend && copperTrend.length > 0 ? copperTrend : undefined,
+  };
+}
+
+const MONEYCONTROL_HEADERS = {
+  'accept': 'application/json, text/plain, */*',
+  'accept-language': 'en-US,en;q=0.9',
+  'cache-control': 'no-cache',
+  'origin': 'https://www.moneycontrol.com',
+  'pragma': 'no-cache',
+  'referer': 'https://www.moneycontrol.com/',
+  'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+};
+
+/** Fallback: get latest copper price from historical trend API when live API fails */
+async function fetchCopperFromHistoricalApi(): Promise<{ price: number; trend?: CopperTrendPoint[]; percentageChange?: number | null } | null> {
+  try {
+    const historyUrl = 'https://priceapi.moneycontrol.com/technicalCompanyData/commodity/getHistoricalTrend?type=FUTCOM&symbol=COPPER&exchange=MCX&expiry=ALLEXPIRY&deviceType=W';
+    const res = await fetch(historyUrl, { headers: MONEYCONTROL_HEADERS, next: { revalidate: 600 } });
+    if (!res.ok) return null;
+    const json: CopperHistoricalResponse = await res.json();
+    if (json?.response !== 200 || !json?.data || typeof json.data !== 'object') return null;
+    const entries = Object.entries(json.data)
+      .map(([date, item]) => {
+        const price = parseFloat(String(item.priceCurrent).replace(/,/g, ''));
+        const perChange = parseFloat(String(item.perPriceChange));
+        return {
+          date: item.tranDate || date,
+          price: !isNaN(price) ? price : 0,
+          percentageChange: !isNaN(perChange) ? perChange : undefined,
+        } as CopperTrendPoint;
+      })
+      .filter((item) => item.price > 0)
+      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    if (entries.length === 0) return null;
+    const latest = entries[entries.length - 1];
+    if (!latest) return null;
+    return { price: latest.price, trend: entries, percentageChange: latest.percentageChange ?? null };
+  } catch {
+    return null;
+  }
+}
+
+/** Fetch historical trend (for charts). Uses existing copper_1kg to add today if missing. */
+async function fetchCopperHistoricalTrend(
+  currentPriceKg: number,
+  currentPercentageChange: number | null
+): Promise<CopperTrendPoint[] | undefined> {
+  try {
+    const historyUrl = 'https://priceapi.moneycontrol.com/technicalCompanyData/commodity/getHistoricalTrend?type=FUTCOM&symbol=COPPER&exchange=MCX&expiry=ALLEXPIRY&deviceType=W';
+    const res = await fetch(historyUrl, { headers: MONEYCONTROL_HEADERS, next: { revalidate: 600 } });
+    if (!res.ok) return undefined;
+    const json: CopperHistoricalResponse = await res.json();
+    if (json?.response !== 200 || !json?.data || typeof json.data !== 'object') return undefined;
+    let trend = Object.entries(json.data)
+      .map(([date, item]) => {
+        const price = parseFloat(String(item.priceCurrent).replace(/,/g, ''));
+        const perChange = parseFloat(String(item.perPriceChange));
+        return {
+          date: item.tranDate || date,
+          price: !isNaN(price) ? price : 0,
+          percentageChange: !isNaN(perChange) ? perChange : undefined,
+        } as CopperTrendPoint;
+      })
+      .filter((item) => item.price > 0)
+      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    const todayStr = new Date().toISOString().split('T')[0] || '';
+    if (trend.length > 0 && !trend.some((t) => t.date === todayStr)) {
+      trend = [...trend, { date: todayStr, price: currentPriceKg, percentageChange: currentPercentageChange ?? undefined }];
+      trend.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    }
+    return trend.length > 0 ? trend : undefined;
+  } catch {
+    return undefined;
   }
 }

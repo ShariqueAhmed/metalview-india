@@ -69,7 +69,7 @@ export default function StructuredData({
         '@type': 'ListItem',
         position: 2,
         name: `${metalType.charAt(0).toUpperCase() + metalType.slice(1)} Prices`,
-        item: `${baseUrl}?metal=${metalType}`,
+        item: `${baseUrl}/${metalType}`,
       },
       ...(location
         ? [
@@ -77,7 +77,7 @@ export default function StructuredData({
               '@type': 'ListItem',
               position: 3,
               name: cityName,
-              item: `${baseUrl}?metal=${metalType}&city=${location}`,
+              item: `${baseUrl}/${metalType}?city=${location}`,
             },
           ]
         : []),
@@ -461,8 +461,8 @@ export default function StructuredData({
     thumbnailUrl: `${baseUrl}/api/og?metal=${metalType}&city=${location || 'india'}`,
     uploadDate: formatDate(lastUpdated),
     duration: 'PT30S', // 30 seconds - represents the time to view the chart
-    contentUrl: `${baseUrl}/?metal=${metalType}${location ? `&city=${location}` : ''}`,
-    embedUrl: `${baseUrl}/?metal=${metalType}${location ? `&city=${location}` : ''}`,
+    contentUrl: `${baseUrl}/${metalType}${location ? `?city=${location}` : ''}`,
+    embedUrl: `${baseUrl}/${metalType}${location ? `?city=${location}` : ''}`,
     publisher: {
       '@type': 'Organization',
       name: 'MetalView India',

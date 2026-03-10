@@ -5,6 +5,8 @@
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import { Shield, Lock, Eye, FileText } from 'lucide-react';
 
 export const metadata: Metadata = {
@@ -15,14 +17,16 @@ export const metadata: Metadata = {
 
 export default function PrivacyPolicyPage() {
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 card-shadow">
+    <div className="page-bg">
+      <div className="page-bg-ambient" aria-hidden />
+      <Header />
+      <main className="flex-1 relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="content-card p-6 sm:p-8 lg:p-10">
           {/* Header */}
           <div className="mb-8">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/30 flex items-center justify-center border-2 border-blue-200 dark:border-blue-800">
-                <Shield className="w-6 h-6 text-blue-600 dark:text-blue-400" aria-hidden="true" />
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-500/20 to-indigo-500/20 dark:from-sky-400/20 dark:to-indigo-400/20 flex items-center justify-center border border-sky-200/80 dark:border-sky-700/50">
+                <Shield className="w-6 h-6 text-sky-600 dark:text-sky-400" aria-hidden="true" />
               </div>
               <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-slate-50">
                 Privacy Policy
@@ -44,7 +48,7 @@ export default function PrivacyPolicyPage() {
           <section className="mb-8">
             <div className="flex items-center gap-2 mb-4">
               <FileText className="w-5 h-5 text-amber-600 dark:text-amber-400" aria-hidden="true" />
-              <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-50">
+              <h2 className="section-title">
                 Information We Collect
               </h2>
             </div>
@@ -76,7 +80,7 @@ export default function PrivacyPolicyPage() {
           <section className="mb-8">
             <div className="flex items-center gap-2 mb-4">
               <Eye className="w-5 h-5 text-amber-600 dark:text-amber-400" aria-hidden="true" />
-              <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-50">
+              <h2 className="section-title">
                 How We Use Your Information
               </h2>
             </div>
@@ -97,7 +101,7 @@ export default function PrivacyPolicyPage() {
           <section className="mb-8">
             <div className="flex items-center gap-2 mb-4">
               <Lock className="w-5 h-5 text-amber-600 dark:text-amber-400" aria-hidden="true" />
-              <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-50">
+              <h2 className="section-title">
                 Third-Party Services
               </h2>
             </div>
@@ -131,7 +135,7 @@ export default function PrivacyPolicyPage() {
 
           {/* Data Security */}
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-50 mb-4">
+            <h2 className="section-title mb-4">
               Data Security
             </h2>
             <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
@@ -141,7 +145,7 @@ export default function PrivacyPolicyPage() {
 
           {/* Your Rights */}
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-50 mb-4">
+            <h2 className="section-title mb-4">
               Your Rights
             </h2>
             <div className="space-y-2 text-slate-700 dark:text-slate-300">
@@ -159,8 +163,8 @@ export default function PrivacyPolicyPage() {
 
           {/* Children's Privacy */}
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-50 mb-4">
-              Children's Privacy
+            <h2 className="section-title mb-4">
+              Children&apos;s Privacy
             </h2>
             <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
               Our website is not intended for children under the age of 18. We do not knowingly collect personal information from children. If you are a parent or guardian and believe your child has provided us with personal information, please contact us.
@@ -169,7 +173,7 @@ export default function PrivacyPolicyPage() {
 
           {/* Changes to Privacy Policy */}
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-50 mb-4">
+            <h2 className="section-title mb-4">
               Changes to This Privacy Policy
             </h2>
             <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
@@ -179,13 +183,13 @@ export default function PrivacyPolicyPage() {
 
           {/* Contact Information */}
           <section id="contact" className="mb-8 scroll-mt-6">
-            <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-50 mb-4">
+            <h2 className="section-title mb-4">
               Contact Us
             </h2>
             <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
               If you have any questions about this Privacy Policy, please contact us:
             </p>
-            <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+            <div className="bg-slate-100/80 dark:bg-slate-800/80 rounded-xl p-5 border border-slate-200/80 dark:border-slate-700/80">
               <p className="text-slate-700 dark:text-slate-300">
                 <strong>Email:</strong>{' '}
                 <a 
@@ -205,16 +209,17 @@ export default function PrivacyPolicyPage() {
           </section>
 
           {/* Back to Home */}
-          <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800">
+          <div className="mt-8 pt-6 border-t border-slate-200/80 dark:border-slate-700/80">
             <Link
               href="/"
-              className="inline-flex items-center gap-2 text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 font-medium transition-colors"
+              className="inline-flex items-center gap-2 text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 rounded-lg px-2 py-1"
             >
               ← Back to Home
             </Link>
           </div>
         </div>
-      </div>
+      </main>
+      <Footer />
     </div>
   );
 }

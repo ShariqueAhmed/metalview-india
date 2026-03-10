@@ -102,6 +102,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.9,
   });
 
+  // Key content pages (guides hub, about, privacy) for discoverability and AdSense
+  sitemapEntries.push({
+    url: `${baseUrl}/guides`,
+    lastModified: now,
+    changeFrequency: 'weekly' as const,
+    priority: 0.85,
+  });
+  sitemapEntries.push({
+    url: `${baseUrl}/about`,
+    lastModified: now,
+    changeFrequency: 'monthly' as const,
+    priority: 0.8,
+  });
+  sitemapEntries.push({
+    url: `${baseUrl}/privacy-policy`,
+    lastModified: now,
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  });
+
   // Fetch last updated dates for cities (batch fetch for efficiency)
   const cityDates = new Map<string, Date>();
   const cityPromises = TOP_CITIES.map(async (city) => {

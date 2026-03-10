@@ -34,28 +34,28 @@ const METAL_INFO = {
     icon: '🪙',
     color: 'amber',
     unit: 'per 10g',
-    link: '/?metal=gold',
+    link: '/gold',
   },
   silver: {
     name: 'Silver',
     icon: '🥈',
     color: 'slate',
     unit: 'per 1kg',
-    link: '/?metal=silver',
+    link: '/silver',
   },
   platinum: {
     name: 'Platinum',
     icon: '💎',
     color: 'blue',
     unit: 'per 10g',
-    link: '/?metal=platinum',
+    link: '/platinum',
   },
   palladium: {
     name: 'Palladium',
     icon: '✨',
     color: 'purple',
     unit: 'per 10g',
-    link: '/?metal=palladium',
+    link: '/palladium',
   },
 };
 

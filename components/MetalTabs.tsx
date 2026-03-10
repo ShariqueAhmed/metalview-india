@@ -94,17 +94,15 @@ export default function MetalTabs({
           return (
             <button
               key={metal.id}
-              onClick={() => hasData && onMetalChange(metal.id)}
+              onClick={() => onMetalChange(metal.id)}
               onKeyDown={(e) => {
-                if ((e.key === 'Enter' || e.key === ' ') && hasData) {
+                if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault();
                   onMetalChange(metal.id);
                 }
               }}
-              disabled={!hasData}
-              aria-label={!hasData ? `${metal.name} data not available` : `View ${metal.name} prices`}
+              aria-label={!hasData ? `View ${metal.name} (data may be unavailable)` : `View ${metal.name} prices`}
               aria-pressed={isActive}
-              aria-disabled={!hasData}
               role="tab"
               tabIndex={isActive ? 0 : -1}
               className={`
@@ -114,9 +112,10 @@ export default function MetalTabs({
                   ? 'text-slate-900 dark:text-slate-50'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-50'
                 }
-                ${!hasData ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-t-lg'}
+                ${!hasData ? 'opacity-75' : ''}
+                cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-t-lg
               `}
-              title={!hasData ? `${metal.name} data not available` : `View ${metal.name} prices`}
+              title={!hasData ? `View ${metal.name} (data may be unavailable)` : `View ${metal.name} prices`}
             >
               <span className={`
                 ${isActive ? 'text-slate-900 dark:text-slate-50' : 'text-slate-500 dark:text-slate-400'}
@@ -143,17 +142,15 @@ export default function MetalTabs({
             return (
               <button
                 key={metal.id}
-                onClick={() => hasData && onMetalChange(metal.id)}
+                onClick={() => onMetalChange(metal.id)}
                 onKeyDown={(e) => {
-                  if ((e.key === 'Enter' || e.key === ' ') && hasData) {
+                  if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
                     onMetalChange(metal.id);
                   }
                 }}
-                disabled={!hasData}
-                aria-label={!hasData ? `${metal.name} data not available` : `View ${metal.name} prices`}
+                aria-label={!hasData ? `View ${metal.name} (data may be unavailable)` : `View ${metal.name} prices`}
                 aria-pressed={isActive}
-                aria-disabled={!hasData}
                 role="tab"
                 tabIndex={isActive ? 0 : -1}
                 className={`
@@ -164,9 +161,10 @@ export default function MetalTabs({
                     ? 'bg-slate-900 dark:bg-slate-50 text-white dark:text-slate-900 shadow-sm'
                     : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 active:bg-slate-200 dark:active:bg-slate-700'
                   }
-                  ${!hasData ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
+                  ${!hasData ? 'opacity-75' : ''}
+                  cursor-pointer
                 `}
-                title={!hasData ? `${metal.name} data not available` : `View ${metal.name} prices`}
+                title={!hasData ? `View ${metal.name} (data may be unavailable)` : `View ${metal.name} prices`}
               >
                 <span className={`
                   ${isActive ? 'text-white dark:text-slate-900' : 'text-slate-600 dark:text-slate-400'}
