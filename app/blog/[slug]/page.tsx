@@ -1125,6 +1125,250 @@ Stay updated with Surat gold prices on MetalView.
     readTime: '6 min read',
     category: 'City Guide',
   },
+  'silver-price-trends-india-2026': {
+    slug: 'silver-price-trends-india-2026',
+    title: 'Silver Price Trends in India: What Drives the Market in 2026',
+    excerpt: 'Understand how industrial demand, import duties, the US dollar, and festival season affect silver rates in India—and how to track live prices responsibly.',
+    content: `
+# Silver Price Trends in India: What Drives the Market in 2026
+
+Silver plays two roles in India: a precious metal for jewelry and savings, and an industrial commodity used in electronics, solar panels, and medical devices. That dual demand makes silver prices more volatile than gold in the short term.
+
+## Why Silver Moves Differently From Gold
+
+- **Industrial share:** A large portion of global silver demand comes from industry. When manufacturing and green-energy investment grow, silver can rise even when gold is flat.
+- **Smaller market:** The silver market is less deep than gold, so news and currency moves can cause sharper daily swings.
+- **Rupee and dollar:** Silver is priced internationally in US dollars. A weaker rupee often means higher rupee prices for Indian buyers, even if global silver is unchanged.
+
+## Seasonal Patterns in India
+
+Indian households buy silver for festivals, weddings, and gifting. Demand often picks up around Diwali, Dhanteras, and the wedding season. Jewelers may adjust premiums and making charges during busy periods, so the effective price you pay can differ from the raw metal rate.
+
+## How to Use Live Silver Rates
+
+Before you buy coins, bars, or jewelry:
+
+1. Check **today’s silver rate** for your city on a trusted source.
+2. Ask for **BIS-hallmarked** or clearly stated purity (often 999 for coins, lower for alloys in jewelry).
+3. Separate **metal value** from **making charges** and GST so you can compare shops fairly.
+
+## Disclaimer
+
+Metal prices change frequently. Rates on MetalView are aggregated for information only and are not buy or sell recommendations. Always confirm with your jeweler or financial adviser before large purchases or investments.
+
+For current numbers, see our live **silver** hub and city pages linked from the homepage and guides section.
+    `,
+    date: '2026-03-08',
+    readTime: '8 min read',
+    category: 'Market Analysis',
+  },
+  'platinum-palladium-prices-india-guide': {
+    slug: 'platinum-palladium-prices-india-guide',
+    title: 'Platinum and Palladium Prices in India: A Practical Guide',
+    excerpt: 'Learn how platinum and palladium are quoted in India, why they matter for jewelry and industry, and what to watch when comparing live rates.',
+    content: `
+# Platinum and Palladium Prices in India: A Practical Guide
+
+Platinum and palladium are rarer than gold and are heavily used in automotive catalysts, jewelry, and industrial applications. In India, they are less mainstream than gold but interest is growing among urban buyers and investors who want diversification.
+
+## How Prices Are Usually Shown
+
+Retail platforms often quote platinum **per gram** or **per 10 grams**, similar to gold. Palladium may be quoted less frequently at retail but still follows global spot markets, currency effects, and import dynamics.
+
+## Factors That Influence Rates
+
+- **Global supply:** Most platinum and palladium come from a small number of mining regions. Disruptions can move prices quickly.
+- **Auto sector:** Demand for catalytic converters affects both metals, especially palladium historically.
+- **Jewelry trend:** Platinum jewelry competes with 18K and 22K gold on design and durability; marketing and wedding trends can lift local demand.
+- **Exchange rates and duties:** Rupee movement and policy affect landed cost in India.
+
+## Buying Tips
+
+1. Insist on **purity disclosure** and invoicing that shows weight and rate.
+2. Compare **total out-the-door price**, not just “rate per gram.”
+3. Treat very large purchases as **long-term** decisions; spreads and making charges matter more on small lots.
+
+Use MetalView’s **platinum** and **palladium** pages to compare live indicators alongside gold and silver—helpful for a full precious-metals picture.
+
+This article is for education only and not financial advice.
+    `,
+    date: '2026-03-07',
+    readTime: '7 min read',
+    category: 'Education',
+  },
+  'sovereign-gold-bonds-vs-physical-gold-india': {
+    slug: 'sovereign-gold-bonds-vs-physical-gold-india',
+    title: 'Sovereign Gold Bonds vs Physical Gold in India: Pros and Cons',
+    excerpt: 'Compare SGBs with coins and jewelry: liquidity, safety, GST, interest, and who each option suits—without hype.',
+    content: `
+# Sovereign Gold Bonds vs Physical Gold in India: Pros and Cons
+
+Many Indian families default to **physical gold**—coins, bars, or jewelry—while the government also offers **Sovereign Gold Bonds (SGBs)** as a paper form of gold exposure. Both track gold’s price direction differently and suit different goals.
+
+## Physical Gold
+
+### Advantages
+- **Tangible** asset you can hold or wear.
+- **No demat** account required for small jewelry purchases.
+- **Cultural and emotional** value for weddings and festivals.
+
+### Drawbacks
+- **Making charges** and **GST** on jewelry raise effective cost.
+- **Storage and theft** risk for bullion at home; bank lockers add cost.
+- **Resale** may involve deductions for purity checks and margins.
+
+## Sovereign Gold Bonds (Overview)
+
+SGBs are government securities denominated in grams of gold. They are not the same as owning metal in your hand, but they aim to track gold prices with certain features (such as a fixed interest on the issue price in many tranches—check current RBI/official terms when you invest).
+
+### Advantages
+- **No making charges** or jewelry-style GST on the bond itself (tax rules can change; verify at investment time).
+- **Held in demat** or electronic form—no locker needed.
+- **Interest component** where applicable is an extra over gold-like exposure (subject to terms each series).
+
+### Drawbacks
+- **Liquidity** is limited compared to physical resale; secondary market depth varies.
+- **Tenure** is long-term by design; early exit has rules and windows.
+- **No jewelry use**—purely financial exposure.
+
+## Who Might Prefer What?
+
+- **Jewelry or gifting:** Physical (with BIS hallmark and clear invoices).
+- **Long-term financial exposure without storage:** SGBs may be worth discussing with a financial adviser.
+- **Trading short-term moves:** Neither physical nor SGBs are ideal without understanding costs and rules.
+
+MetalView helps you monitor **live gold rates** so you understand the market context for any choice. We do not sell bonds or bullion; always read official RBI notifications before investing.
+    `,
+    date: '2026-03-06',
+    readTime: '9 min read',
+    category: 'Investment',
+  },
+  'gst-on-gold-jewelry-india-explained': {
+    slug: 'gst-on-gold-jewelry-india-explained',
+    title: 'GST on Gold Jewelry in India: What Buyers Should Know',
+    excerpt: 'A plain-English overview of how GST applies to gold jewelry, making charges, and repairs—plus questions to ask at the counter.',
+    content: `
+# GST on Gold Jewelry in India: What Buyers Should Know
+
+Goods and Services Tax (GST) affects how much you **actually pay** for gold jewelry, beyond the headline “gold rate per gram.” Rules can be updated by the government; this article explains the **concepts** so you can read your bill critically—always confirm current rates with a chartered accountant or the jeweler’s invoice template.
+
+## Gold Metal vs Making Charges
+
+Typically, **GST applies separately** to the value of gold (as supplied) and to **making charges** (as a service or supply component depending on how the invoice is structured). Your bill should break these out so you can see:
+
+- Weight × rate for gold
+- Making charges (flat or per gram)
+- Applicable GST lines (rates depend on current law)
+
+## Why Your “Effective Price” Differs From the Board Rate
+
+The board outside a shop often shows **22K or 24K rate per gram**. Your final cost usually adds:
+
+1. **Making charges** (design complexity, brand, wastage policy)
+2. **GST** on eligible components
+3. **Stones and other materials** billed separately if applicable
+
+## Repairs and Exchanges
+
+Policies for **old gold exchange** or **repairs** vary by store. Ask whether GST is charged on labor only, on added gold, or on both, and get a written estimate.
+
+## Smart Questions to Ask
+
+- Is this **BIS hallmarked**? What **purity** is stated?
+- What is **today’s rate** for this purity, and how does it compare to a live benchmark?
+- Please show **GST breakdown** on the estimate.
+
+Track **live gold prices** on MetalView before you visit the store so you have a reference point for conversation—not a substitute for the jeweler’s final invoice.
+
+This content is educational, not tax or legal advice.
+    `,
+    date: '2026-03-05',
+    readTime: '7 min read',
+    category: 'Education',
+  },
+  'copper-price-india-guide-industrial-demand': {
+    slug: 'copper-price-india-guide-industrial-demand',
+    title: 'Copper Price in India: Why It Matters Beyond the Headline',
+    excerpt: 'Copper links construction, power, and EV trends to everyday costs. Here is how Indian buyers and businesses can think about copper rates.',
+    content: `
+# Copper Price in India: Why It Matters Beyond the Headline
+
+Copper is sometimes called “Dr. Copper” because demand often reflects industrial health. In India, copper matters for **power infrastructure**, **construction wiring**, **renewable energy**, and a wide range of **manufacturing**.
+
+## What Moves Copper?
+
+- **Global growth expectations:** When factories and construction slow globally, copper can soften; when stimulus and infrastructure accelerate, demand rises.
+- **Inventories and mining:** Supply disruptions or stock levels at exchanges influence short-term prices.
+- **Currency:** Like other commodities, rupee and dollar moves change the rupee price Indian users see.
+
+## Retail vs Industrial Users
+
+Most Indian households do not buy copper the way they buy gold jewelry. Instead, copper affects **input costs** for builders, electricians, appliance makers, and infrastructure projects. For investors, copper exposure is usually through **commodity markets or funds**, which carry separate risks and rules.
+
+## Using Live Copper Data
+
+If you follow copper on MetalView:
+
+1. Treat numbers as **market indicators**, not personal trading signals.
+2. Pair price data with **news on power and construction** for context.
+3. For trading or hedging, use **SEBI-regulated channels** and professional advice.
+
+We aggregate data for transparency and learning. Prices are not recommendations to buy or sell any instrument.
+
+Visit our **copper** metal page and **guides** for links to related reading.
+    `,
+    date: '2026-03-04',
+    readTime: '6 min read',
+    category: 'Market Analysis',
+  },
+  'how-to-read-live-metal-prices-metalview': {
+    slug: 'how-to-read-live-metal-prices-metalview',
+    title: 'How to Read Live Metal Prices on MetalView (Step by Step)',
+    excerpt: 'A transparent guide to using MetalView: metal hubs, city pages, last updated times, and how to interpret rates before you buy or invest.',
+    content: `
+# How to Read Live Metal Prices on MetalView (Step by Step)
+
+MetalView is built to give Indian users a **single place** to check gold, silver, copper, platinum, and palladium indicators with city context where available. This guide helps you use the site effectively.
+
+## Start From the Homepage
+
+The homepage links to **each metal** (gold, silver, copper, platinum, palladium). Choose your metal to see a focused view with market context and educational copy.
+
+## City and “Price in City” Pages
+
+For many locations you can open:
+
+- **City overview** pages that summarize multiple metals for one city.
+- **Metal + city** URLs such as gold or silver **price in Mumbai, Delhi**, and other centers.
+
+Use these when you want to compare **what is typical in your area** before visiting a jeweler or broker.
+
+## Last Updated Timestamps
+
+Look for **“Last updated”** on data-heavy pages. Markets move during the day; a timestamp tells you how fresh the snapshot is. If the stamp is old, refresh later or confirm with another source before large decisions.
+
+## Purity and Units
+
+Gold may be shown for **24K, 22K, 18K**, or by weight (per gram / 10 grams). Silver may be per kilogram or per gram depending on context. Always match the **same purity and unit** when comparing two shops or two websites.
+
+## Guides and Blog
+
+Our **Guides** section covers purity, investment themes, and city buying tips. The **Blog** adds deeper articles on trends, GST concepts, and market behavior—all written for Indian readers.
+
+## Important Limitations
+
+- MetalView **does not** sell jewelry, coins, or bonds.
+- Displayed prices come from **aggregated data sources** and may differ slightly from your jeweler’s board rate.
+- Nothing here is **financial, tax, or legal advice**.
+
+If something looks wrong, use the **About** page to understand our methodology, then cross-check with primary sources.
+
+Thank you for using MetalView as part of your research.
+    `,
+    date: '2026-03-03',
+    readTime: '6 min read',
+    category: 'Education',
+  },
 };
 
 interface BlogPostPageProps {

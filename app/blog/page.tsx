@@ -6,18 +6,21 @@ import { Calendar, Clock, ArrowRight, Sparkles } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Gold Price Blog - Latest News & Insights | MetalView',
-  description: 'Stay updated with the latest gold price trends, market insights, and investment tips. Learn about gold purity, buying guides, and market analysis.',
+  description: 'Expert articles on gold, silver, copper, platinum, and palladium in India—GST, SGBs, live rates, city guides, and market trends. Educational content for buyers and investors.',
   keywords: [
     'gold price news',
-    'gold market trends',
-    'gold investment tips',
-    'gold buying guide',
-    'gold price analysis',
+    'silver price india',
     'precious metals blog',
+    'GST on gold jewelry india',
+    'sovereign gold bonds india',
+    'copper price india',
+    'platinum price india',
+    'metal investment tips',
+    'live metal prices guide',
   ],
   openGraph: {
-    title: 'Gold Price Blog - Latest News & Insights | MetalView',
-    description: 'Stay updated with the latest gold price trends and market insights.',
+    title: 'Metal & Gold Price Blog | MetalView India',
+    description: 'In-depth guides on gold, silver, copper, platinum, and palladium prices and policies in India.',
     url: 'https://metalview.in/blog',
   },
 };
@@ -32,6 +35,12 @@ interface BlogPost {
 }
 
 const blogPosts: BlogPost[] = [
+  { slug: 'silver-price-trends-india-2026', title: 'Silver Price Trends in India: What Drives the Market in 2026', excerpt: 'Understand how industrial demand, import duties, the US dollar, and festival season affect silver rates in India—and how to track live prices responsibly.', date: '2026-03-08', readTime: '8 min read', category: 'Market Analysis' },
+  { slug: 'platinum-palladium-prices-india-guide', title: 'Platinum and Palladium Prices in India: A Practical Guide', excerpt: 'Learn how platinum and palladium are quoted in India, why they matter for jewelry and industry, and what to watch when comparing live rates.', date: '2026-03-07', readTime: '7 min read', category: 'Education' },
+  { slug: 'sovereign-gold-bonds-vs-physical-gold-india', title: 'Sovereign Gold Bonds vs Physical Gold in India: Pros and Cons', excerpt: 'Compare SGBs with coins and jewelry: liquidity, safety, GST, interest, and who each option suits—without hype.', date: '2026-03-06', readTime: '9 min read', category: 'Investment' },
+  { slug: 'gst-on-gold-jewelry-india-explained', title: 'GST on Gold Jewelry in India: What Buyers Should Know', excerpt: 'A plain-English overview of how GST applies to gold jewelry, making charges, and repairs—plus questions to ask at the counter.', date: '2026-03-05', readTime: '7 min read', category: 'Education' },
+  { slug: 'copper-price-india-guide-industrial-demand', title: 'Copper Price in India: Why It Matters Beyond the Headline', excerpt: 'Copper links construction, power, and EV trends to everyday costs. Here is how Indian buyers and businesses can think about copper rates.', date: '2026-03-04', readTime: '6 min read', category: 'Market Analysis' },
+  { slug: 'how-to-read-live-metal-prices-metalview', title: 'How to Read Live Metal Prices on MetalView (Step by Step)', excerpt: 'A transparent guide to using MetalView: metal hubs, city pages, last updated times, and how to interpret rates before you buy or invest.', date: '2026-03-03', readTime: '6 min read', category: 'Education' },
   { slug: 'understanding-gold-purity-24k-vs-22k', title: 'Understanding Gold Purity: 24K vs 22K - Which is Better?', excerpt: 'Learn the key differences between 24K and 22K gold, their uses, and which one is better for investment vs jewelry.', date: '2025-01-20', readTime: '5 min read', category: 'Education' },
   { slug: 'gold-price-trends-2025', title: 'Gold Price Trends 2025: What to Expect', excerpt: 'Analyze the current gold market trends and predictions for 2025. Understand factors affecting gold prices in India.', date: '2025-01-18', readTime: '7 min read', category: 'Market Analysis' },
   { slug: 'best-time-to-buy-gold', title: 'Best Time to Buy Gold: A Complete Guide', excerpt: 'Discover the optimal times to buy gold, seasonal patterns, and factors to consider before making your purchase.', date: '2025-01-15', readTime: '6 min read', category: 'Investment' },

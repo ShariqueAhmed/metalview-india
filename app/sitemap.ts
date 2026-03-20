@@ -9,6 +9,7 @@
  */
 
 import { MetadataRoute } from 'next';
+import { BLOG_SITEMAP_ENTRIES } from '@/utils/blogSitemapData';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://metalview.in';
 
@@ -32,28 +33,6 @@ const GUIDE_PAGES = [
   { path: '24k-vs-22k-vs-18k-gold', priority: 0.85 },
   { path: 'gold-price-trends-2025', priority: 0.85 },
   { path: 'best-cities-to-buy-gold', priority: 0.85 },
-];
-
-/** All blog posts with publication date (from blog/page.tsx) */
-const BLOG_POSTS: { slug: string; date: string }[] = [
-  { slug: 'understanding-gold-purity-24k-vs-22k', date: '2025-01-20' },
-  { slug: 'gold-price-trends-2025', date: '2025-01-18' },
-  { slug: 'best-time-to-buy-gold', date: '2025-01-15' },
-  { slug: 'gold-investment-vs-jewelry', date: '2025-01-12' },
-  { slug: 'how-to-calculate-gold-price', date: '2025-01-10' },
-  { slug: 'gold-hallmark-explained', date: '2025-01-08' },
-  { slug: 'factors-affecting-gold-prices', date: '2025-01-05' },
-  { slug: 'gold-investment-strategies', date: '2025-01-03' },
-  { slug: 'gold-price-in-delhi', date: '2025-01-19' },
-  { slug: 'gold-price-in-mumbai', date: '2025-01-17' },
-  { slug: 'gold-price-in-bangalore', date: '2025-01-16' },
-  { slug: 'gold-price-in-kolkata', date: '2025-01-14' },
-  { slug: 'gold-price-in-chennai', date: '2025-01-13' },
-  { slug: 'gold-price-in-hyderabad', date: '2025-01-11' },
-  { slug: 'gold-price-in-pune', date: '2025-01-09' },
-  { slug: 'gold-price-in-ahmedabad', date: '2025-01-07' },
-  { slug: 'gold-price-in-jaipur', date: '2025-01-06' },
-  { slug: 'gold-price-in-surat', date: '2025-01-04' },
 ];
 
 /** Fetch last updated for a city from API (cached) */
@@ -136,7 +115,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   // —— Tier 4: Blog index & posts ——
-  const blogDatesSorted = [...BLOG_POSTS.map((p) => p.date)].sort().reverse();
+  const blogDatesSorted = [...BLOG_SITEMAP_ENTRIES.map((p) => p.date)].sort().reverse();
   const latestBlogDateStr = blogDatesSorted[0];
   const latestBlogDate =
     latestBlogDateStr !== undefined ? new Date(latestBlogDateStr) : now;
@@ -147,7 +126,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.85,
   });
 
-  for (const { slug, date } of BLOG_POSTS) {
+  for (const { slug, date } of BLOG_SITEMAP_ENTRIES) {
     entries.push({
       url: `${BASE_URL}/blog/${slug}`,
       lastModified: new Date(date),

@@ -129,7 +129,7 @@ After adding the property for `metalview.in`, submit the sitemap and use “Requ
 ## 7. Blog & Guides
 
 ### Current state
-- Blog index and 19 posts; guides hub and 7 guide pages.
+- Blog index and 25 posts; guides hub and 7 guide pages.
 - Article schema and HowTo schema on blog.
 - **Metadata:** Blog post pages have canonical, openGraph.images (`/api/og?title=...`), publishedTime, and Article JSON-LD with datePublished/dateModified.
 - **Next 15:** `params` is typed as `Promise<{ slug: string }>` and awaited in both `generateMetadata` and the page component.
