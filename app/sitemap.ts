@@ -136,9 +136,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   // —— Tier 4: Blog index & posts ——
-  const latestBlogDate = BLOG_POSTS.length
-    ? new Date(BLOG_POSTS.map((p) => p.date).sort().reverse()[0])
-    : now;
+  const blogDatesSorted = [...BLOG_POSTS.map((p) => p.date)].sort().reverse();
+  const latestBlogDateStr = blogDatesSorted[0];
+  const latestBlogDate =
+    latestBlogDateStr !== undefined ? new Date(latestBlogDateStr) : now;
   entries.push({
     url: `${BASE_URL}/blog`,
     lastModified: latestBlogDate,

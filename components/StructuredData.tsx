@@ -451,8 +451,6 @@ export default function StructuredData({
     },
   };
 
-  const metalName = metalType.charAt(0).toUpperCase() + metalType.slice(1);
-
   // SoftwareApplication Schema for PWA (no fake ratings - policy-safe)
   const appSchema = {
     '@context': 'https://schema.org',
