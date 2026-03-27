@@ -1,9 +1,13 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { Suspense } from 'react';
+import Script from 'next/script';
 import { Analytics as VercelAnalytics } from '@vercel/analytics/next';
 import './globals.css';
 import { Analytics } from './analytics';
+
+/** Google Analytics 4 (gtag). Override with NEXT_PUBLIC_GA_MEASUREMENT_ID in env. */
+const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? 'G-ZMRV17R3P2';
 
 // Optimize font loading with display swap to prevent FOIT (Flash of Invisible Text)
 const inter = Inter({ 
@@ -190,6 +194,23 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className}>
+        {/* Google tag (gtag.js) — one tag site-wide; loads after hydration */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script
+          id="google-tag-gtag-init"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${GA_MEASUREMENT_ID}');
+            `,
+          }}
+        />
         {/* Skip to main content link for screen readers */}
         <a
           href="#main-content"
