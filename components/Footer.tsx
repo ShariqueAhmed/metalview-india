@@ -56,10 +56,16 @@ export default function Footer() {
               Privacy Policy
             </Link>
             <Link
-              href="/privacy-policy#contact"
+              href="/terms-of-service"
               className="py-2 text-slate-600 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors touch-manipulation"
             >
-              Contact
+              Terms of Service
+            </Link>
+            <Link
+              href="/contact"
+              className="py-2 text-slate-600 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors touch-manipulation"
+            >
+              Contact Us
             </Link>
           </div>
         </div>

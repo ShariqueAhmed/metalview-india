@@ -105,9 +105,9 @@ export async function fetchCopperPrices(): Promise<CopperData> {
   const expiryDates = getExpiryDatesToTry();
 
   // 1) Try live price API with multiple expiry dates
-  let data: CopperApiResponse | null = null;
-  let lastError: Error | null = null;
-
+    let data: CopperApiResponse | null = null;
+    let lastError: Error | null = null;
+    
   // Also try without expiry (some APIs return front-month by default)
   const urlsToTry = [
     ...expiryDates.map((expiry) => `https://priceapi.moneycontrol.com/pricefeed/mcx/commodityfutures/COPPER?expiry=${expiry}`),
@@ -187,22 +187,22 @@ export async function fetchCopperPrices(): Promise<CopperData> {
   if (!copperTrend) {
     const trendResult = await fetchCopperHistoricalTrend(copper_1kg, percentageChange);
     copperTrend = trendResult;
-  }
+    }
 
-  return {
-    copper_1kg: Math.round(copper_1kg * 100) / 100,
-    copper_100g: Math.round(copper_100g * 100) / 100,
-    copper_10g: Math.round(copper_10g * 100) / 100,
-    copper_1g: Math.round(copper_1g * 100) / 100,
-    updated_at: new Date().toISOString(),
-    percentageChange: percentageChange !== null && !isNaN(percentageChange) ? percentageChange : null,
-    change: change !== null && !isNaN(change) ? change : null,
-    openPrice: openPrice !== null && !isNaN(openPrice) ? openPrice : null,
-    highPrice: highPrice !== null && !isNaN(highPrice) ? highPrice : null,
-    lowPrice: lowPrice !== null && !isNaN(lowPrice) ? lowPrice : null,
-    prevClose: prevClose !== null && !isNaN(prevClose) ? prevClose : null,
-    copperTrend: copperTrend && copperTrend.length > 0 ? copperTrend : undefined,
-  };
+    return {
+      copper_1kg: Math.round(copper_1kg * 100) / 100,
+      copper_100g: Math.round(copper_100g * 100) / 100,
+      copper_10g: Math.round(copper_10g * 100) / 100,
+      copper_1g: Math.round(copper_1g * 100) / 100,
+      updated_at: new Date().toISOString(),
+      percentageChange: percentageChange !== null && !isNaN(percentageChange) ? percentageChange : null,
+      change: change !== null && !isNaN(change) ? change : null,
+      openPrice: openPrice !== null && !isNaN(openPrice) ? openPrice : null,
+      highPrice: highPrice !== null && !isNaN(highPrice) ? highPrice : null,
+      lowPrice: lowPrice !== null && !isNaN(lowPrice) ? lowPrice : null,
+      prevClose: prevClose !== null && !isNaN(prevClose) ? prevClose : null,
+      copperTrend: copperTrend && copperTrend.length > 0 ? copperTrend : undefined,
+    };
 }
 
 const MONEYCONTROL_HEADERS = {

@@ -116,10 +116,10 @@ export default function HomeClient() {
         >
           <h2 id="metal-pages" className="sr-only">
             Metal price pages
-          </h2>
+                    </h2>
           {METALS.map((metal, i) => {
             const Icon = metal.icon;
-            return (
+                return (
               <Link
                 key={metal.id}
                 href={metal.href}
@@ -144,9 +144,9 @@ export default function HomeClient() {
                   View {metal.name} prices
                   <ArrowRight className="w-4 h-4 flex-shrink-0 group-hover:translate-x-0.5 transition-transform" aria-hidden />
                 </span>
-              </Link>
-            );
-          })}
+                      </Link>
+                    );
+                  })}
         </section>
 
         {/* Bottom CTA */}

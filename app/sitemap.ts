@@ -104,6 +104,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   });
 
+  entries.push({
+    url: `${BASE_URL}/contact`,
+    lastModified: now,
+    changeFrequency: 'monthly',
+    priority: 0.65,
+  });
+
+  entries.push({
+    url: `${BASE_URL}/terms-of-service`,
+    lastModified: now,
+    changeFrequency: 'monthly',
+    priority: 0.65,
+  });
+
   // —— Tier 3: Guide pages ——
   for (const { path, priority } of GUIDE_PAGES) {
     entries.push({

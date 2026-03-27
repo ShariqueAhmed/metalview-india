@@ -67,19 +67,19 @@ function BlogCard({ post, variant }: { post: BlogPost; variant: 'default' | 'cit
     : 'bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 border-amber-200/60 dark:border-amber-700/50';
   return (
     <article className="content-card metal-card-shine p-6 hover:shadow-lg dark:hover:shadow-amber-500/5 transition-all duration-300 group overflow-hidden">
-      <div className="flex items-center gap-2 mb-3">
+                  <div className="flex items-center gap-2 mb-3">
         <span className={`px-2.5 py-1 text-xs font-semibold rounded-lg border ${badgeClass}`}>
-          {post.category}
-        </span>
-      </div>
+                      {post.category}
+                    </span>
+                  </div>
       <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50 mb-3 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
         <Link href={`/blog/${post.slug}`} className="focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 rounded">
-          {post.title}
+                    {post.title}
         </Link>
-      </h2>
+                  </h2>
       <p className="text-slate-600 dark:text-slate-400 mb-4 line-clamp-3 leading-relaxed">
-        {post.excerpt}
-      </p>
+                    {post.excerpt}
+                  </p>
       <div className="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400 mb-4">
         <span className="flex items-center gap-1.5">
           <Calendar className="w-4 h-4" aria-hidden />
@@ -89,14 +89,14 @@ function BlogCard({ post, variant }: { post: BlogPost; variant: 'default' | 'cit
           <Clock className="w-4 h-4" aria-hidden />
           {post.readTime}
         </span>
-      </div>
-      <Link
-        href={`/blog/${post.slug}`}
+                  </div>
+                  <Link
+                    href={`/blog/${post.slug}`}
         className="inline-flex items-center gap-2 text-sm font-semibold text-amber-600 dark:text-amber-400 hover:gap-3 transition-all"
-      >
-        Read more
+                  >
+                    Read more
         <ArrowRight className="w-4 h-4" aria-hidden />
-      </Link>
+                  </Link>
     </article>
   );
 }
@@ -114,7 +114,7 @@ export default function BlogPage() {
           <div className="inline-flex items-center gap-2 rounded-full bg-amber-100/80 dark:bg-amber-900/30 border border-amber-200/60 dark:border-amber-700/40 px-3.5 py-1.5 mb-6 text-xs font-medium text-amber-800 dark:text-amber-200">
             <Sparkles className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" aria-hidden />
             News & insights
-          </div>
+                </div>
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-50 mb-4">
             <span className="home-hero-gradient">Gold Price Blog</span>
           </h1>
