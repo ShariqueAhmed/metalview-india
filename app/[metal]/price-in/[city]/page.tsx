@@ -24,7 +24,6 @@ import FAQSchema from '@/components/FAQSchema';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import LastUpdated from '@/components/LastUpdated';
 import YouMayAlsoLike from '@/components/YouMayAlsoLike';
-import { AdSenseResponsive } from '@/components/AdSense';
 import { GoldPriceCityBlock } from './GoldPriceCityBlock';
 
 interface CityPageProps {
@@ -101,6 +100,56 @@ const CITY_FAQS: Record<string, Array<{ question: string; answer: string }>> = {
     },
   ],
 };
+
+function getMetalPurposeLine(metal: MetalType): string {
+  switch (metal) {
+    case 'gold':
+      return 'Gold buyers usually care about purity, jewellery pricing, coins or bars, and how today’s quoted rate turns into a final bill.';
+    case 'silver':
+      return 'Silver buyers often compare affordability, bulk purchase economics, industrial-demand volatility, and local resale convenience.';
+    case 'copper':
+      return 'Copper prices are more useful as a market indicator for businesses, contractors, and commodity followers than as a retail buying signal.';
+    case 'platinum':
+      return 'Platinum buyers usually compare it with gold for jewellery, premium design choices, and niche investment interest.';
+    case 'palladium':
+      return 'Palladium is usually followed for industrial and precious-metals context rather than mainstream retail buying.';
+  }
+}
+
+function getMetalBuyingChecklist(metal: MetalType, cityName: string): string[] {
+  switch (metal) {
+    case 'gold':
+      return [
+        `Confirm whether the quote in ${cityName} is for 24K, 22K, or 18K before comparing it elsewhere.`,
+        'Ask for making charges, GST, and hallmark details separately from the metal rate.',
+        'Compare the final invoice, not just the displayed board price.',
+      ];
+    case 'silver':
+      return [
+        'Check whether the rate is per gram or per kilogram before comparing dealers.',
+        'For jewellery or utensils, separate fabrication costs from metal value.',
+        'If buying in larger quantity, consider storage and resale practicality too.',
+      ];
+    case 'copper':
+      return [
+        'Treat the published copper rate as a market reference, not as a retail quote.',
+        'If copper is being sourced for business use, compare grade, delivery, and taxes together.',
+        'Use trend data for planning context rather than day-trading assumptions.',
+      ];
+    case 'platinum':
+      return [
+        'Check purity, weight unit, and total billed amount before comparing platinum offers.',
+        'If buying jewellery, ask how fabrication affects the final price.',
+        'Use live rates as context, but verify the actual retail quote directly.',
+      ];
+    case 'palladium':
+      return [
+        'Verify exactly how the seller is quoting palladium and in what unit.',
+        'Expect thinner retail availability than gold or silver in many cities.',
+        'Compare the total cost and liquidity implications before buying.',
+      ];
+  }
+}
 
 // Generate static params for top cities and metals
 // Pages will be generated on-demand (ISR) to avoid build-time fetch timeouts
@@ -406,6 +455,9 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
             <p className="text-slate-600 dark:text-slate-400 mb-4">
               Use this page to see the current {metal} rate in {cityName}, compare with other cities using the table and chart below, and understand why prices vary by location. All rates are indicative; confirm with local dealers before buying.
             </p>
+            <p className="text-slate-600 dark:text-slate-400 mb-4">
+              {getMetalPurposeLine(metalType)}
+            </p>
             {data?.updated_at && (
               <LastUpdated date={data.updated_at} />
             )}
@@ -418,11 +470,6 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
               selectedCity={city}
               metal={metal}
             />
-          </div>
-
-          {/* AdSense Ad - After Header */}
-          <div className="mb-8 flex justify-center">
-            <AdSenseResponsive className="min-h-[100px] max-w-full" />
           </div>
 
           {/* Main Price Section */}
@@ -497,6 +544,35 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
             </div>
           )}
 
+          <div className="mb-8 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 p-6 sm:p-8 card-shadow">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-4">
+              How to Use This {metal.charAt(0).toUpperCase() + metal.slice(1)} Page in {cityName}
+            </h2>
+            <div className="grid gap-6 lg:grid-cols-2">
+              <div>
+                <p className="text-slate-600 dark:text-slate-400 mb-4">
+                  Start with the live rate and visible timestamp, then compare the history table and chart to understand whether today&apos;s move looks ordinary or unusually sharp. That helps you avoid reacting to a single number without context.
+                </p>
+                <p className="text-slate-600 dark:text-slate-400">
+                  If you are buying locally in {cityName}, use this page as a benchmark before you ask for a final quote. For physical purchases, the real decision should be based on the full bill and product details, not on the benchmark rate alone.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-50 mb-3">
+                  Quick checklist
+                </h3>
+                <ul className="space-y-2 text-slate-600 dark:text-slate-400">
+                  {getMetalBuyingChecklist(metalType, cityName).map((item) => (
+                    <li key={item} className="flex gap-2">
+                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-amber-500 dark:bg-amber-400 flex-shrink-0" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+
           {/* Why Prices Differ in [City] Section */}
           <div className="mb-8 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 p-6 sm:p-8 card-shadow">
             <div className="flex items-center gap-3 mb-4">
@@ -522,6 +598,9 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
               </ul>
               <p className="text-slate-600 dark:text-slate-400 mb-4">
                 In {cityName}, {metal} rates are also influenced by local festivals, wedding demand, and the presence of refineries or wholesale markets. Checking the price history on this page can help you spot seasonal patterns before you buy or sell.
+              </p>
+              <p className="text-slate-600 dark:text-slate-400 mb-4">
+                On approval-quality publisher pages, the useful part is not merely saying that cities differ. It is explaining how that difference shows up in real life. In practice, the benchmark metal rate may vary only modestly, while the effective out-of-pocket cost changes more because of shop policy, fabrication, urgency, local competition, and product mix.
               </p>
               <p className="text-slate-600 dark:text-slate-400">
                 Prices displayed are indicative and may vary slightly from actual market rates due
@@ -585,11 +664,6 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
             metal={metalType}
             city={city}
           />
-
-          {/* AdSense Ad - Before Related Sections */}
-          <div className="mb-8 flex justify-center">
-            <AdSenseResponsive className="min-h-[100px] max-w-full" />
-          </div>
 
           {/* Related Cities Section */}
           <section aria-labelledby="related-cities" className="mb-8 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 p-6 sm:p-8 card-shadow">
@@ -662,10 +736,6 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
             </div>
           </section>
 
-          {/* AdSense Ad - Before Footer */}
-          <div className="mb-8 flex justify-center">
-            <AdSenseResponsive className="min-h-[100px] max-w-full" />
-          </div>
         </main>
 
         <Footer />

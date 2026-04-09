@@ -126,6 +126,30 @@ export default function GuidesPage() {
           </p>
         </header>
 
+        <section className="mb-10 content-card p-6 sm:p-7">
+          <h2 className="section-title mb-4">How We Build Our Guides</h2>
+          <div className="grid gap-4 md:grid-cols-3">
+            <div>
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Explain the numbers</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                Our guides are meant to add context to live rates by explaining purity, taxes, buying costs, market behavior, and practical comparison points.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Stay decision-useful</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                We focus on questions Indian readers actually ask before buying or tracking metals, especially city-level differences and common pricing misunderstandings.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Keep pages reviewable</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                If a guide becomes outdated or unclear, readers can email <a href="mailto:metalviewofficial@gmail.com" className="text-amber-600 dark:text-amber-400 hover:underline">metalviewofficial@gmail.com</a> so we can update it.
+              </p>
+            </div>
+          </div>
+        </section>
+
         <section className="space-y-5" aria-labelledby="guides-list">
           <h2 id="guides-list" className="sr-only">
             All guides and resources

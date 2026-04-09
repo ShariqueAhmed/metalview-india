@@ -62,7 +62,7 @@ export default function InvestmentGuidePage() {
       },
     },
     datePublished: '2025-01-27',
-    dateModified: '2025-01-27',
+    dateModified: '2026-04-09',
   };
 
   return (
@@ -93,6 +93,9 @@ export default function InvestmentGuidePage() {
                 <p className="text-lg text-slate-600 dark:text-slate-400">
                   Complete guide to metal investments and strategies in India
                 </p>
+                <p className="text-sm text-slate-500 dark:text-slate-500 mt-1">
+                  Reviewed on April 9, 2026 by the MetalView editorial team
+                </p>
               </div>
             </div>
           </div>
@@ -104,10 +107,10 @@ export default function InvestmentGuidePage() {
                 Metal Investments in India
               </h2>
               <p className="text-slate-600 dark:text-slate-400 mb-4">
-                Investing in precious metals like gold, silver, platinum, and palladium has been a 
-                traditional wealth preservation strategy in India for centuries. Understanding the 
-                different metals, their price trends, and investment strategies helps you make 
-                informed decisions.
+                Precious metals are often discussed as a single category, but they behave very differently in real portfolios. Gold is usually treated as a stability and hedge asset, silver mixes investment demand with industrial demand, and platinum and palladium carry much narrower use cases and higher uncertainty for ordinary investors.
+              </p>
+              <p className="text-slate-600 dark:text-slate-400 mb-4">
+                The goal of this guide is not to push one metal over another. It is to help you decide what role, if any, a metal investment should play in your own mix of liquidity needs, risk tolerance, holding period, and purchase format.
               </p>
 
               <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-3 mt-6">
@@ -119,6 +122,9 @@ export default function InvestmentGuidePage() {
                 <li><strong>Platinum:</strong> Rarer than gold, strong industrial demand</li>
                 <li><strong>Palladium:</strong> Rarest precious metal, high industrial demand</li>
               </ul>
+              <p className="text-slate-600 dark:text-slate-400 mb-4">
+                For most Indian households, the practical comparison is usually gold versus silver. Platinum and palladium can be relevant for specialized views, but they are not the default starting point for most long-term savers.
+              </p>
 
               <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-3 mt-6">
                 Investment Strategies
@@ -133,6 +139,30 @@ export default function InvestmentGuidePage() {
                 <li>Understanding price trends and market factors</li>
                 <li>Choosing the right form (bars, coins, jewelry)</li>
               </ul>
+
+              <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-3 mt-6">
+                Questions to Answer Before You Invest
+              </h3>
+              <ul className="list-disc list-inside text-slate-600 dark:text-slate-400 space-y-2 mb-4">
+                <li>Are you buying for wealth preservation, trading, gifting, or jewellery use?</li>
+                <li>How long can you hold without needing to sell in a weak market?</li>
+                <li>Do you need compact liquidity, or can you handle bulkier holdings like silver?</li>
+                <li>Are you comparing physical metal with paper or digital alternatives fairly?</li>
+              </ul>
+
+              <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-3 mt-6">
+                What New Investors Often Miss
+              </h3>
+              <p className="text-slate-600 dark:text-slate-400 mb-4">
+                New investors often focus only on the quoted spot-style price and forget friction costs. In physical metals, those costs can include spreads, fabrication or making charges, storage, insurance, resale discounts, and taxes. These details matter more than small day-to-day price moves if your ticket size is modest.
+              </p>
+
+              <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-3 mt-6">
+                Editorial Approach
+              </h3>
+              <p className="text-slate-600 dark:text-slate-400 mb-0">
+                MetalView treats these pages as educational explainers, not personal advice. We aim to help readers compare options more clearly, understand live-rate pages in context, and avoid making investment decisions based on incomplete pricing information.
+              </p>
             </div>
           </div>
 

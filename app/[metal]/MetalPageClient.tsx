@@ -23,7 +23,6 @@ import PriceHistoryTable from '@/components/PriceHistoryTable';
 import TrendingCities from '@/components/TrendingCities';
 import Footer from '@/components/Footer';
 import StructuredData from '@/components/StructuredData';
-import { AdSenseResponsive } from '@/components/AdSense';
 import FAQSchema from '@/components/FAQSchema';
 import FAQSection from '@/components/FAQSection';
 import PeopleAlsoAsk from '@/components/PeopleAlsoAsk';
@@ -250,8 +249,6 @@ export default function MetalPageClient({ metal, initialCity }: MetalPageClientP
           </div>
         </section>
 
-        <div className="mb-8 flex justify-center"><AdSenseResponsive className="min-h-[100px] max-w-full" /></div>
-
         {error && (
           <div className="mb-6 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800/50 rounded-xl p-4 flex items-start gap-3">
             <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
@@ -369,8 +366,6 @@ export default function MetalPageClient({ metal, initialCity }: MetalPageClientP
               />
             </section>
 
-            <div className="mb-8 flex justify-center"><AdSenseResponsive className="min-h-[100px] max-w-full" /></div>
-
             <section className="mb-8">
               <ChartSection
                 goldData={metal === 'gold' && data.goldTrend24k ? data.goldTrend24k.map((p) => ({ date: p.date, price: p.price })) : undefined}
@@ -426,7 +421,6 @@ export default function MetalPageClient({ metal, initialCity }: MetalPageClientP
               <p className="text-slate-600 dark:text-slate-400 mb-3">MetalView is a free resource for live metal prices in India. Data is sourced from trusted platforms and updated regularly. See our <Link href="/about" className="text-amber-600 dark:text-amber-400 hover:underline">About</Link> page for details.</p>
               <p className="text-slate-600 dark:text-slate-400">For guides on purity, investment, and city-wise buying, visit our <Link href="/guides" className="text-amber-600 dark:text-amber-400 hover:underline font-medium">Guides &amp; Resources</Link>.</p>
             </section>
-            <div className="mb-8 flex justify-center"><AdSenseResponsive className="min-h-[100px] max-w-full" /></div>
           </div>
         ) : null}
       </main>

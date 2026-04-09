@@ -6,7 +6,7 @@ import { Metadata } from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
-import { Info, RefreshCw, Shield, BarChart3, BookOpen, Sparkles } from 'lucide-react';
+import { Info, RefreshCw, Shield, BarChart3, BookOpen, Sparkles, Users, BadgeCheck, Mail } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'About MetalView - How We Get Gold & Silver Prices in India',
@@ -83,6 +83,42 @@ const SECTIONS = [
     iconColor: 'text-slate-600 dark:text-slate-400',
     content: (
       <p>Prices on MetalView are indicative and for informational purposes only. They may differ from actual dealer or exchange rates due to making charges, taxes, premiums, and local market conditions. We do not guarantee the accuracy or completeness of any price or data. Always verify with your local jeweller, bank, or broker before making any purchase or investment. MetalView is not a registered investment or financial advisor; we do not provide personalised financial advice.</p>
+    ),
+  },
+  {
+    icon: Users,
+    title: 'Who Runs MetalView',
+    iconBg: 'bg-violet-500/15 dark:bg-violet-400/10',
+    iconColor: 'text-violet-600 dark:text-violet-400',
+    content: (
+      <>
+        <p>MetalView is an independent Indian publishing project focused on metal-price transparency, educational explainers, and city-by-city market context. We are not a brokerage, jeweller, exchange, or investment advisory service. Our goal is to make daily metal prices easier to verify and understand for regular readers.</p>
+        <p>If you need to reach the team, you can contact us at <a href="mailto:metalviewofficial@gmail.com" className="text-amber-600 dark:text-amber-400 hover:underline">metalviewofficial@gmail.com</a>. We use this address for reader feedback, corrections, partnership queries, and data questions.</p>
+      </>
+    ),
+  },
+  {
+    icon: BadgeCheck,
+    title: 'Editorial Standards',
+    iconBg: 'bg-emerald-500/15 dark:bg-emerald-400/10',
+    iconColor: 'text-emerald-600 dark:text-emerald-400',
+    content: (
+      <>
+        <p>We aim to publish practical, plain-English content that adds context to raw price data. That means we explain purity, pricing units, local market differences, taxes, and common buying considerations instead of only repeating live numbers.</p>
+        <p>We do not sell rankings or guaranteed placements in our guides. When we mention cities, markets, or buying considerations, the purpose is to help readers interpret rates and compare options more carefully.</p>
+      </>
+    ),
+  },
+  {
+    icon: Mail,
+    title: 'Corrections & Updates',
+    iconBg: 'bg-sky-500/15 dark:bg-sky-400/10',
+    iconColor: 'text-sky-600 dark:text-sky-400',
+    content: (
+      <>
+        <p>We review source changes, pricing anomalies, and reader feedback regularly. If you spot an outdated guide, broken page, or inaccurate description, please email us with the page URL and the issue so we can review and update it.</p>
+        <p>For important corrections, we update the relevant page content and keep the page&apos;s visible last-updated date current where applicable.</p>
+      </>
     ),
   },
 ];

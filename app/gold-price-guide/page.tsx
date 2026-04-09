@@ -62,7 +62,7 @@ export default function GoldPriceGuidePage() {
       },
     },
     datePublished: '2025-01-27',
-    dateModified: '2025-01-27',
+    dateModified: '2026-04-09',
   };
 
   return (
@@ -93,6 +93,9 @@ export default function GoldPriceGuidePage() {
                 <p className="text-lg text-slate-600 dark:text-slate-400">
                   Complete guide to gold prices, purity, and investment in India
                 </p>
+                <p className="text-sm text-slate-500 dark:text-slate-500 mt-1">
+                  Reviewed on April 9, 2026 by the MetalView editorial team
+                </p>
               </div>
             </div>
           </div>
@@ -104,9 +107,10 @@ export default function GoldPriceGuidePage() {
                 Understanding Gold Prices in India
               </h2>
               <p className="text-slate-600 dark:text-slate-400 mb-4">
-                Gold prices in India are influenced by multiple factors including international market rates, 
-                currency exchange rates, local demand, government policies, and regional market conditions. 
-                Understanding these factors helps you make informed investment decisions.
+                Gold prices in India are easy to quote and surprisingly hard to interpret well. A headline rate may look straightforward, but the number you actually pay can change with purity, GST, making charges, local dealer premiums, and how quickly the market moved during the day. A useful gold guide should therefore do more than repeat the price. It should help you understand what the price means in practical buying situations.
+              </p>
+              <p className="text-slate-600 dark:text-slate-400 mb-4">
+                This page is designed as that working guide. Use it to understand what drives daily rates, how to compare 24K, 22K, and 18K pricing, when city-level differences matter, and which questions to ask before you buy jewellery, coins, or bars.
               </p>
 
               <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-3 mt-6">
@@ -120,6 +124,9 @@ export default function GoldPriceGuidePage() {
                 <li>Making charges (for jewelry)</li>
                 <li>Dealer margins and regional variations</li>
               </ul>
+              <p className="text-slate-600 dark:text-slate-400 mb-4">
+                In other words, the quoted market rate is only the base layer. For most Indian buyers, the final decision is influenced just as much by product type and local selling practices as by the benchmark gold price itself.
+              </p>
 
               <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-3 mt-6">
                 Gold Purity Levels
@@ -132,6 +139,34 @@ export default function GoldPriceGuidePage() {
                 <li><strong>22K Gold:</strong> 91.6% pure, commonly used for Indian jewelry</li>
                 <li><strong>18K Gold:</strong> 75% pure, used for diamond jewelry and international designs</li>
               </ul>
+
+              <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-3 mt-6">
+                How to Use Today&apos;s Gold Rate Properly
+              </h3>
+              <ol className="list-decimal list-inside text-slate-600 dark:text-slate-400 space-y-2 mb-4">
+                <li>Start with the correct purity for what you want to buy.</li>
+                <li>Check whether the quoted price is per gram or per 10 grams.</li>
+                <li>Ask separately for making charges, wastage, GST, and any premium.</li>
+                <li>Verify hallmarking and invoice details before payment.</li>
+                <li>Compare the final bill, not just the displayed gold rate.</li>
+              </ol>
+
+              <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-3 mt-6">
+                Common Buyer Mistakes
+              </h3>
+              <ul className="list-disc list-inside text-slate-600 dark:text-slate-400 space-y-2 mb-4">
+                <li>Comparing one shop&apos;s 22K jewellery quote with another shop&apos;s 24K market rate</li>
+                <li>Ignoring making charges because the displayed gold price looked attractive</li>
+                <li>Assuming every city difference is meaningful when some variation is just dealer markup</li>
+                <li>Buying on urgency without checking purity, invoice language, and resale implications</li>
+              </ul>
+
+              <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-3 mt-6">
+                When This Guide Is Most Useful
+              </h3>
+              <p className="text-slate-600 dark:text-slate-400 mb-0">
+                Use this guide when you are comparing jewellery quotes, thinking about buying coins or bars, tracking prices before a family purchase, or trying to understand why Mumbai, Delhi, Chennai, and other city pages do not always show exactly the same effective buying cost.
+              </p>
             </div>
           </div>
 

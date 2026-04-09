@@ -62,7 +62,7 @@ export default function SilverInvestmentGuidePage() {
       },
     },
     datePublished: '2025-01-27',
-    dateModified: '2025-01-27',
+    dateModified: '2026-04-09',
   };
 
   return (
@@ -93,6 +93,9 @@ export default function SilverInvestmentGuidePage() {
                 <p className="text-lg text-slate-600 dark:text-slate-400">
                   Complete guide to silver prices and investment strategies in India
                 </p>
+                <p className="text-sm text-slate-500 dark:text-slate-500 mt-1">
+                  Reviewed on April 9, 2026 by the MetalView editorial team
+                </p>
               </div>
             </div>
           </div>
@@ -104,12 +107,10 @@ export default function SilverInvestmentGuidePage() {
                 Understanding Silver Prices in India
               </h2>
               <p className="text-slate-600 dark:text-slate-400 mb-4">
-                Silver prices in India are influenced by both industrial demand and investment demand. 
-                Unlike gold, silver has significant industrial applications, making its price more volatile 
-                but also offering unique investment opportunities.
+                Silver sits in a different category from gold in one important way: it is both a precious metal and a heavily used industrial input. That dual role is why silver can move sharply when manufacturing sentiment, energy demand, export activity, or broader risk appetite changes.
               </p>
               <p className="text-slate-600 dark:text-slate-400 mb-4">
-                On MetalView you can check the live silver rate per gram and per kilogram for major cities, compare trends over time, and read how silver compares to gold as an investment. The guides and links on this page are for general information only; always do your own research or consult a financial advisor before investing.
+                On MetalView you can check the live silver rate per gram and per kilogram for major cities, compare trends over time, and read how silver compares to gold as an investment. This guide is meant to help you interpret that data in practical terms: where silver can fit, what risks people underestimate, and how to compare it with gold honestly.
               </p>
 
               <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-3 mt-6">
@@ -123,6 +124,9 @@ export default function SilverInvestmentGuidePage() {
                 <li>Interest rates and inflation expectations</li>
                 <li>Mining supply and recycling rates</li>
               </ul>
+              <p className="text-slate-600 dark:text-slate-400 mb-4">
+                Because industrial use matters so much, silver often behaves less like a pure defensive asset than many first-time buyers expect. That can be a benefit in strong cycles, but it can also lead to deeper swings.
+              </p>
 
               <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-3 mt-6">
                 Silver as an Investment
@@ -136,6 +140,23 @@ export default function SilverInvestmentGuidePage() {
                 <li><strong>High Volatility:</strong> Potential for higher returns (and risks)</li>
                 <li><strong>Portfolio Diversification:</strong> Reduces overall portfolio risk</li>
               </ul>
+
+              <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-3 mt-6">
+                Practical Trade-Offs for Indian Buyers
+              </h3>
+              <ul className="list-disc list-inside text-slate-600 dark:text-slate-400 space-y-2 mb-4">
+                <li>Physical silver is more affordable per purchase but bulkier to store at meaningful scale.</li>
+                <li>Bid-ask spreads and local resale convenience can vary more than many buyers expect.</li>
+                <li>Silver can look cheap relative to gold while still being the riskier purchase for short-term holders.</li>
+                <li>For jewellery buyers, weight and fabrication can change the economics quickly.</li>
+              </ul>
+
+              <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-3 mt-6">
+                Who This Guide Helps Most
+              </h3>
+              <p className="text-slate-600 dark:text-slate-400 mb-0">
+                This page is especially useful if you are considering your first physical silver purchase, comparing silver with gold for diversification, or trying to understand why silver prices can move more abruptly than headline “safe-haven” narratives suggest.
+              </p>
             </div>
           </div>
 

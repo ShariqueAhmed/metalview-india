@@ -23,7 +23,9 @@ const blogPosts: Record<string, BlogPost> = {
     content: `
 # Understanding Gold Purity: 24K vs 22K - Which is Better?
 
-Gold is one of the most precious metals, valued for its beauty and investment potential. However, not all gold is created equal. Understanding the difference between 24K and 22K gold is crucial for making informed decisions.
+If you are comparing gold prices without checking purity first, you can end up comparing two completely different products. In India, many buyers use the words "gold rate" as if they refer to one number. In practice, 24K and 22K serve different purposes, carry different pricing logic, and make sense in different buying situations.
+
+This guide explains the difference in plain language so you can decide whether you are looking for investment-oriented purity, jewellery-friendly durability, or the best balance between the two.
 
 ## What is 24K Gold?
 
@@ -67,6 +69,12 @@ Gold is one of the most precious metals, valued for its beauty and investment po
 - Contains alloy metals
 - Slightly lower resale value
 
+## Why the Price Difference Matters
+
+When 24K appears more expensive than 22K, that difference is not just a premium in the usual retail sense. You are paying for higher purity. A 22K jewellery quote may still become more expensive overall than a 24K coin or bar once making charges, design premiums, and invoice structure are included.
+
+This is why it is dangerous to compare two quotes only by looking at the headline price. You need to compare purity, form, and total billed amount together.
+
 ## Which Should You Choose?
 
 **Choose 24K Gold if:**
@@ -81,9 +89,16 @@ Gold is one of the most precious metals, valued for its beauty and investment po
 - You need items for daily wear
 - You prefer traditional Indian jewelry
 
+## Questions to Ask Before You Buy
+
+1. Am I buying gold to store value or to wear regularly?
+2. Is the seller quoting the rate for the same purity I am comparing elsewhere?
+3. Is this price for plain metal value only, or does it include design and making charges?
+4. What will resale likely look like for this format?
+
 ## Conclusion
 
-Both 24K and 22K gold have their place. For investment purposes, 24K gold is superior due to its purity. For jewelry, 22K gold is the practical choice due to its durability. Understanding your needs will help you make the right decision.
+Both 24K and 22K gold have their place. For investment purposes, 24K usually makes more sense because purity is the point. For jewellery, 22K is often the more practical choice because durability matters in real use. The right decision becomes much clearer once you stop asking "Which is better?" and start asking "Better for what?"
     `,
     date: '2025-01-15',
     readTime: '5 min read',
@@ -96,11 +111,11 @@ Both 24K and 22K gold have their place. For investment purposes, 24K gold is sup
     content: `
 # Gold Price Trends 2025: What to Expect
 
-The gold market in 2025 continues to show interesting patterns. Let's explore what factors are driving gold prices and what investors can expect.
+Gold prices in India rarely move because of one single headline. What readers experience as a daily "gold trend" is usually the combined effect of global bullion pricing, rupee-dollar movement, inflation expectations, central-bank behavior, and local buying demand. That is why a useful trend guide should focus less on prediction theater and more on the mechanisms that actually move the market.
 
 ## Current Market Overview
 
-Gold prices have been volatile, influenced by multiple economic factors including inflation, currency fluctuations, and global economic uncertainty.
+Gold has remained sensitive to inflation expectations, interest-rate narratives, and risk sentiment. Even when international gold looks stable in dollar terms, Indian buyers can see noticeable movement because the rupee leg of the equation matters too.
 
 ## Key Factors Affecting Gold Prices
 
@@ -109,6 +124,17 @@ Gold prices have been volatile, influenced by multiple economic factors includin
 3. **Global Demand**: International demand affects local prices
 4. **Interest Rates**: Lower rates make gold more attractive
 5. **Geopolitical Events**: Uncertainty increases gold's appeal
+
+## What Indian Buyers Should Watch Closely
+
+- Whether rupee weakness is amplifying imported price pressure
+- Whether local demand is increasing around weddings and festivals
+- Whether retail premiums and making charges are widening even when benchmark prices look calm
+- Whether you are reading a market forecast or an actual buying-cost estimate
+
+## A More Useful Way to Think About "Predictions"
+
+Instead of asking for one target number, it is often better to ask which conditions would support firmness and which conditions would cool prices. Gold tends to stay supported when uncertainty is high, when real yields look less attractive, or when the rupee weakens. It tends to lose some urgency when inflation softens, yields look attractive, and risk appetite improves.
 
 ## Predictions for 2025
 
@@ -126,7 +152,7 @@ Consider these strategies:
 - Diversification
 - Regular monitoring of prices
 
-Stay updated with live gold prices on MetalView to make informed decisions.
+Stay updated with live gold prices on MetalView, but use trend articles as context rather than as buy/sell instructions. Trend awareness is most valuable when it helps you ask better questions about timing, costs, and portfolio fit.
     `,
     date: '2025-01-10',
     readTime: '7 min read',
@@ -139,7 +165,7 @@ Stay updated with live gold prices on MetalView to make informed decisions.
     content: `
 # Best Time to Buy Gold: A Complete Guide
 
-Timing your gold purchase can significantly impact your investment returns. Here's a comprehensive guide to help you decide.
+The "best time" to buy gold depends on what kind of buyer you are. A family buying jewellery for a fixed wedding date faces a different decision from an investor building a position over time. That is why timing advice becomes misleading when it ignores urgency, purchase format, and total billed cost.
 
 ## Seasonal Patterns
 
@@ -147,6 +173,8 @@ Gold prices in India often follow seasonal patterns:
 - **Festival Season**: Prices may rise during Diwali, Akshaya Tritiya
 - **Wedding Season**: Higher demand during peak wedding months
 - **Off-Season**: Lower prices during non-festival periods
+
+Seasonality matters most when demand pushes premiums and making charges higher, not only when the benchmark metal price itself rises.
 
 ## Monthly Trends
 
@@ -163,6 +191,14 @@ Historical data shows:
 3. **Dollar-Cost Averaging**: Buy in small amounts regularly
 4. **Long-Term View**: Don't time the market, invest consistently
 
+## When Timing Matters Less
+
+Timing matters less if:
+- you are averaging purchases over time,
+- the purchase is tied to a life event,
+- making charges are a bigger variable than the day&apos;s market move,
+- or you are buying for long-term holding rather than short-term resale.
+
 ## Factors to Consider
 
 - Current market conditions
@@ -170,7 +206,7 @@ Historical data shows:
 - Available budget
 - Market volatility
 
-Remember, the best time to buy gold is when it aligns with your financial goals and budget.
+Remember, the best time to buy gold is usually when the purchase structure is clear, the total cost is fair, and the decision fits your purpose. Good buying discipline often matters more than trying to catch the perfect day.
     `,
     date: '2025-01-05',
     readTime: '6 min read',
@@ -183,7 +219,7 @@ Remember, the best time to buy gold is when it aligns with your financial goals 
     content: `
 # Gold Investment vs Jewelry: Making the Right Choice
 
-When buying gold, you have two main options: investment gold or jewelry. Each has distinct advantages and considerations.
+Many Indian households treat jewellery as both adornment and savings, but the economics of jewellery and investment gold are not the same. If you do not separate emotional value from financial value, it is easy to overestimate how "investment-like" a jewellery purchase really is.
 
 ## Gold Investment (24K)
 
@@ -198,6 +234,7 @@ When buying gold, you have two main options: investment gold or jewelry. Each ha
 - No aesthetic value
 - Storage concerns
 - Insurance needed
+- Premiums and spreads still matter when buying and selling
 
 ## Gold Jewelry (22K)
 
@@ -213,6 +250,10 @@ When buying gold, you have two main options: investment gold or jewelry. Each ha
 - Wear and tear
 - Design may go out of fashion
 
+## The Most Important Practical Difference
+
+Investment gold is usually bought for metal value first. Jewellery is bought for design, wearability, gifting, and cultural use first. That means a jewellery bill often includes value that does not fully come back at resale.
+
 ## Making the Decision
 
 **Choose Investment Gold if:**
@@ -227,13 +268,22 @@ When buying gold, you have two main options: investment gold or jewelry. Each ha
 - You're buying for special occasions
 - You prefer traditional approach
 
+## A Better Comparison Question
+
+Instead of asking whether jewellery is "good investment gold," ask:
+
+1. How much of this bill is pure metal value?
+2. How much am I paying for design and making?
+3. If I needed to resell, what portion is likely to come back cleanly?
+4. Am I comfortable treating the non-metal portion as a lifestyle expense?
+
 ## Hybrid Approach
 
 Many smart investors use both:
 - 70% in investment gold (24K)
 - 30% in jewelry (22K)
 
-This balances investment goals with personal enjoyment.
+This kind of split can balance financial discipline with personal and cultural use. The key is to label each purchase honestly rather than expecting every jewellery purchase to behave like pure bullion.
     `,
     date: '2025-01-12',
     readTime: '8 min read',
@@ -246,13 +296,17 @@ This balances investment goals with personal enjoyment.
     content: `
 # How to Calculate Gold Price: Complete Guide
 
-Understanding how gold prices are calculated is essential for making informed purchases. This guide will help you calculate gold prices accurately.
+Gold pricing becomes confusing when people jump straight from the displayed gold rate to the final invoice. In reality, jewellery pricing is a layered calculation. The underlying gold value is only one part of what you pay. Once you add purity, weight, making charges, GST, and any stones or extras, the total can look very different from the headline number.
+
+This guide is built to make that calculation transparent so you can understand a quote instead of just trusting it.
 
 ## Basic Gold Price Calculation
 
 The basic formula for calculating gold price is:
 
 **Total Price = (Gold Rate × Weight) + Making Charges + GST**
+
+That formula is a good starting point, but in practice you should also ask whether the seller is using the same purity you are comparing elsewhere and whether any extra materials are being billed separately.
 
 ## Step-by-Step Guide
 
@@ -297,6 +351,11 @@ Add GST to subtotal to get the final price. Example: ₹67,200 + ₹2,016 = ₹6
 - 3% on gold jewelry in India
 - Applied on total value including making charges
 
+### 5. Other Bill Components
+- Stones, embellishments, or non-gold materials may be charged separately
+- Brand premium can change the effective price even when purity is the same
+- Exchange or old-gold adjustment policies can affect what you finally pay
+
 ## Calculation Examples
 
 ### Example 1: Simple Gold Bar
@@ -325,11 +384,15 @@ Add GST to subtotal to get the final price. Example: ₹67,200 + ₹2,016 = ₹6
 4. **Compare Prices**: Check multiple dealers before buying
 5. **Verify Weight**: Ensure accurate weighing
 
+## The Most Common Comparison Mistake
+
+Many buyers compare Shop A&apos;s 24K benchmark rate with Shop B&apos;s 22K jewellery bill and conclude one seller is cheaper. That is not a fair comparison. The correct comparison is between the same purity, same weight basis, and similar billing structure.
+
 ## Online Calculators
 
 Use MetalView's live gold price calculator to get instant price estimates for different weights and purities.
 
-Remember, always verify the final price with your jeweler before making a purchase.
+Remember, the goal is not just to calculate the price. It is to understand the bill well enough to ask better questions before you buy.
     `,
     date: '2025-01-10',
     readTime: '6 min read',
@@ -342,7 +405,7 @@ Remember, always verify the final price with your jeweler before making a purcha
     content: `
 # Gold Hallmark Explained: What You Need to Know
 
-Gold hallmarking is mandatory in India to ensure purity and protect consumers. Here's everything you need to know.
+Hallmarking is one of the most important protections available to gold buyers in India, but many people still treat it like a decorative stamp instead of a consumer-safety tool. If you are buying jewellery, coins, or other gold items, hallmark awareness can make the difference between a confident purchase and an expensive assumption.
 
 ## What is Gold Hallmarking?
 
@@ -365,6 +428,8 @@ A BIS hallmark consists of:
 - **Resale Value**: Hallmarked gold has better resale value
 - **Legal Requirement**: Mandatory for gold jewelry above certain weight
 
+Hallmarking does not replace buyer diligence, but it gives you a much stronger starting point. You should still read the invoice, confirm purity, and understand the pricing structure.
+
 ## How to Verify Hallmark
 
 1. Check for BIS triangle mark
@@ -373,6 +438,8 @@ A BIS hallmark consists of:
 4. Check jeweler's identification mark
 5. Verify year of marking
 
+If anything looks unclear, ask the seller to explain the hallmark and invoice details before billing. A genuine seller should be able to do that comfortably.
+
 ## Benefits of Hallmarked Gold
 
 - **Assured Quality**: Guaranteed purity
@@ -380,7 +447,7 @@ A BIS hallmark consists of:
 - **Consumer Confidence**: Trust in purchase
 - **Legal Protection**: Government-backed certification
 
-Always buy hallmarked gold to ensure you get what you pay for.
+Always buy hallmarked gold to improve your chances of getting what you are being promised. It is one of the simplest and strongest quality checks available to ordinary buyers.
     `,
     date: '2025-01-08',
     readTime: '5 min read',
@@ -393,7 +460,7 @@ Always buy hallmarked gold to ensure you get what you pay for.
     content: `
 # Top 10 Factors Affecting Gold Prices in India
 
-Gold prices are influenced by multiple factors. Understanding these can help you make better investment decisions.
+Gold prices in India are not set by one domestic switch. They emerge from a chain of global and local influences, and understanding that chain makes the market feel much less mysterious. This article breaks those influences down in a way that is practical for Indian readers who are trying to make sense of daily moves.
 
 ## 1. International Gold Prices
 
@@ -410,6 +477,8 @@ High inflation increases gold's appeal as a hedge, driving up demand and prices.
 ## 4. Interest Rates
 
 Lower interest rates make gold more attractive compared to fixed deposits and bonds.
+
+That relationship is not always immediate, but rate expectations shape how investors compare gold with income-generating assets.
 
 ## 5. Demand and Supply
 
@@ -446,7 +515,15 @@ Economic crises, geopolitical tensions, and market volatility increase gold dema
 - Dealer margins
 - Transportation costs
 
-Understanding these factors helps predict price movements and make informed decisions.
+## What Matters Most for Retail Buyers
+
+Retail buyers often over-focus on global headlines and under-focus on the final invoice. In practice, the most important questions are:
+
+1. What is happening to benchmark gold?
+2. What is the rupee doing?
+3. How much extra am I paying because of local retail structure?
+
+Understanding these factors helps you interpret price movements more realistically and avoid reacting to noise.
     `,
     date: '2025-01-05',
     readTime: '8 min read',
@@ -459,7 +536,7 @@ Understanding these factors helps predict price movements and make informed deci
     content: `
 # Gold Investment Strategies for Beginners
 
-Gold is a valuable addition to any investment portfolio. Here are proven strategies for beginners.
+Gold is often one of the first assets new Indian investors consider because it feels familiar, tangible, and historically durable. But beginner mistakes usually happen when people buy without deciding what role gold is supposed to play in the portfolio. This guide starts with that question and then works through the common options.
 
 ## Investment Options
 
@@ -480,6 +557,16 @@ Gold is a valuable addition to any investment portfolio. Here are proven strateg
 - **Pros**: Professional management, diversification
 - **Cons**: Market risks, fees
 
+## Start With Purpose, Not Product
+
+Before choosing any format, ask whether gold is meant to serve as:
+- long-term wealth preservation,
+- diversification,
+- short-term trading exposure,
+- or a cultural / gifting purchase.
+
+Different purposes point to different products. A buyer who wants portability and purity may not want the same format as someone who wants a systematic financial allocation.
+
 ## Investment Strategies
 
 ### Strategy 1: Dollar-Cost Averaging
@@ -496,6 +583,13 @@ Gold is a valuable addition to any investment portfolio. Here are proven strateg
 - Allocate 5-15% of portfolio to gold
 - Acts as hedge against inflation
 - Diversifies risk
+
+## A Practical Beginner Framework
+
+1. Start small enough that volatility does not change your lifestyle decisions.
+2. Choose the format that matches your goal, not the format that feels most familiar.
+3. Track total costs, including spreads, charges, storage, or fees.
+4. Avoid building a thesis only from short-term price excitement.
 
 ## Tips for Beginners
 
@@ -514,7 +608,7 @@ Gold is a valuable addition to any investment portfolio. Here are proven strateg
 - Not storing securely
 - Panic selling during dips
 
-Start your gold investment journey with a clear strategy and long-term perspective.
+Start your gold investment journey with a clear strategy, a defined role for gold in your finances, and a long-term perspective on what success should look like.
     `,
     date: '2025-01-03',
     readTime: '7 min read',
@@ -528,7 +622,7 @@ Start your gold investment journey with a clear strategy and long-term perspecti
     content: `
 # Gold Price in Delhi Today: Complete Guide 2025
 
-Delhi, the capital of India, is one of the major gold markets in the country. Here's everything you need to know about gold prices in Delhi.
+Delhi is one of India&apos;s most important retail gold markets because it combines old-market trading culture with modern branded jewellery retail. That mix is useful for buyers, but it can also make comparison harder: the city gives you plenty of options, and those options are not always priced in the same way.
 
 ## Current Gold Market in Delhi
 
@@ -537,6 +631,8 @@ Delhi's gold market is known for:
 - Wide variety of designs
 - Trusted dealers
 - Strong consumer protection
+
+The practical takeaway is that Delhi usually offers enough competition for buyers to compare intelligently, but only if they ask for the full quote structure and not just the displayed gold rate.
 
 ## Best Places to Buy Gold in Delhi
 
@@ -566,6 +662,8 @@ Delhi gold prices typically:
 - Reflect local demand patterns
 - Include local taxes and charges
 
+Demand can tighten around weddings, festivals, and gifting periods, which may affect making charges and showroom premiums even when the benchmark rate looks steady.
+
 ## Buying Tips for Delhi
 
 1. **Compare Prices**: Check multiple dealers
@@ -573,6 +671,14 @@ Delhi gold prices typically:
 3. **Negotiate Making Charges**: Can save 2-3%
 4. **Check Weight**: Verify at certified centers
 5. **Get Receipt**: Keep all purchase documents
+
+## How to Compare Delhi Offers More Fairly
+
+If two stores look far apart on price, check whether:
+- they are quoting the same purity,
+- one bill includes stones or extras,
+- making charges are percentage-based or flat,
+- and whether a premium showroom experience is being built into the price.
 
 ## Price Factors
 
@@ -589,7 +695,7 @@ Delhi gold prices typically:
 - Weekdays often have better prices
 - End of month sales
 
-Stay updated with live gold prices in Delhi on MetalView for the best deals.
+Stay updated with live gold prices in Delhi on MetalView, but use the live benchmark as your starting point, not your only buying decision.
     `,
     date: '2025-01-19',
     readTime: '6 min read',
@@ -602,7 +708,7 @@ Stay updated with live gold prices in Delhi on MetalView for the best deals.
     content: `
 # Gold Price in Mumbai: Market Analysis & Buying Tips
 
-Mumbai, the financial capital of India, has a vibrant gold market with competitive prices and trusted dealers.
+Mumbai matters because it is not just another retail city for gold. It is one of the country&apos;s most influential trading centers, which is why many buyers treat Mumbai pricing as a useful benchmark when comparing rates elsewhere.
 
 ## Mumbai Gold Market Overview
 
@@ -611,6 +717,8 @@ Mumbai's gold market features:
 - Modern jewelry chains
 - Competitive pricing
 - Strong consumer base
+
+Because the market is deep and highly competitive, Mumbai often gives price-sensitive buyers a better sense of the underlying benchmark than smaller cities do.
 
 ## Top Gold Markets in Mumbai
 
@@ -639,6 +747,8 @@ Mumbai's gold market features:
 - Hallmarked gold widely available
 - Good resale market
 
+That said, the final price can still vary meaningfully from shop to shop once design, making charges, and branding enter the picture.
+
 ## Buying Guide
 
 1. **Research Prices**: Check current rates online
@@ -646,6 +756,10 @@ Mumbai's gold market features:
 3. **Verify Certification**: Ensure BIS hallmark
 4. **Understand Charges**: Know making charges upfront
 5. **Get Documentation**: Keep receipts and certificates
+
+## Why Mumbai Still Requires Comparison Shopping
+
+Even in a highly competitive city, the cheapest displayed rate is not always the best purchase. A buyer comparing bullion, plain jewellery, and design-led jewellery is really comparing three different economic products. The right comparison is the final payable amount for the exact item type you want.
 
 ## Price Trends
 
@@ -655,7 +769,7 @@ Mumbai prices typically:
 - Include local taxes
 - Reflect market demand
 
-For live gold prices in Mumbai, visit MetalView.
+For live gold prices in Mumbai, visit MetalView and use the city page as a benchmark before visiting dealers or comparing invoice quotes.
     `,
     date: '2025-01-17',
     readTime: '6 min read',
@@ -1371,6 +1485,8 @@ Thank you for using MetalView as part of your research.
   },
 };
 
+const REVIEW_DATE = '2026-04-09';
+
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
 }
@@ -1428,6 +1544,38 @@ function getRelatedPosts(currentSlug: string, currentCategory: string, limit = 3
   return [...sameCategory, ...others].slice(0, limit);
 }
 
+function getArticleChecklist(post: BlogPost): string[] {
+  if (post.category === 'City Guide') {
+    return [
+      'Compare the live city rate with the final dealer quote, not just the board price.',
+      'Ask for purity, making charges, GST, and invoice breakup before paying.',
+      'Use the city page to understand local market context before visiting shops.',
+    ];
+  }
+
+  if (post.category === 'Investment') {
+    return [
+      'Decide whether the purchase is for preservation, speculation, gifting, or jewellery use.',
+      'Account for spreads, charges, taxes, and storage before comparing returns.',
+      'Treat this article as educational context, not personalized financial advice.',
+    ];
+  }
+
+  if (post.category === 'Market Analysis') {
+    return [
+      'Use market articles to understand drivers, not to predict exact prices.',
+      'Check current live rates alongside the broader trend narrative.',
+      'Separate benchmark moves from local retail costs when making decisions.',
+    ];
+  }
+
+  return [
+    'Match purity, weight unit, and billing structure before comparing prices.',
+    'Check live rates and then verify the final quote with the seller or platform.',
+    'Use the related guides if you need city context, calculation help, or purity basics.',
+  ];
+}
+
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params;
   const post = blogPosts[slug];
@@ -1477,7 +1625,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       },
     },
     datePublished: new Date(post.date).toISOString(),
-    dateModified: new Date(post.date).toISOString(), // Can be updated when post is modified
+    dateModified: new Date(REVIEW_DATE).toISOString(),
     mainEntityOfPage: {
       '@type': 'WebPage',
       '@id': `${baseUrl}/blog/${post.slug}`,
@@ -1544,6 +1692,29 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <div className="flex items-center gap-2">
               <Clock className="w-4 h-4" />
               <span>{post.readTime}</span>
+            </div>
+            <div className="text-xs font-medium text-gray-500 dark:text-gray-400">
+              Reviewed by MetalView editorial team
+            </div>
+          </div>
+
+          <div className="mb-8 grid gap-4 lg:grid-cols-[1.5fr_1fr]">
+            <div className="rounded-lg border border-blue-200/70 dark:border-blue-900/60 bg-blue-50/70 dark:bg-blue-950/20 p-5">
+              <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-2">Why this article matters</h2>
+              <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                {post.excerpt} This page is intended to help readers interpret live metal prices more carefully, compare offers more intelligently, and understand the practical trade-offs behind the headline number.
+              </p>
+            </div>
+            <div className="rounded-lg border border-amber-200/70 dark:border-amber-900/60 bg-amber-50/70 dark:bg-amber-950/20 p-5">
+              <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-2">Reader checklist</h2>
+              <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                {getArticleChecklist(post).map((item) => (
+                  <li key={item} className="flex gap-2">
+                    <span className="mt-1 h-1.5 w-1.5 rounded-full bg-amber-500 dark:bg-amber-400 flex-shrink-0" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
 

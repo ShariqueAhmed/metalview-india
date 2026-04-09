@@ -24,7 +24,6 @@ import FAQSchema from '@/components/FAQSchema';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import LastUpdated from '@/components/LastUpdated';
 import YouMayAlsoLike from '@/components/YouMayAlsoLike';
-import { AdSenseResponsive } from '@/components/AdSense';
 
 interface CityPageProps {
   params: Promise<{ cityName: string }>;
@@ -237,6 +236,14 @@ const CITY_FAQS: Record<string, Array<{ question: string; answer: string }>> = {
     },
   ],
 };
+
+function getCityPageChecklist(city: string): string[] {
+  return [
+    `Use ${city} as your local benchmark, then compare the final quote you receive against the live rate shown here.`,
+    'For jewellery purchases, separate purity, making charges, GST, and stones or extras before comparing offers.',
+    'For industrial or non-jewellery metals, treat the page as market context rather than a direct retail quote.',
+  ];
+}
 
 // Generate static params for top cities
 export async function generateStaticParams() {
@@ -456,6 +463,9 @@ export default async function CityOverviewPage({ params }: CityPageProps) {
                 <p className="text-slate-600 dark:text-slate-400 mb-2">
                   This page shows live metal rates in {city} so you can compare gold, silver, copper, platinum, and palladium prices in one place. Use the city selector to switch locations, and click any metal below or in the links at the bottom for detailed rates and history. Prices are indicative; verify with local dealers before buying.
                 </p>
+                <p className="text-slate-600 dark:text-slate-400 mb-2">
+                  The goal of this page is to help you understand the local market picture, not just the number. Different metals matter to different users in {city}: jewellery buyers, savers, traders, and industrial users will all read these prices differently.
+                </p>
                 {data?.updated_at && (
                   <LastUpdated date={data.updated_at} />
                 )}
@@ -592,6 +602,35 @@ export default async function CityOverviewPage({ params }: CityPageProps) {
             </div>
           )}
 
+          <div className="mb-8 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 p-6 sm:p-8 card-shadow">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-4">
+              How to Use the {city} City Page
+            </h2>
+            <div className="grid gap-6 lg:grid-cols-2">
+              <div>
+                <p className="text-slate-600 dark:text-slate-400 mb-4">
+                  Use this page when you want a single-city snapshot before opening a metal-specific page. It works best as a comparison hub: you can see whether gold and silver look steady, whether copper is moving sharply, and whether niche metals like platinum or palladium are worth deeper review.
+                </p>
+                <p className="text-slate-600 dark:text-slate-400">
+                  Once you know which metal matters to you, the metal-specific city pages give you better context on history, pricing structure, and buying considerations. This page is the overview; the detailed decision support lives one click deeper.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-50 mb-3">
+                  Quick checklist
+                </h3>
+                <ul className="space-y-2 text-slate-600 dark:text-slate-400">
+                  {getCityPageChecklist(city).map((item) => (
+                    <li key={item} className="flex gap-2">
+                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-amber-500 dark:bg-amber-400 flex-shrink-0" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+
           {/* City Market Insights */}
           <div className="mb-8 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 p-6 sm:p-8 card-shadow">
             <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-4">
@@ -601,6 +640,9 @@ export default async function CityOverviewPage({ params }: CityPageProps) {
               <p className="text-slate-600 dark:text-slate-400 mb-4">{cityInsight}</p>
               <p className="text-slate-600 dark:text-slate-400 mb-4">
                 In {city}, gold and silver rates often move with national trends, but local demand during festivals and weddings can create short-term differences. Copper, platinum, and palladium are more influenced by global commodity markets and exchange rates. The chart above helps you see how prices have moved over time.
+              </p>
+              <p className="text-slate-600 dark:text-slate-400 mb-4">
+                For most readers, the most important distinction is between benchmark movement and final buying cost. The benchmark rate helps you understand direction. The actual bill depends on what you are buying, how it is quoted, and how competitive the local market is on that day.
               </p>
               <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-3">
                 Key Factors Affecting Prices
@@ -666,7 +708,7 @@ export default async function CityOverviewPage({ params }: CityPageProps) {
               <>
                 <FAQSection
                   faqs={cityFaqs}
-                title={`Frequently Asked Questions about Gold Prices in ${city}`}
+                title={`Frequently Asked Questions about Metal Prices in ${city}`}
               />
               <FAQSchema
                 faqs={cityFaqs}
@@ -714,11 +756,6 @@ export default async function CityOverviewPage({ params }: CityPageProps) {
                 Palladium
               </Link>
             </div>
-          </div>
-
-          {/* AdSense Ad - Before Related Sections */}
-          <div className="mb-8 flex justify-center">
-            <AdSenseResponsive className="min-h-[100px] max-w-full" />
           </div>
 
           {/* Related Cities Section */}
@@ -788,10 +825,6 @@ export default async function CityOverviewPage({ params }: CityPageProps) {
             pageType="city"
           />
 
-          {/* AdSense Ad - Before Footer */}
-          <div className="mb-8 flex justify-center">
-            <AdSenseResponsive className="min-h-[100px] max-w-full" />
-          </div>
         </main>
 
         <Footer />

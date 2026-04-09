@@ -373,6 +373,6 @@ export function generateDatasetSchema(data: {
       description: `Price of ${metalName.toLowerCase()} per unit`,
     },
     numberOfItems: dataPoints.length,
-    license: `${baseUrl}/terms`,
+    license: `${baseUrl}/terms-of-service`,
   };
 }

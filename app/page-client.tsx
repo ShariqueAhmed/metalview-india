@@ -109,6 +109,32 @@ export default function HomeClient() {
           </p>
         </header>
 
+        <section className="mb-10 sm:mb-12 content-card p-5 sm:p-6 lg:p-7">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-50 mb-3">
+            Why Readers Trust MetalView
+          </h2>
+          <div className="grid gap-4 md:grid-cols-3">
+            <div>
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Transparent sourcing</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                We explain where price data comes from, how often it updates, and why dealer rates can still vary offline.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Publisher-first content</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                Alongside live rates, we publish guides on purity, taxes, city differences, and buying decisions so the site adds context, not just numbers.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Direct contact</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                Readers can reach us at <a href="mailto:metalviewofficial@gmail.com" className="text-amber-600 dark:text-amber-400 hover:underline">metalviewofficial@gmail.com</a> for corrections, support, and business queries.
+              </p>
+            </div>
+          </div>
+        </section>
+
         {/* Metal cards */}
         <section
           aria-labelledby="metal-pages"
@@ -149,25 +175,19 @@ export default function HomeClient() {
                   })}
         </section>
 
-        {/* Bottom CTA */}
-        <div className="mt-12 sm:mt-16 p-5 sm:p-6 rounded-2xl bg-slate-100/80 dark:bg-slate-800/40 border border-slate-200/60 dark:border-slate-700/50 backdrop-blur-sm">
-          <p className="text-sm text-slate-600 dark:text-slate-400 text-center leading-relaxed">
-            Prices are indicative and updated regularly. See our{' '}
-            <Link
-              href="/about"
-              className="font-medium text-amber-600 dark:text-amber-400 hover:underline active:opacity-80 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 rounded"
-            >
-              About
-            </Link>{' '}
-            page for data sources and{' '}
-            <Link
-              href="/guides"
-              className="font-medium text-amber-600 dark:text-amber-400 hover:underline active:opacity-80 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 rounded"
-            >
-              Guides
-            </Link>{' '}
-            for more information.
-          </p>
+        <div className="mt-12 sm:mt-16 grid gap-4 md:grid-cols-2">
+          <div className="p-5 sm:p-6 rounded-2xl bg-slate-100/80 dark:bg-slate-800/40 border border-slate-200/60 dark:border-slate-700/50 backdrop-blur-sm">
+            <h2 className="text-lg font-bold text-slate-900 dark:text-slate-50 mb-2">Before You Use Today&apos;s Price</h2>
+            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              Rates on MetalView are indicative. Always confirm final dealer pricing, making charges, GST, purity, and availability before purchasing jewellery, coins, or bars.
+            </p>
+          </div>
+          <div className="p-5 sm:p-6 rounded-2xl bg-slate-100/80 dark:bg-slate-800/40 border border-slate-200/60 dark:border-slate-700/50 backdrop-blur-sm">
+            <h2 className="text-lg font-bold text-slate-900 dark:text-slate-50 mb-2">Learn How We Work</h2>
+            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              See our <Link href="/about" className="font-medium text-amber-600 dark:text-amber-400 hover:underline active:opacity-80 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 rounded">About</Link> page for data sourcing and standards, and browse <Link href="/guides" className="font-medium text-amber-600 dark:text-amber-400 hover:underline active:opacity-80 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 rounded">Guides</Link> for deeper explainers on purity, taxes, and market context.
+            </p>
+          </div>
         </div>
       </main>
       <Footer />

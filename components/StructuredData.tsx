@@ -51,6 +51,7 @@ export default function StructuredData({
       contactType: 'Customer Service',
       areaServed: 'IN',
       availableLanguage: ['en', 'hi'],
+      email: 'metalviewofficial@gmail.com',
     },
   };
 

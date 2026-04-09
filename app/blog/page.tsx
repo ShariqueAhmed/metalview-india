@@ -123,6 +123,74 @@ export default function BlogPage() {
           </p>
         </header>
 
+        <section className="mb-10 content-card p-6 sm:p-7">
+          <h2 className="section-title mb-4">What You&apos;ll Find Here</h2>
+          <div className="grid gap-4 md:grid-cols-3">
+            <div>
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Market context</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                Articles that explain what is moving gold, silver, copper, platinum, and palladium prices in India beyond the headline number.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Buyer education</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                Practical guides on taxes, purity, hallmarking, price calculation, and how to compare real quotes from dealers or platforms.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">City-level perspective</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                Localized explainers that help readers understand why pricing, demand, and buying behavior can differ across major Indian cities.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="mb-14 grid gap-6 lg:grid-cols-[1.6fr_1fr]">
+          <article className="content-card p-6 sm:p-7">
+            <p className="text-xs font-semibold uppercase tracking-wide text-amber-700 dark:text-amber-300 mb-2">
+              Editorial Focus
+            </p>
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-3">
+              We aim to publish explainers, not filler
+            </h2>
+            <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+              MetalView&apos;s blog is meant to make live-rate pages more useful. Instead of treating the daily price as the whole story, we cover the practical details that often determine whether a quote is actually attractive: purity, taxes, fabrication costs, local demand, trading behavior, and common comparison mistakes.
+            </p>
+            <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+              If a topic affects how Indian readers buy, evaluate, or interpret metal prices, it belongs here. That includes educational basics for first-time buyers and more analytical pieces for readers following market trends responsibly.
+            </p>
+          </article>
+          <aside className="content-card p-6 sm:p-7">
+            <h2 className="text-lg font-bold text-slate-900 dark:text-slate-50 mb-3">
+              Start Here
+            </h2>
+            <ul className="space-y-3 text-sm">
+              <li>
+                <Link href="/blog/how-to-read-live-metal-prices-metalview" className="text-amber-600 dark:text-amber-400 hover:underline">
+                  How to Read Live Metal Prices on MetalView
+                </Link>
+              </li>
+              <li>
+                <Link href="/blog/gst-on-gold-jewelry-india-explained" className="text-amber-600 dark:text-amber-400 hover:underline">
+                  GST on Gold Jewelry in India
+                </Link>
+              </li>
+              <li>
+                <Link href="/blog/sovereign-gold-bonds-vs-physical-gold-india" className="text-amber-600 dark:text-amber-400 hover:underline">
+                  Sovereign Gold Bonds vs Physical Gold
+                </Link>
+              </li>
+              <li>
+                <Link href="/blog/silver-price-trends-india-2026" className="text-amber-600 dark:text-amber-400 hover:underline">
+                  Silver Price Trends in India
+                </Link>
+              </li>
+            </ul>
+          </aside>
+        </section>
+
         <section className="mb-14">
           <h2 className="section-title mb-6">Latest Articles</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

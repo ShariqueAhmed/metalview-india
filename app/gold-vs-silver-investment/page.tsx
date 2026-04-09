@@ -60,7 +60,7 @@ export default function GoldVsSilverInvestmentPage() {
       },
     },
     datePublished: '2025-01-27',
-    dateModified: '2025-01-27',
+    dateModified: '2026-04-09',
     mainEntityOfPage: {
       '@type': 'WebPage',
       '@id': `${baseUrl}/gold-vs-silver-investment`,
@@ -93,7 +93,22 @@ export default function GoldVsSilverInvestmentPage() {
             <p className="text-lg text-slate-600 dark:text-slate-400">
               A comprehensive comparison of gold and silver investments in India, including returns, risks, liquidity, and expert recommendations.
             </p>
+            <p className="text-sm text-slate-500 dark:text-slate-500 mt-2">
+              Reviewed on April 9, 2026 by the MetalView editorial team
+            </p>
           </div>
+
+          <section className="mb-8 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 p-6 sm:p-8 card-shadow">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-4">
+              The Short Answer
+            </h2>
+            <p className="text-slate-600 dark:text-slate-400 mb-4">
+              Gold is usually the better fit for investors who care more about stability, portability, and long-term wealth preservation. Silver is usually the better fit for investors who can tolerate sharper swings, want a lower ticket-size entry point, and understand that industrial demand can make silver behave very differently from gold.
+            </p>
+            <p className="text-slate-600 dark:text-slate-400 mb-0">
+              That means the better choice is not universal. It depends on whether you want steadier protection, greater upside volatility, easier storage, or lower initial cost.
+            </p>
+          </section>
 
           {/* Quick Comparison Table */}
           <div className="mb-12 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 p-6 sm:p-8 card-shadow">
@@ -144,6 +159,18 @@ export default function GoldVsSilverInvestmentPage() {
               </table>
             </div>
           </div>
+
+          <section className="mb-12 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 p-6 sm:p-8 card-shadow">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-4">
+              What Most Comparisons Miss
+            </h2>
+            <ul className="list-disc list-inside text-slate-600 dark:text-slate-400 space-y-2">
+              <li>A lower price per unit does not automatically mean silver is the easier investment to manage.</li>
+              <li>A “safe-haven” label does not mean gold is risk-free or that timing never matters.</li>
+              <li>Physical ownership introduces storage, spread, and resale considerations for both metals.</li>
+              <li>The right comparison is between your actual use case for each metal, not just their headlines.</li>
+            </ul>
+          </section>
 
           {/* Gold Investment Section */}
           <section className="mb-12 bg-white dark:bg-slate-900 rounded-xl border-2 border-amber-200 dark:border-amber-800 p-6 sm:p-8 card-shadow">
@@ -222,6 +249,26 @@ export default function GoldVsSilverInvestmentPage() {
                   <li>More susceptible to market manipulation</li>
                   <li>Industrial demand can fluctuate</li>
                 </ul>
+              </div>
+            </div>
+          </section>
+
+          <section className="mb-12 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 p-6 sm:p-8 card-shadow">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-4">
+              A Practical Decision Framework
+            </h2>
+            <div className="grid gap-6 md:grid-cols-2">
+              <div>
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-50 mb-2">Lean toward gold when</h3>
+                <p className="text-slate-600 dark:text-slate-400">
+                  your priority is stability, easier storage, broad resale acceptance, gifting utility, or long-term wealth preservation with lower drama.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-50 mb-2">Lean toward silver when</h3>
+                <p className="text-slate-600 dark:text-slate-400">
+                  you want a lower-cost entry point, can handle stronger swings, and are comfortable with silver&apos;s industrial-demand sensitivity and storage trade-offs.
+                </p>
               </div>
             </div>
           </section>
