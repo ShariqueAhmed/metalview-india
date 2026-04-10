@@ -53,189 +53,89 @@ const TOP_CITIES = [
   'ghaziabad',
 ];
 
-// City-specific market insights
 const CITY_INSIGHTS: Record<string, string> = {
-  mumbai: 'Mumbai is India\'s largest gold trading hub, with Zaveri Bazaar being one of the most prominent gold markets. Prices here often set the benchmark for other cities due to high trading volumes and direct import connections.',
-  delhi: 'Delhi\'s gold market is influenced by both local demand and proximity to major trading centers. The city sees significant jewelry purchases during wedding seasons, affecting local prices.',
-  bangalore: 'Bangalore\'s tech-savvy population drives demand for investment-grade gold. The city has a growing market for digital gold and gold ETFs.',
-  kolkata: 'Kolkata has a rich tradition of gold trading, with Bowbazar being a historic gold market. The city maintains competitive prices due to established dealer networks.',
-  chennai: 'Chennai\'s gold market is known for traditional jewelry designs. The city has strong cultural ties to gold, especially during festivals and weddings.',
-  hyderabad: 'Hyderabad\'s Charminar area is famous for gold jewelry. The city sees high demand during local festivals and wedding seasons.',
-  pune: 'Pune\'s gold market benefits from its proximity to Mumbai. The city has a growing middle-class population driving gold investment demand.',
-  ahmedabad: 'Ahmedabad has a strong gold trading tradition, with Manek Chowk being a well-known market. The city sees consistent demand throughout the year.',
-  jaipur: 'Jaipur is famous for its traditional gold jewelry designs. The city\'s gold market is influenced by both local demand and tourism.',
-  surat: 'Surat is a major diamond and gold trading center. The city has strong connections to international markets, affecting local gold prices.',
+  mumbai: 'Mumbai is one of India\'s most influential bullion and commodities hubs, so local price discovery tends to be faster and dealer competition is usually stronger than in smaller cities.',
+  delhi: 'Delhi combines traditional trading areas with large organised retail demand, which means quoted rates can differ depending on neighbourhood, product type, and seller positioning.',
+  bangalore: 'Bangalore has a broad mix of jewellery demand, investment-minded buyers, and digitally aware consumers, making it a useful city for comparing retail and investment behavior.',
+  kolkata: 'Kolkata has long-established jewellery and bullion networks, and local dealer relationships still influence how rates and premiums are quoted to end buyers.',
+  chennai: 'Chennai is a major jewellery market with active branded retail and strong seasonal buying patterns, so benchmark metal rates and final showroom prices do not always move in lockstep.',
+  hyderabad: 'Hyderabad combines traditional jewellery demand with active modern retail, which makes comparison shopping and bill-level transparency especially important.',
+  pune: 'Pune benefits from western India trading links while maintaining its own active jewellery and investment market, which helps keep local quotes competitive.',
+  ahmedabad: 'Ahmedabad has a steady precious-metals market where buyers often compare multiple dealer quotes, making price transparency a meaningful local factor.',
+  jaipur: 'Jaipur has a strong jewellery tradition and a tourism-facing retail market, so design premiums and craftsmanship can matter as much as benchmark metal movement.',
+  surat: 'Surat is closely connected to wider trading and manufacturing networks, so business demand and commodity sentiment often shape how prices are discussed locally.',
 };
 
 // Popular markets and dealers by city
 const CITY_MARKETS: Record<string, Array<{ name: string; description: string; type: 'market' | 'area' | 'dealer' }>> = {
   mumbai: [
-    { name: 'Zaveri Bazaar', description: 'One of India\'s largest and most prominent gold markets, known for competitive prices and high trading volumes', type: 'market' },
-    { name: 'Bharat Diamond Bourse', description: 'Major trading hub for gold and diamonds with international connections', type: 'market' },
-    { name: 'Opera House', description: 'Popular area for gold jewelry shopping with numerous certified dealers', type: 'area' },
+    { name: 'Zaveri Bazaar', description: 'One of India\'s most prominent jewellery and bullion markets, known for high trading activity and strong price discovery', type: 'market' },
+    { name: 'Bharat Diamond Bourse', description: 'Major trading hub with international connections that influences wider precious-metals sentiment in the city', type: 'market' },
+    { name: 'Opera House', description: 'Popular area for jewellery shopping with numerous certified dealers and established retail brands', type: 'area' },
   ],
   delhi: [
-    { name: 'Chandni Chowk', description: 'Historic gold market with traditional jewelry shops and competitive prices', type: 'market' },
-    { name: 'Karol Bagh', description: 'Popular shopping area with numerous gold jewelry stores and certified dealers', type: 'area' },
-    { name: 'Dariba Kalan', description: 'Famous silver and gold market in Old Delhi with traditional designs', type: 'market' },
+    { name: 'Chandni Chowk', description: 'Historic jewellery market with traditional shops, active trading, and highly variable quote styles', type: 'market' },
+    { name: 'Karol Bagh', description: 'Popular shopping area with many jewellery stores, showrooms, and certified dealers', type: 'area' },
+    { name: 'Dariba Kalan', description: 'Well-known Old Delhi bullion and jewellery market with deep silver and traditional retail links', type: 'market' },
   ],
   bangalore: [
-    { name: 'Commercial Street', description: 'Popular shopping area with multiple gold jewelry stores and modern designs', type: 'area' },
-    { name: 'Jayanagar', description: 'Residential area with established gold dealers and competitive pricing', type: 'area' },
-    { name: 'MG Road', description: 'Main commercial area with certified jewelers and branded stores', type: 'area' },
+    { name: 'Commercial Street', description: 'Popular shopping area with multiple jewellery retailers and modern product mixes', type: 'area' },
+    { name: 'Jayanagar', description: 'Established residential-commercial zone with long-running dealers and competitive retail pricing', type: 'area' },
+    { name: 'MG Road', description: 'Main commercial corridor with branded stores and certified jewellers', type: 'area' },
   ],
   kolkata: [
-    { name: 'Bowbazar', description: 'Historic gold market with traditional jewelry designs and competitive prices', type: 'market' },
-    { name: 'Bara Bazaar', description: 'One of the oldest markets in Kolkata, known for gold trading', type: 'market' },
-    { name: 'New Market', description: 'Popular shopping area with multiple gold jewelry stores', type: 'area' },
+    { name: 'Bowbazar', description: 'Historic jewellery market with traditional craftsmanship and strong local dealer networks', type: 'market' },
+    { name: 'Bara Bazaar', description: 'One of Kolkata\'s oldest trading districts, relevant for bullion and wider commodity activity', type: 'market' },
+    { name: 'New Market', description: 'Popular shopping area with multiple jewellery stores and retail comparison options', type: 'area' },
   ],
   chennai: [
-    { name: 'T. Nagar', description: 'Major shopping district with numerous gold jewelry stores and traditional designs', type: 'area' },
-    { name: 'Mount Road', description: 'Commercial area with certified jewelers and modern gold designs', type: 'area' },
-    { name: 'Mylapore', description: 'Traditional area known for gold jewelry during festivals', type: 'area' },
+    { name: 'T. Nagar', description: 'Major jewellery shopping district with dense showroom competition and strong seasonal demand', type: 'area' },
+    { name: 'Mount Road', description: 'Commercial area with certified jewellers and modern retail brands', type: 'area' },
+    { name: 'Mylapore', description: 'Traditional neighbourhood with established jewellers and strong festive shopping relevance', type: 'area' },
   ],
   hyderabad: [
-    { name: 'Charminar', description: 'Famous area for gold jewelry with traditional designs and competitive prices', type: 'area' },
-    { name: 'Abids', description: 'Popular shopping area with multiple gold jewelry stores', type: 'area' },
-    { name: 'Banjara Hills', description: 'Upscale area with branded gold jewelry stores', type: 'area' },
+    { name: 'Charminar', description: 'Famous area for traditional jewellery retail with heavy local footfall and varied pricing styles', type: 'area' },
+    { name: 'Abids', description: 'Popular shopping area with multiple jewellery stores and comparison opportunities', type: 'area' },
+    { name: 'Banjara Hills', description: 'Upscale area with branded jewellery stores and premium positioning', type: 'area' },
   ],
   pune: [
-    { name: 'Tulsi Baug', description: 'Traditional market area with gold jewelry stores and competitive pricing', type: 'market' },
-    { name: 'FC Road', description: 'Popular shopping street with modern gold jewelry stores', type: 'area' },
-    { name: 'Camp Area', description: 'Commercial area with certified jewelers', type: 'area' },
+    { name: 'Tulsi Baug', description: 'Traditional market area with active jewellery retail and price-sensitive buyers', type: 'market' },
+    { name: 'FC Road', description: 'Popular shopping street with modern jewellery stores and urban retail demand', type: 'area' },
+    { name: 'Camp Area', description: 'Commercial area with established certified jewellers', type: 'area' },
   ],
   ahmedabad: [
-    { name: 'Manek Chowk', description: 'Famous gold market with traditional jewelry and competitive prices', type: 'market' },
-    { name: 'Law Garden', description: 'Popular area with gold jewelry stores', type: 'area' },
-    { name: 'CG Road', description: 'Commercial area with modern gold jewelry stores', type: 'area' },
+    { name: 'Manek Chowk', description: 'Well-known jewellery market with longstanding dealer relationships and active local trade', type: 'market' },
+    { name: 'Law Garden', description: 'Popular area with jewellery retailers and steady city demand', type: 'area' },
+    { name: 'CG Road', description: 'Commercial corridor with modern jewellery stores and branded retail', type: 'area' },
   ],
   jaipur: [
-    { name: 'Johari Bazaar', description: 'Famous for traditional gold jewelry designs and competitive prices', type: 'market' },
-    { name: 'Tripolia Bazaar', description: 'Historic market known for gold and silver jewelry', type: 'market' },
-    { name: 'MI Road', description: 'Main commercial area with gold jewelry stores', type: 'area' },
+    { name: 'Johari Bazaar', description: 'Historic jewellery market known for traditional craftsmanship and tourist-facing retail', type: 'market' },
+    { name: 'Tripolia Bazaar', description: 'Long-running market area with jewellery trade across multiple metal categories', type: 'market' },
+    { name: 'MI Road', description: 'Main commercial area with established jewellery stores and city retail demand', type: 'area' },
   ],
   surat: [
-    { name: 'Varachha Road', description: 'Major diamond and gold trading area with competitive prices', type: 'area' },
-    { name: 'Mahidharpura', description: 'Historic gold market with traditional designs', type: 'market' },
-    { name: 'Adajan', description: 'Residential area with established gold dealers', type: 'area' },
+    { name: 'Varachha Road', description: 'Major diamond, jewellery, and trading area with strong business-linked demand', type: 'area' },
+    { name: 'Mahidharpura', description: 'Historic market area connected to jewellery and bullion trade', type: 'market' },
+    { name: 'Adajan', description: 'Residential-commercial area with established jewellery dealers', type: 'area' },
   ],
 };
 
-// City-specific FAQs
-const CITY_FAQS: Record<string, Array<{ question: string; answer: string }>> = {
-  mumbai: [
+function getCityOverviewFaqs(city: string): Array<{ question: string; answer: string }> {
+  return [
     {
-      question: 'Why are gold prices in Mumbai often lower than other cities?',
-      answer: 'Mumbai is India\'s largest gold trading hub with direct import connections and high trading volumes. This results in lower dealer margins and more competitive prices compared to smaller cities.',
+      question: `How should I use this ${city} metal price page?`,
+      answer: `Use the ${city} city page as a benchmark overview before checking a metal-specific route. It helps you compare how gold, silver, copper, platinum, and palladium are moving locally before you evaluate a final dealer or supplier quote.`,
     },
     {
-      question: 'Where can I buy gold in Mumbai?',
-      answer: 'Zaveri Bazaar in Mumbai is one of India\'s most prominent gold markets. You can also purchase from certified dealers, banks, and online platforms. Always verify the purity and get proper documentation.',
+      question: `Why can final metal quotes in ${city} differ from the rates shown here?`,
+      answer: `The rates on this page are benchmark prices. In ${city}, the final payable amount may vary because of purity, unit size, fabrication or making charges, GST, supplier margins, transport costs, and product availability.`,
     },
     {
-      question: 'What is the best time to buy gold in Mumbai?',
-      answer: 'Gold prices fluctuate daily. Generally, prices may be lower during off-peak seasons (non-festival periods). However, timing the market is difficult, so consider your investment goals and buy when you need it.',
+      question: `Which metals on this ${city} page are most relevant for retail buyers?`,
+      answer: `Gold and silver are usually the most relevant for jewellery and household buying. Copper, platinum, and palladium are still useful to track, but they are often more important for industry, niche retail demand, or market context than for mainstream consumer purchases in ${city}.`,
     },
-    {
-      question: 'How do I verify gold purity in Mumbai?',
-      answer: 'Always check for BIS (Bureau of Indian Standards) hallmark on gold jewelry. Certified dealers provide purity certificates. You can also get gold tested at BIS-approved testing centers.',
-    },
-  ],
-  delhi: [
-    {
-      question: 'How do gold prices in Delhi compare to Mumbai?',
-      answer: 'Delhi prices are typically slightly higher than Mumbai due to transportation costs and local market dynamics. However, the difference is usually minimal (₹50-200 per 10g).',
-    },
-    {
-      question: 'Where are the best places to buy gold in Delhi?',
-      answer: 'Chandni Chowk and Karol Bagh are popular gold markets in Delhi. You can also purchase from certified jewelers, banks, and online platforms. Always verify purity certificates.',
-    },
-    {
-      question: 'What factors affect gold prices in Delhi?',
-      answer: 'Gold prices in Delhi are influenced by international rates, local demand (especially during wedding seasons), dealer margins, making charges, and local taxes.',
-    },
-  ],
-  bangalore: [
-    {
-      question: 'Is gold a good investment in Bangalore?',
-      answer: 'Gold can be a good investment for diversification. Bangalore\'s tech-savvy population often prefers digital gold, gold ETFs, or sovereign gold bonds for investment purposes, while physical gold is popular for jewelry.',
-    },
-    {
-      question: 'Where can I buy gold in Bangalore?',
-      answer: 'Commercial Street, Jayanagar, and MG Road have numerous gold jewelry stores. You can also purchase from certified dealers, banks, and online platforms. Always verify purity.',
-    },
-  ],
-  kolkata: [
-    {
-      question: 'What makes Kolkata\'s gold market unique?',
-      answer: 'Kolkata has a rich tradition of gold trading with historic markets like Bowbazar. The city maintains competitive prices due to established dealer networks and traditional jewelry designs.',
-    },
-    {
-      question: 'Where are the best gold markets in Kolkata?',
-      answer: 'Bowbazar and Bara Bazaar are famous gold markets in Kolkata. These areas have numerous dealers offering competitive prices and traditional designs.',
-    },
-  ],
-  chennai: [
-    {
-      question: 'What is special about Chennai\'s gold market?',
-      answer: 'Chennai\'s gold market is known for traditional jewelry designs and strong cultural ties to gold, especially during festivals and weddings. T. Nagar is a major shopping area for gold.',
-    },
-    {
-      question: 'When is the best time to buy gold in Chennai?',
-      answer: 'Gold prices fluctuate daily. However, demand is typically higher during festival seasons (Pongal, Diwali) and wedding seasons, which may affect local prices.',
-    },
-  ],
-  hyderabad: [
-    {
-      question: 'Where can I find the best gold prices in Hyderabad?',
-      answer: 'Charminar area is famous for gold jewelry with competitive prices. You can also check Abids and Banjara Hills for various options. Always compare prices and verify purity.',
-    },
-    {
-      question: 'What affects gold prices in Hyderabad?',
-      answer: 'Gold prices in Hyderabad are influenced by international rates, local demand during festivals and weddings, dealer margins, and transportation costs.',
-    },
-  ],
-  pune: [
-    {
-      question: 'How do gold prices in Pune compare to Mumbai?',
-      answer: 'Pune prices are typically slightly higher than Mumbai due to transportation costs, but the difference is usually minimal. The city benefits from proximity to Mumbai\'s trading hub.',
-    },
-    {
-      question: 'Where can I buy gold in Pune?',
-      answer: 'Tulsi Baug, FC Road, and Camp area have numerous gold jewelry stores. You can also purchase from certified dealers and banks. Always verify purity certificates.',
-    },
-  ],
-  ahmedabad: [
-    {
-      question: 'What is Manek Chowk known for?',
-      answer: 'Manek Chowk is a famous gold market in Ahmedabad known for traditional jewelry and competitive prices. It\'s one of the oldest and most trusted markets in the city.',
-    },
-    {
-      question: 'How do I ensure I\'m buying genuine gold in Ahmedabad?',
-      answer: 'Always check for BIS hallmark, buy from certified dealers, and get proper documentation. Manek Chowk has many established dealers with good reputations.',
-    },
-  ],
-  jaipur: [
-    {
-      question: 'What makes Jaipur\'s gold market special?',
-      answer: 'Jaipur is famous for traditional gold jewelry designs. Johari Bazaar is a historic market known for intricate designs and competitive prices, attracting both locals and tourists.',
-    },
-    {
-      question: 'Where should I buy gold in Jaipur?',
-      answer: 'Johari Bazaar and Tripolia Bazaar are famous gold markets in Jaipur. These areas have numerous dealers offering traditional designs and competitive prices.',
-    },
-  ],
-  surat: [
-    {
-      question: 'Why is Surat important for gold trading?',
-      answer: 'Surat is a major diamond and gold trading center with strong connections to international markets. This affects local gold prices and makes it a significant trading hub.',
-    },
-    {
-      question: 'Where can I buy gold in Surat?',
-      answer: 'Varachha Road and Mahidharpura are major gold trading areas in Surat. The city has numerous dealers with competitive prices due to its trading hub status.',
-    },
-  ],
-};
+  ];
+}
 
 function getCityPageChecklist(city: string): string[] {
   return [
@@ -639,7 +539,7 @@ export default async function CityOverviewPage({ params }: CityPageProps) {
             <div className="prose prose-sm max-w-none dark:prose-invert">
               <p className="text-slate-600 dark:text-slate-400 mb-4">{cityInsight}</p>
               <p className="text-slate-600 dark:text-slate-400 mb-4">
-                In {city}, gold and silver rates often move with national trends, but local demand during festivals and weddings can create short-term differences. Copper, platinum, and palladium are more influenced by global commodity markets and exchange rates. The chart above helps you see how prices have moved over time.
+                In {city}, benchmark metal rates usually move with national and global trends, but the final quote you receive can still differ by product category, supplier type, urgency, and local competition. The chart above helps you separate broad market movement from city-level retail variation.
               </p>
               <p className="text-slate-600 dark:text-slate-400 mb-4">
                 For most readers, the most important distinction is between benchmark movement and final buying cost. The benchmark rate helps you understand direction. The actual bill depends on what you are buying, how it is quoted, and how competitive the local market is on that day.
@@ -671,7 +571,7 @@ export default async function CityOverviewPage({ params }: CityPageProps) {
                     <Store className="w-5 h-5 text-amber-700 dark:text-amber-400" aria-hidden="true" />
                   </div>
                   <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50">
-                    Popular Markets & Dealers in {city}
+                    Popular Bullion & Jewellery Markets in {city}
                   </h2>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -703,7 +603,7 @@ export default async function CityOverviewPage({ params }: CityPageProps) {
 
           {/* City-Specific FAQs */}
           {(() => {
-            const cityFaqs = CITY_FAQS[cityName.toLowerCase()];
+            const cityFaqs = getCityOverviewFaqs(city);
             return cityFaqs && cityFaqs.length > 0 && (
               <>
                 <FAQSection

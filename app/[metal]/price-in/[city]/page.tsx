@@ -59,22 +59,8 @@ const TOP_CITIES = [
   'ghaziabad',
 ];
 
-// City-specific market insights
-const CITY_INSIGHTS: Record<string, string> = {
-  mumbai: 'Mumbai is India\'s largest gold trading hub, with Zaveri Bazaar being one of the most prominent gold markets. Prices here often set the benchmark for other cities due to high trading volumes and direct import connections.',
-  delhi: 'Delhi\'s gold market is influenced by both local demand and proximity to major trading centers. The city sees significant jewelry purchases during wedding seasons, affecting local prices.',
-  bangalore: 'Bangalore\'s tech-savvy population drives demand for investment-grade gold. The city has a growing market for digital gold and gold ETFs.',
-  kolkata: 'Kolkata has a rich tradition of gold trading, with Bowbazar being a historic gold market. The city maintains competitive prices due to established dealer networks.',
-  chennai: 'Chennai\'s gold market is known for traditional jewelry designs. The city has strong cultural ties to gold, especially during festivals and weddings.',
-  hyderabad: 'Hyderabad\'s Charminar area is famous for gold jewelry. The city sees high demand during local festivals and wedding seasons.',
-  pune: 'Pune\'s gold market benefits from its proximity to Mumbai. The city has a growing middle-class population driving gold investment demand.',
-  ahmedabad: 'Ahmedabad has a strong gold trading tradition, with Manek Chowk being a well-known market. The city sees consistent demand throughout the year.',
-  jaipur: 'Jaipur is famous for its traditional gold jewelry designs. The city\'s gold market is influenced by both local demand and tourism.',
-  surat: 'Surat is a major diamond and gold trading center. The city has strong connections to international markets, affecting local gold prices.',
-};
-
-// City-specific FAQs
-const CITY_FAQS: Record<string, Array<{ question: string; answer: string }>> = {
+// City-specific gold FAQs
+const GOLD_CITY_FAQS: Record<string, Array<{ question: string; answer: string }>> = {
   mumbai: [
     {
       question: 'Why are gold prices in Mumbai often lower than other cities?',
@@ -99,6 +85,19 @@ const CITY_FAQS: Record<string, Array<{ question: string; answer: string }>> = {
       answer: 'Chandni Chowk and Karol Bagh are popular gold markets in Delhi. You can also purchase from certified jewelers, banks, and online platforms. Always verify purity certificates.',
     },
   ],
+};
+
+const CITY_PROFILES: Record<string, string> = {
+  mumbai: 'Mumbai is one of India\'s most influential bullion and commodities hubs, with deep trading networks, strong wholesale activity, and high price visibility.',
+  delhi: 'Delhi combines old-market trading corridors with large organised retail demand, so quoted rates and final selling prices can vary across neighbourhoods and dealer types.',
+  bangalore: 'Bangalore has a broad mix of jewellery buyers, investment-minded households, and digitally aware consumers, which makes it a useful city for comparing retail and investment demand.',
+  kolkata: 'Kolkata has long-established jewellery and bullion networks, and local dealer relationships still play a meaningful role in how rates are quoted to retail buyers.',
+  chennai: 'Chennai is a major South Indian jewellery market with strong consumer demand, active branded retail, and clear seasonality in showroom activity.',
+  hyderabad: 'Hyderabad combines traditional jewellery demand with active urban retail trade, making local competition and quote transparency important factors for buyers.',
+  pune: 'Pune benefits from its proximity to larger western India trading centres while maintaining its own active retail market for jewellery and investment products.',
+  ahmedabad: 'Ahmedabad has a steady retail precious-metals market and a strong culture of comparing dealer quotes before buying, which can keep pricing competitive.',
+  jaipur: 'Jaipur has a strong jewellery tradition and a tourist-facing retail base, so craftsmanship, design style, and dealer positioning often affect final billed prices.',
+  surat: 'Surat is closely connected to wider trading and manufacturing networks, so commodity sentiment and business demand can influence how local rates are discussed and quoted.',
 };
 
 function getMetalPurposeLine(metal: MetalType): string {
@@ -147,6 +146,78 @@ function getMetalBuyingChecklist(metal: MetalType, cityName: string): string[] {
         'Verify exactly how the seller is quoting palladium and in what unit.',
         'Expect thinner retail availability than gold or silver in many cities.',
         'Compare the total cost and liquidity implications before buying.',
+      ];
+  }
+}
+
+function getCityInsight(city: string, cityName: string, metal: MetalType): string {
+  const cityProfile =
+    CITY_PROFILES[city.toLowerCase()] ||
+    `${cityName} has its own mix of local demand, dealer competition, transport costs, and pricing practices that can make final quotes differ slightly from national benchmarks.`;
+
+  switch (metal) {
+    case 'gold':
+      return `${cityProfile} On gold pages, the most important distinction is between the benchmark rate and the final jewellery or bullion invoice after purity, making charges, and GST are added.`;
+    case 'silver':
+      return `${cityProfile} Silver buyers in ${cityName} should pay attention to unit size, fabrication or utensil charges, and whether the quote is meant for bullion, jewellery, or industrial-use quantities.`;
+    case 'copper':
+      return `${cityProfile} Copper pricing in ${cityName} is usually more useful as a business and commodity reference point than as a consumer retail signal, because grade, delivery terms, and quantity matter heavily.`;
+    case 'platinum':
+      return `${cityProfile} Platinum demand in ${cityName} is thinner than gold or silver, so price comparison should focus on purity, availability, and the full retail quote rather than the headline benchmark alone.`;
+    case 'palladium':
+      return `${cityProfile} Palladium is typically followed for industrial and precious-metals context, so liquidity, quote transparency, and actual seller availability matter more than on mainstream jewellery metals.`;
+  }
+}
+
+function getCityFAQs(city: string, cityName: string, metal: MetalType): Array<{ question: string; answer: string }> {
+  if (metal === 'gold') {
+    return GOLD_CITY_FAQS[city.toLowerCase()] || [];
+  }
+
+  switch (metal) {
+    case 'silver':
+      return [
+        {
+          question: `How should I compare silver prices in ${cityName}?`,
+          answer: `Start by confirming whether the quote in ${cityName} is per gram, per 10 grams, or per kilogram. Then separate fabrication, GST, and product-specific charges from the benchmark silver rate before comparing dealers.`,
+        },
+        {
+          question: `Why can the final silver bill in ${cityName} differ from the live rate?`,
+          answer: `The live silver rate is only the metal benchmark. Your final bill in ${cityName} may also include fabrication charges, wastage, GST, packaging, and the seller's premium depending on whether you are buying jewellery, utensils, or bullion.`,
+        },
+      ];
+    case 'copper':
+      return [
+        {
+          question: `What does the copper price in ${cityName} page represent?`,
+          answer: `This page gives a benchmark copper reference for ${cityName}. Actual business quotes can differ based on grade, quantity, delivery terms, taxes, and whether the transaction is retail, wholesale, or industrial.`,
+        },
+        {
+          question: `Why is copper pricing in ${cityName} not the same as a retail shelf price?`,
+          answer: `Copper is commonly quoted within broader supply contracts rather than as a simple consumer metal purchase. In ${cityName}, transport, grade certification, and supplier margins can materially affect the final payable rate.`,
+        },
+      ];
+    case 'platinum':
+      return [
+        {
+          question: `How should I evaluate platinum prices in ${cityName}?`,
+          answer: `Use the live platinum benchmark in ${cityName} as a starting point, then confirm purity, unit weight, GST, and fabrication charges with the seller. Retail platinum availability can be narrower than gold, so final quotes may vary more.`,
+        },
+        {
+          question: `Why can platinum jewellery prices in ${cityName} vary between stores?`,
+          answer: `Stores in ${cityName} may use different purity standards, design premiums, and making-charge structures for platinum products. Comparing the full invoice is more useful than comparing only the displayed metal rate.`,
+        },
+      ];
+    case 'palladium':
+      return [
+        {
+          question: `Is palladium widely available for retail buying in ${cityName}?`,
+          answer: `Retail palladium availability in ${cityName} is usually more limited than gold or silver. Before making a decision, confirm seller credibility, quote format, and resale options rather than relying only on the benchmark rate.`,
+        },
+        {
+          question: `How should I use the palladium rate shown for ${cityName}?`,
+          answer: `Treat it as a market reference for industrial and precious-metals tracking. If you receive an actual offer in ${cityName}, compare the benchmark with the quoted unit, taxes, availability, and liquidity conditions.`,
+        },
       ];
   }
 }
@@ -407,8 +478,8 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
       })
     : null;
 
-  const cityInsight = CITY_INSIGHTS[city.toLowerCase()] || `Gold prices in ${cityName} are influenced by local market demand, transportation costs, and regional economic factors.`;
-  const cityFAQs = CITY_FAQS[city.toLowerCase()] || [];
+  const cityInsight = getCityInsight(city, cityName, metalType);
+  const cityFAQs = getCityFAQs(city, cityName, metalType);
 
   return (
     <>
@@ -597,7 +668,7 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
                 <li>Proximity to major trading hubs</li>
               </ul>
               <p className="text-slate-600 dark:text-slate-400 mb-4">
-                In {cityName}, {metal} rates are also influenced by local festivals, wedding demand, and the presence of refineries or wholesale markets. Checking the price history on this page can help you spot seasonal patterns before you buy or sell.
+                In {cityName}, the benchmark {metal} rate is only one part of the real decision. Depending on the metal, the final usable quote may be shaped by fabrication, availability, quantity, supplier type, and how competitive the local market is on that day. Checking the history on this page helps you separate normal movement from a genuinely unusual shift.
               </p>
               <p className="text-slate-600 dark:text-slate-400 mb-4">
                 On approval-quality publisher pages, the useful part is not merely saying that cities differ. It is explaining how that difference shows up in real life. In practice, the benchmark metal rate may vary only modestly, while the effective out-of-pocket cost changes more because of shop policy, fabrication, urgency, local competition, and product mix.
