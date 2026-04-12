@@ -117,6 +117,13 @@ export default function PriceHistoryTable({
   const startIndex = (currentPage - 1) * itemsPerPageValue;
   const endIndex = startIndex + itemsPerPageValue;
 
+  // Avoid empty table when dataset shrinks (e.g. city change) while on a high page
+  useEffect(() => {
+    if (itemsPerPage && totalPages >= 1 && currentPage > totalPages) {
+      setCurrentPage(totalPages);
+    }
+  }, [itemsPerPage, totalPages, currentPage]);
+
   // Apply pagination to sorted data
   const displayData = itemsPerPage 
     ? sortedData.slice(startIndex, endIndex)

@@ -215,7 +215,7 @@ export default function InvestmentGuidePage() {
                 </h3>
               </div>
               <p className="text-sm text-slate-600 dark:text-slate-400">
-                Expert analysis and predictions for gold prices
+                Scenario-based context for reading gold market trends more carefully
               </p>
             </Link>
 

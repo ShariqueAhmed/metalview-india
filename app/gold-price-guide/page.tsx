@@ -202,7 +202,7 @@ export default function GoldPriceGuidePage() {
                 </h3>
               </div>
               <p className="text-sm text-slate-600 dark:text-slate-400">
-                Expert analysis and predictions for gold prices in 2025
+                Scenario-based context for understanding 2025 gold market trends
               </p>
             </Link>
 

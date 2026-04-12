@@ -15,11 +15,11 @@ export function generateGoldPeopleAlsoAsk(): PeopleAlsoAskItem[] {
   return [
     {
       question: 'Why is gold price increasing?',
-      answer: `Gold prices increase due to several factors: (1) **Inflation concerns** - When inflation rises, gold becomes more attractive as a store of value. (2) **Geopolitical tensions** - Political instability and conflicts drive safe-haven demand. (3) **Currency weakness** - When the US dollar weakens, gold prices typically rise. (4) **Central bank buying** - Increased purchases by central banks boost demand. (5) **Economic uncertainty** - During economic downturns, investors flock to gold. (6) **Low interest rates** - When interest rates are low, gold becomes more attractive compared to bonds. (7) **Strong demand** - High demand from India, China, and other countries during festivals and wedding seasons.`,
+      answer: `Gold prices usually rise because several drivers are moving at the same time: inflation concerns, geopolitical stress, central-bank buying, changes in interest-rate expectations, and currency weakness. For Indian buyers, rupee movement and local retail demand can amplify international gold moves, so the price you see locally may rise even when the global chart looks calmer.`,
     },
     {
       question: 'What affects gold prices?',
-      answer: `Gold prices are influenced by multiple factors: **International factors** include global gold prices (London Bullion Market, COMEX), US dollar strength, interest rates, inflation rates, and geopolitical events. **Economic indicators** like GDP growth, unemployment rates, and economic policies affect investor sentiment. **Supply and demand** dynamics include mining production, central bank sales/purchases, jewelry demand, and investment demand. **Market sentiment** is driven by investor confidence, ETF flows, and speculative trading. **Local factors in India** include import duties, currency exchange rates (USD to INR), local demand during festivals, making charges, and dealer margins. **Seasonal factors** like Diwali, Akshaya Tritiya, and wedding seasons create demand spikes.`,
+      answer: `Gold prices are influenced by global bullion markets, the US dollar, inflation expectations, interest rates, central-bank activity, and investor sentiment. In India, import duties, rupee-dollar movement, dealer premiums, making charges, and seasonal jewellery demand all shape the price that consumers actually see on the ground.`,
     },
     {
       question: 'Is gold a good investment?',
@@ -31,7 +31,7 @@ export function generateGoldPeopleAlsoAsk(): PeopleAlsoAskItem[] {
     },
     {
       question: 'When is the best time to buy gold?',
-      answer: `The best time to buy gold depends on your goals: **For investment**: (1) **During price dips** - Buy when prices are lower than recent highs. (2) **Dollar-cost averaging** - Buy small amounts regularly rather than timing the market. (3) **Long-term perspective** - Focus on long-term trends rather than short-term fluctuations. **For jewelry**: (1) **Off-season periods** - Prices may be slightly lower outside major festivals. (2) **Avoid peak seasons** - Diwali, Akshaya Tritiya, and wedding seasons see higher demand and prices. **Market timing**: (1) **Monitor trends** - Watch for consistent upward or downward trends. (2) **Economic indicators** - Consider buying during economic uncertainty. (3) **Currency movements** - Strong INR can mean lower gold prices. **Important**: Timing the market is difficult. For most investors, regular purchases (SIP approach) work better than trying to time the market perfectly.`,
+      answer: `The best time to buy gold depends on whether you are buying for investment or jewellery use. Investors often benefit more from regular purchases and disciplined allocation than from trying to guess the perfect day. Jewellery buyers should also watch making charges, festival-period premiums, and full-bill transparency, because those can matter as much as the benchmark metal rate.`,
     },
     {
       question: 'What is the difference between 24K, 22K, and 18K gold?',
@@ -71,7 +71,7 @@ export function generateGeneralPeopleAlsoAsk(): PeopleAlsoAskItem[] {
   return [
     {
       question: 'What affects metal prices?',
-      answer: `Metal prices are affected by: **Global factors** - International commodity prices, currency exchange rates, economic growth, inflation, interest rates. **Supply and demand** - Mining production, industrial consumption, investment demand, recycling rates. **Geopolitical events** - Political tensions, trade wars, sanctions. **Market sentiment** - Investor confidence, speculative trading, ETF flows. **Local factors** - Import duties, local demand, transportation costs, dealer margins, taxes. **Seasonal factors** - Festival demand, wedding seasons, agricultural cycles. **Technology trends** - New uses in technology (e.g., silver in solar panels) affect demand.`,
+      answer: `Metal prices are affected by global commodity markets, currency exchange rates, economic growth, supply disruptions, industrial demand, and investor sentiment. Local prices in India can also be shaped by import duties, transport costs, dealer margins, taxes, and the difference between benchmark rates and final retail or business quotes.`,
     },
     {
       question: 'How often do metal prices change?',

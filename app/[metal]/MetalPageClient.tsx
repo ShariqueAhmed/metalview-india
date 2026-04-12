@@ -360,7 +360,9 @@ export default function MetalPageClient({ metal, initialCity }: MetalPageClientP
                 data={metal === 'gold' ? data.goldTrend24k : metal === 'silver' ? data.silverTrend : data.copperTrend}
                 title={`${metalName} Price History`}
                 metalName={metalName}
-                itemsPerPage={metal === 'copper' ? 15 : undefined}
+                itemsPerPage={
+                  metal === 'copper' ? 15 : metal === 'palladium' || metal === 'platinum' ? 10 : undefined
+                }
                 showCaratSelector={metal === 'gold'}
                 caratData={metal === 'gold' ? ({ '24k': data.goldTrend24k, '22k': data.goldTrend22k, '18k': data.goldTrend18k }) : undefined}
               />

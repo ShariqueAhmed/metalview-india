@@ -48,7 +48,7 @@ const COMPARISON_PAGES: Array<{ slug: string; title: string; href: string; descr
 
 // Trend pages
 const TREND_PAGES: Array<{ slug: string; title: string; href: string; description: string; metal?: string }> = [
-  { slug: 'gold-price-trends-2025', title: 'Gold Price Trends 2025', href: '/gold-price-trends-2025', description: 'Expert analysis and predictions for gold prices', metal: 'gold' },
+  { slug: 'gold-price-trends-2025', title: 'Gold Price Trends 2025', href: '/gold-price-trends-2025', description: 'Scenario-based context for understanding gold market trends', metal: 'gold' },
 ];
 
 // Blog posts (sample - can be expanded)

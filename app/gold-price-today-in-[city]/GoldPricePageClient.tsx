@@ -49,7 +49,7 @@ export default function GoldPricePageClient({ city, trendingCities }: GoldPriceP
   }, [trendingCities]);
 
   const handleCityChange = (newCity: string) => {
-    router.push(`/gold-price-today-in-${newCity}`);
+    router.push(`/gold/price-in/${newCity}`);
   };
 
   return (

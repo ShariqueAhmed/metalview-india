@@ -1,7 +1,7 @@
 {
   "name": "MetalView - Live Metal Prices in India",
   "short_name": "MetalView",
-  "description": "Get live metal prices in India - Gold, Silver, Copper, and Platinum. Check today's rates in major cities with real-time updates.",
+  "description": "Get live metal prices in India for gold, silver, copper, platinum, and palladium. Check today's rates in major cities with real-time updates and practical market context.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -17,7 +17,7 @@
     {
       "name": "Gold Prices",
       "short_name": "Gold",
-      "description": "View live gold prices",
+      "description": "View live gold rates and city benchmarks",
       "url": "/gold/price-in/mumbai"
     },
     {

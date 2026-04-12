@@ -64,25 +64,25 @@ const GOLD_CITY_FAQS: Record<string, Array<{ question: string; answer: string }>
   mumbai: [
     {
       question: 'Why are gold prices in Mumbai often lower than other cities?',
-      answer: 'Mumbai is India\'s largest gold trading hub with direct import connections and high trading volumes. This results in lower dealer margins and more competitive prices compared to smaller cities.',
+      answer: 'Mumbai often acts as a benchmark city because trading depth, dealer competition, and wholesale connectivity are stronger than in many smaller markets. Even so, buyers should compare the final invoice and not assume every store will match the lowest visible rate.',
     },
     {
       question: 'Where can I buy gold in Mumbai?',
-      answer: 'Zaveri Bazaar in Mumbai is one of India\'s most prominent gold markets. You can also purchase from certified dealers, banks, and online platforms. Always verify the purity and get proper documentation.',
+      answer: 'Zaveri Bazaar is the best-known traditional market, while branded chains, banks, and certified online sellers are additional options. The safest approach is to verify BIS hallmarking, purity, making charges, and buyback terms before you pay.',
     },
     {
       question: 'What is the best time to buy gold in Mumbai?',
-      answer: 'Gold prices fluctuate daily. Generally, prices may be lower during off-peak seasons (non-festival periods). However, timing the market is difficult, so consider your investment goals and buy when you need it.',
+      answer: 'There is no perfect day to buy gold in Mumbai. What helps more is checking the live benchmark, avoiding rushed festival-period purchases when possible, and comparing full-bill quotes across sellers before deciding.',
     },
   ],
   delhi: [
     {
       question: 'How do gold prices in Delhi compare to Mumbai?',
-      answer: 'Delhi prices are typically slightly higher than Mumbai due to transportation costs and local market dynamics. However, the difference is usually minimal (₹50-200 per 10g).',
+      answer: 'Delhi and Mumbai usually stay close on benchmark rates, but retail quotes can still diverge because of neighbourhood competition, making-charge policy, and seller premium. Compare the full estimate, not just the headline gold rate.',
     },
     {
       question: 'Where are the best places to buy gold in Delhi?',
-      answer: 'Chandni Chowk and Karol Bagh are popular gold markets in Delhi. You can also purchase from certified jewelers, banks, and online platforms. Always verify purity certificates.',
+      answer: 'Chandni Chowk, Karol Bagh, and established branded showrooms are all common buying options in Delhi. Before choosing any seller, ask for BIS hallmark details, purity, making charges, GST, and written invoice breakup.',
     },
   ],
 };
@@ -589,7 +589,13 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
                 data={getPriceHistoryData(data, metalType)}
                 title={`${metal.charAt(0).toUpperCase() + metal.slice(1)} Price History`}
                 metalName={metal.charAt(0).toUpperCase() + metal.slice(1)}
-                itemsPerPage={metalType === 'copper' ? 15 : undefined}
+                itemsPerPage={
+                  metalType === 'copper'
+                    ? 15
+                    : metalType === 'palladium' || metalType === 'platinum'
+                      ? 10
+                      : undefined
+                }
                 showCaratSelector={metalType === 'gold'}
                 caratData={
                   metalType === 'gold'

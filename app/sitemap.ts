@@ -176,16 +176,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
-  // Legacy metal-price-today-in-{city} routes (backward compatibility)
-  for (const city of TOP_CITIES) {
-    const lastMod = cityDates.get(city) ?? now;
-    entries.push({
-      url: `${BASE_URL}/gold-price-today-in-${city}`,
-      lastModified: lastMod,
-      changeFrequency: 'hourly',
-      priority: 0.75,
-    });
-  }
-
   return entries;
 }

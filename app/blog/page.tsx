@@ -5,7 +5,7 @@ import Footer from '@/components/Footer';
 import { Calendar, Clock, ArrowRight, Sparkles } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Gold Price Blog - Latest News & Insights | MetalView',
+  title: 'MetalView Blog - Metal Price Guides & Insights | MetalView',
   description: 'Expert articles on gold, silver, copper, platinum, and palladium in India—GST, SGBs, live rates, city guides, and market trends. Educational content for buyers and investors.',
   keywords: [
     'gold price news',
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     'live metal prices guide',
   ],
   openGraph: {
-    title: 'Metal & Gold Price Blog | MetalView India',
+    title: 'MetalView Blog | Gold, Silver & Metal Price Guides',
     description: 'In-depth guides on gold, silver, copper, platinum, and palladium prices and policies in India.',
     url: 'https://metalview.in/blog',
   },
@@ -42,23 +42,23 @@ const blogPosts: BlogPost[] = [
   { slug: 'copper-price-india-guide-industrial-demand', title: 'Copper Price in India: Why It Matters Beyond the Headline', excerpt: 'Copper links construction, power, and EV trends to everyday costs. Here is how Indian buyers and businesses can think about copper rates.', date: '2026-03-04', readTime: '6 min read', category: 'Market Analysis' },
   { slug: 'how-to-read-live-metal-prices-metalview', title: 'How to Read Live Metal Prices on MetalView (Step by Step)', excerpt: 'A transparent guide to using MetalView: metal hubs, city pages, last updated times, and how to interpret rates before you buy or invest.', date: '2026-03-03', readTime: '6 min read', category: 'Education' },
   { slug: 'understanding-gold-purity-24k-vs-22k', title: 'Understanding Gold Purity: 24K vs 22K - Which is Better?', excerpt: 'Learn the key differences between 24K and 22K gold, their uses, and which one is better for investment vs jewelry.', date: '2025-01-20', readTime: '5 min read', category: 'Education' },
-  { slug: 'gold-price-trends-2025', title: 'Gold Price Trends 2025: What to Expect', excerpt: 'Analyze the current gold market trends and predictions for 2025. Understand factors affecting gold prices in India.', date: '2025-01-18', readTime: '7 min read', category: 'Market Analysis' },
+  { slug: 'gold-price-trends-2025', title: 'Gold Price Trends 2025: What to Expect', excerpt: 'A practical look at gold price trends in 2025, the drivers behind them, and how Indian readers can think in scenarios instead of overconfident forecasts.', date: '2025-01-18', readTime: '7 min read', category: 'Market Analysis' },
   { slug: 'best-time-to-buy-gold', title: 'Best Time to Buy Gold: A Complete Guide', excerpt: 'Discover the optimal times to buy gold, seasonal patterns, and factors to consider before making your purchase.', date: '2025-01-15', readTime: '6 min read', category: 'Investment' },
   { slug: 'gold-investment-vs-jewelry', title: 'Gold Investment vs Jewelry: Making the Right Choice', excerpt: 'Compare gold investment options with jewelry purchases. Understand the pros and cons of each approach.', date: '2025-01-12', readTime: '8 min read', category: 'Investment' },
   { slug: 'how-to-calculate-gold-price', title: 'How to Calculate Gold Price: Complete Guide', excerpt: 'Learn how gold prices are calculated, understand making charges, and calculate the total cost of gold jewelry.', date: '2025-01-10', readTime: '6 min read', category: 'Education' },
   { slug: 'gold-hallmark-explained', title: 'Gold Hallmark Explained: What You Need to Know', excerpt: 'Understand gold hallmarking, BIS certification, and how to verify the purity of your gold purchases.', date: '2025-01-08', readTime: '5 min read', category: 'Education' },
   { slug: 'factors-affecting-gold-prices', title: 'Top 10 Factors Affecting Gold Prices in India', excerpt: 'Discover the key factors that influence gold prices including inflation, currency rates, demand, and global events.', date: '2025-01-05', readTime: '8 min read', category: 'Market Analysis' },
   { slug: 'gold-investment-strategies', title: 'Gold Investment Strategies for Beginners', excerpt: 'Learn proven strategies for investing in gold, from physical gold to digital gold and gold ETFs.', date: '2025-01-03', readTime: '7 min read', category: 'Investment' },
-  { slug: 'gold-price-in-delhi', title: 'Gold Price in Delhi Today: Complete Guide 2025', excerpt: 'Get the latest gold prices in Delhi, understand market trends, and find the best places to buy gold in the capital.', date: '2025-01-19', readTime: '6 min read', category: 'City Guide' },
-  { slug: 'gold-price-in-mumbai', title: 'Gold Price in Mumbai: Market Analysis & Buying Tips', excerpt: 'Explore gold prices in Mumbai, understand the local market dynamics, and discover trusted gold dealers in the city.', date: '2025-01-17', readTime: '6 min read', category: 'City Guide' },
-  { slug: 'gold-price-in-bangalore', title: 'Gold Price in Bangalore: Your Complete Guide', excerpt: 'Stay updated with gold prices in Bangalore. Learn about the best time to buy and top jewelry stores in the city.', date: '2025-01-16', readTime: '6 min read', category: 'City Guide' },
-  { slug: 'gold-price-in-kolkata', title: 'Gold Price in Kolkata: Market Trends & Insights', excerpt: 'Get insights into gold prices in Kolkata, understand local market patterns, and find reliable gold sellers.', date: '2025-01-14', readTime: '6 min read', category: 'City Guide' },
-  { slug: 'gold-price-in-chennai', title: 'Gold Price in Chennai: Complete Buying Guide', excerpt: 'Discover current gold prices in Chennai, learn about the best jewelry markets, and get tips for buying gold.', date: '2025-01-13', readTime: '6 min read', category: 'City Guide' },
-  { slug: 'gold-price-in-hyderabad', title: 'Gold Price in Hyderabad: Market Overview 2025', excerpt: 'Stay informed about gold prices in Hyderabad. Explore the city gold market and get expert buying advice.', date: '2025-01-11', readTime: '6 min read', category: 'City Guide' },
-  { slug: 'gold-price-in-pune', title: 'Gold Price in Pune: Trends & Best Places to Buy', excerpt: 'Get the latest gold prices in Pune, understand market trends, and discover trusted gold dealers in the city.', date: '2025-01-09', readTime: '6 min read', category: 'City Guide' },
-  { slug: 'gold-price-in-ahmedabad', title: 'Gold Price in Ahmedabad: Complete Market Guide', excerpt: 'Explore gold prices in Ahmedabad, learn about local market dynamics, and find the best jewelry stores.', date: '2025-01-07', readTime: '6 min read', category: 'City Guide' },
-  { slug: 'gold-price-in-jaipur', title: 'Gold Price in Jaipur: The Pink City Gold Market', excerpt: 'Discover gold prices in Jaipur, known for its rich jewelry heritage. Get insights into the local gold market.', date: '2025-01-06', readTime: '6 min read', category: 'City Guide' },
-  { slug: 'gold-price-in-surat', title: 'Gold Price in Surat: Diamond City Gold Market', excerpt: 'Stay updated with gold prices in Surat. Learn about the city gold market and best buying practices.', date: '2025-01-04', readTime: '6 min read', category: 'City Guide' },
+  { slug: 'gold-price-in-delhi', title: 'Gold Price in Delhi Today: Complete Guide 2025', excerpt: 'A practical Delhi buyer guide covering old-market versus showroom pricing, hallmark checks, making charges, and how to compare the full invoice fairly.', date: '2025-01-19', readTime: '6 min read', category: 'City Guide' },
+  { slug: 'gold-price-in-mumbai', title: 'Gold Price in Mumbai: Market Analysis & Buying Tips', excerpt: 'A practical Mumbai buyer guide covering benchmark pricing, wholesale influence, hallmark checks, and how to compare the final bill instead of the headline rate.', date: '2025-01-17', readTime: '6 min read', category: 'City Guide' },
+  { slug: 'gold-price-in-bangalore', title: 'Gold Price in Bangalore: Your Complete Guide', excerpt: 'A practical Bangalore buyer guide focused on benchmark rates, store comparison, hallmark checks, and clearer invoice evaluation.', date: '2025-01-16', readTime: '6 min read', category: 'City Guide' },
+  { slug: 'gold-price-in-kolkata', title: 'Gold Price in Kolkata: Market Trends & Insights', excerpt: 'A practical Kolkata buyer guide covering craftsmanship premiums, hallmark checks, and how to compare traditional and modern jewellery quotes.', date: '2025-01-14', readTime: '6 min read', category: 'City Guide' },
+  { slug: 'gold-price-in-chennai', title: 'Gold Price in Chennai: Complete Buying Guide', excerpt: 'Understand Chennai\'s jewellery market, seasonal demand, and how to compare purity, making charges, and full-bill quotes.', date: '2025-01-13', readTime: '6 min read', category: 'City Guide' },
+  { slug: 'gold-price-in-hyderabad', title: 'Gold Price in Hyderabad: Market Overview 2025', excerpt: 'Compare traditional and premium Hyderabad gold markets with clearer guidance on hallmarking, invoice structure, and final buying cost.', date: '2025-01-11', readTime: '6 min read', category: 'City Guide' },
+  { slug: 'gold-price-in-pune', title: 'Gold Price in Pune: Trends & Best Places to Buy', excerpt: 'A practical Pune buying guide focused on benchmark rates, store comparison, making charges, and cleaner invoice evaluation.', date: '2025-01-09', readTime: '6 min read', category: 'City Guide' },
+  { slug: 'gold-price-in-ahmedabad', title: 'Gold Price in Ahmedabad: Complete Market Guide', excerpt: 'Learn how Ahmedabad buyers compare traditional jewellers and modern showrooms while tracking purity, making charges, and final value.', date: '2025-01-07', readTime: '6 min read', category: 'City Guide' },
+  { slug: 'gold-price-in-jaipur', title: 'Gold Price in Jaipur: The Pink City Gold Market', excerpt: 'A Jaipur-focused guide to traditional craftsmanship, Kundan and Meenakari premiums, and how to compare design-led gold invoices.', date: '2025-01-06', readTime: '6 min read', category: 'City Guide' },
+  { slug: 'gold-price-in-surat', title: 'Gold Price in Surat: Diamond City Gold Market', excerpt: 'See how Surat buyers can compare showroom quotes, making charges, and final billed value instead of relying on headline rates alone.', date: '2025-01-04', readTime: '6 min read', category: 'City Guide' },
 ];
 
 function BlogCard({ post, variant }: { post: BlogPost; variant: 'default' | 'city' }) {
@@ -116,10 +116,10 @@ export default function BlogPage() {
             News & insights
                 </div>
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-50 mb-4">
-            <span className="home-hero-gradient">Gold Price Blog</span>
+            <span className="home-hero-gradient">MetalView Blog</span>
           </h1>
           <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl">
-            Latest insights, trends, and guides about gold prices and investments
+            Practical guides and market context for gold, silver, copper, platinum, and palladium buyers in India
           </p>
         </header>
 
