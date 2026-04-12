@@ -71,8 +71,8 @@ export function GoldPriceCityBlock({ city, initialData }: GoldPriceCityBlockProp
     return (
       <div className="mb-8 flex flex-col items-center justify-center rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-8 min-h-[200px]">
         <Loader2 className="w-10 h-10 text-amber-500 animate-spin mb-4" aria-hidden />
-        <p className="text-slate-600 dark:text-slate-400 text-center">
-          Fetching the latest live gold benchmark and purity breakdown for {cityName}.
+        <p className="text-slate-600 dark:text-slate-400 text-center text-sm">
+          Updating live rates for {cityName}…
         </p>
       </div>
     );

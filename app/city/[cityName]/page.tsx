@@ -95,7 +95,7 @@ const CITY_MARKETS: Record<string, Array<{ name: string; description: string; ty
     { name: 'Mylapore', description: 'Traditional neighbourhood with established jewellers and strong festive shopping relevance', type: 'area' },
   ],
   hyderabad: [
-    { name: 'Charminar', description: 'Famous area for traditional jewellery retail with heavy local footfall and varied pricing styles', type: 'area' },
+    { name: 'Charminar', description: 'Historic retail corridor with heavy local footfall; compare quotes carefully because pricing styles vary widely across shops', type: 'area' },
     { name: 'Abids', description: 'Popular shopping area with multiple jewellery stores and comparison opportunities', type: 'area' },
     { name: 'Banjara Hills', description: 'Upscale area with branded jewellery stores and premium positioning', type: 'area' },
   ],
@@ -168,7 +168,7 @@ export async function generateMetadata({ params }: CityPageProps): Promise<Metad
   }
   const city = formatCityName(cityName);
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://metalview.in';
+  const baseUrl = getSiteUrl();
 
   return {
     title: `Live Metal Prices in ${city} - Gold, Silver, Copper, Platinum | MetalView India`,
@@ -613,7 +613,7 @@ export default async function CityOverviewPage({ params }: CityPageProps) {
               />
               <FAQSchema
                 faqs={cityFaqs}
-                metal="gold"
+                metal="general"
                 city={cityName}
               />
             </>

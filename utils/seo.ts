@@ -5,6 +5,7 @@
 
 import { Metadata } from 'next';
 import { formatIndianCurrency } from './conversions';
+import { getSiteUrl } from './siteUrl';
 
 export interface SEOData {
   title: string;
@@ -49,7 +50,7 @@ export function generateMetalMetadata(data: SEOData): Metadata {
     ? `${description}${priceText} Real-time updates with historical trends.`
     : `${description} Real-time updates with historical trends.`;
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://metalview.in';
+  const baseUrl = getSiteUrl();
   const ogImageUrl = `${baseUrl}/api/og?metal=${metal || 'gold'}&city=${city || 'india'}${price ? `&price=${price}` : ''}`;
 
   return {

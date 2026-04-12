@@ -92,8 +92,10 @@ const CITY_PROFILES: Record<string, string> = {
   delhi: 'Delhi combines old-market trading corridors with large organised retail demand, so quoted rates and final selling prices can vary across neighbourhoods and dealer types.',
   bangalore: 'Bangalore has a broad mix of jewellery buyers, investment-minded households, and digitally aware consumers, which makes it a useful city for comparing retail and investment demand.',
   kolkata: 'Kolkata has long-established jewellery and bullion networks, and local dealer relationships still play a meaningful role in how rates are quoted to retail buyers.',
-  chennai: 'Chennai is a major South Indian jewellery market with strong consumer demand, active branded retail, and clear seasonality in showroom activity.',
-  hyderabad: 'Hyderabad combines traditional jewellery demand with active urban retail trade, making local competition and quote transparency important factors for buyers.',
+  chennai:
+    'Chennai is a major South Indian retail metals market with strong consumer demand, active branded outlets, and clear seasonality in buying activity.',
+  hyderabad:
+    'Hyderabad has dense retail corridors and active local competition, so quote styles, premiums, and margin structures can vary meaningfully across neighbourhoods and seller types.',
   pune: 'Pune benefits from its proximity to larger western India trading centres while maintaining its own active retail market for jewellery and investment products.',
   ahmedabad: 'Ahmedabad has a steady retail precious-metals market and a strong culture of comparing dealer quotes before buying, which can keep pricing competitive.',
   jaipur: 'Jaipur has a strong jewellery tradition and a tourist-facing retail base, so craftsmanship, design style, and dealer positioning often affect final billed prices.',
@@ -220,6 +222,23 @@ function getCityFAQs(city: string, cityName: string, metal: MetalType): Array<{ 
         },
       ];
   }
+}
+
+/** One visible FAQ block: city-specific + PAA, deduped by question text. */
+function mergeFaqListsUniqueByQuestion(
+  ...lists: Array<Array<{ question: string; answer: string }>>
+): Array<{ question: string; answer: string }> {
+  const seen = new Set<string>();
+  const out: Array<{ question: string; answer: string }> = [];
+  for (const list of lists) {
+    for (const faq of list) {
+      const key = faq.question.replace(/\s+/g, ' ').trim().toLowerCase();
+      if (seen.has(key)) continue;
+      seen.add(key);
+      out.push(faq);
+    }
+  }
+  return out;
 }
 
 // Generate static params for top cities and metals
@@ -470,7 +489,8 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
   const cityInsight = getCityInsight(city, cityName, metalType);
   const cityFAQs = getCityFAQs(city, cityName, metalType);
   const peopleAlsoAsk = getPeopleAlsoAskQuestions(metalType);
-  const visibleFaqs = [...cityFAQs, ...peopleAlsoAsk];
+  const visibleFaqs = mergeFaqListsUniqueByQuestion(cityFAQs, peopleAlsoAsk);
+  const schemaFaqs = [...cityFAQs, ...peopleAlsoAsk];
 
   return (
     <>
@@ -713,11 +733,7 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
           )}
 
           {/* FAQ Schema */}
-          <FAQSchema
-            faqs={visibleFaqs}
-            metal={metalType}
-            city={city}
-          />
+          <FAQSchema faqs={schemaFaqs} metal={metalType} city={city} />
 
           {/* Related Cities Section */}
           <section aria-labelledby="related-cities" className="mb-8 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 p-6 sm:p-8 card-shadow">

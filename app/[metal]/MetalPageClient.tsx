@@ -412,7 +412,7 @@ export default function MetalPageClient({ metal, initialCity }: MetalPageClientP
             <section className="mb-8">
               <FAQSection
                 title={`Frequently Asked Questions About ${metalName}`}
-                faqs={[...generateFAQs(), ...getPeopleAlsoAskQuestions(metal)]}
+                faqs={generateFAQs()}
               />
             </section>
             <YouMayAlsoLike currentMetal={metal} currentCity={data?.city || selectedCity} pageType="home" />

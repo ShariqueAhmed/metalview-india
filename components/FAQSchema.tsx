@@ -12,7 +12,8 @@ interface FAQItem {
 
 interface FAQSchemaProps {
   faqs: FAQItem[];
-  metal?: 'gold' | 'silver' | 'copper' | 'platinum' | 'palladium';
+  /** Use `general` for multi-metal city overview pages where no single metal applies. */
+  metal?: 'gold' | 'silver' | 'copper' | 'platinum' | 'palladium' | 'general';
   city?: string;
 }
 
@@ -22,7 +23,8 @@ export default function FAQSchema({ faqs, metal = 'gold', city }: FAQSchemaProps
   }
 
   const cityName = city ? city.charAt(0).toUpperCase() + city.slice(1) : 'India';
-  const metalName = metal.charAt(0).toUpperCase() + metal.slice(1);
+  const metalName =
+    metal === 'general' ? 'Metal' : metal.charAt(0).toUpperCase() + metal.slice(1);
 
   // Default FAQs if none provided
   const defaultFAQs: FAQItem[] = [
@@ -42,12 +44,15 @@ export default function FAQSchema({ faqs, metal = 'gold', city }: FAQSchemaProps
       question: `Is ${metalName} a good investment?`,
       answer: `${metalName} has historically been considered a safe haven asset and a hedge against inflation. However, investment decisions should be based on your financial goals, risk tolerance, and market conditions. Consult with a financial advisor for personalized advice.`,
     },
-    ...(metal === 'gold' ? [
-      {
-        question: 'What is the difference between 24K and 22K gold?',
-        answer: '24K gold is 99.9% pure gold, while 22K gold contains 91.6% gold and 8.4% other metals (usually copper or silver). 24K is purer but softer, while 22K is more durable and commonly used in jewelry. Prices differ based on purity.',
-      },
-    ] : []),
+    ...(metal === 'gold'
+      ? [
+          {
+            question: 'What is the difference between 24K and 22K gold?',
+            answer:
+              '24K gold is 99.9% pure gold, while 22K gold contains 91.6% gold and 8.4% other metals (usually copper or silver). 24K is purer but softer, while 22K is more durable and commonly used in jewelry. Prices differ based on purity.',
+          },
+        ]
+      : []),
   ];
 
   const faqData = faqs.length > 0 ? faqs : defaultFAQs;
