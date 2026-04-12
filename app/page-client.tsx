@@ -109,32 +109,6 @@ export default function HomeClient() {
           </p>
         </header>
 
-        <section className="mb-10 sm:mb-12 content-card p-5 sm:p-6 lg:p-7">
-          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-50 mb-3">
-            Why Readers Trust MetalView
-          </h2>
-          <div className="grid gap-4 md:grid-cols-3">
-            <div>
-              <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Transparent sourcing</h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                We explain where price data comes from, how often it updates, and why dealer rates can still vary offline.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Publisher-first content</h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                Alongside live rates, we publish guides on purity, taxes, city differences, and buying decisions so the site adds context, not just numbers.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Direct contact</h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                Readers can reach us at <a href="mailto:metalviewofficial@gmail.com" className="text-amber-600 dark:text-amber-400 hover:underline">metalviewofficial@gmail.com</a> for corrections, support, and business queries.
-              </p>
-            </div>
-          </div>
-        </section>
-
         {/* Metal cards */}
         <section
           aria-labelledby="metal-pages"
@@ -173,6 +147,32 @@ export default function HomeClient() {
                       </Link>
                     );
                   })}
+        </section>
+
+        <section className="mt-10 sm:mt-12 mb-10 sm:mb-12 content-card p-5 sm:p-6 lg:p-7">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-50 mb-3">
+            Why Readers Trust MetalView
+          </h2>
+          <div className="grid gap-4 md:grid-cols-3">
+            <div>
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Transparent sourcing</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                We explain where price data comes from, how often it updates, and why dealer rates can still vary offline.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Publisher-first content</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                Alongside live rates, we publish guides on purity, taxes, city differences, and buying decisions so the site adds context, not just numbers.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Direct contact</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                Readers can reach us at <a href="mailto:metalviewofficial@gmail.com" className="text-amber-600 dark:text-amber-400 hover:underline">metalviewofficial@gmail.com</a> for corrections, support, and business queries.
+              </p>
+            </div>
+          </div>
         </section>
 
         <div className="mt-12 sm:mt-16 grid gap-4 md:grid-cols-2">
