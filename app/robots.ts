@@ -8,8 +8,9 @@
  */
 
 import { MetadataRoute } from 'next';
+import { getSiteUrl } from '@/utils/siteUrl';
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://metalview.in';
+const BASE_URL = getSiteUrl();
 
 export default function robots(): MetadataRoute.Robots {
   // Do not add public/robots.txt — Next.js forbids both app/robots.ts and public/robots.txt (500 conflict).

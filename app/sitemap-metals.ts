@@ -5,17 +5,9 @@
 
 import { MetadataRoute } from 'next';
 import { getSiteUrl } from '@/utils/siteUrl';
+import { SITEMAP_METALS, SITEMAP_TOP_CITIES } from '@/utils/sitemapConstants';
 
-const TOP_CITIES = [
-  'mumbai', 'delhi', 'bangalore', 'kolkata', 'chennai',
-  'hyderabad', 'pune', 'ahmedabad', 'jaipur', 'surat',
-  'lucknow', 'kanpur', 'nagpur', 'indore', 'thane',
-  'bhopal', 'visakhapatnam', 'patna', 'vadodara', 'ghaziabad',
-  'coimbatore', 'agra', 'madurai', 'nashik', 'meerut',
-  'rajkot', 'varanasi', 'srinagar', 'amritsar', 'jodhpur',
-];
-
-const METALS = ['gold', 'silver', 'copper', 'platinum', 'palladium'];
+const METALS = [...SITEMAP_METALS];
 
 /**
  * Fetch last updated date for a city from API
@@ -23,7 +15,7 @@ const METALS = ['gold', 'silver', 'copper', 'platinum', 'palladium'];
 async function getLastUpdatedDate(city: string): Promise<Date> {
   try {
     const baseUrl = getSiteUrl();
-    
+
     const response = await fetch(`${baseUrl}/api/metals?city=${encodeURIComponent(city)}`, {
       next: { revalidate: 600 }, // Cache for 10 minutes
       headers: { 'Content-Type': 'application/json' },
@@ -38,7 +30,7 @@ async function getLastUpdatedDate(city: string): Promise<Date> {
   } catch (error) {
     console.error(`Error fetching last updated date for ${city}:`, error);
   }
-  
+
   return new Date();
 }
 
@@ -50,15 +42,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Fetch last updated dates for cities (batch fetch for efficiency)
   const cityDates = new Map<string, Date>();
-  const cityPromises = TOP_CITIES.map(async (city) => {
+  const cityPromises = [...SITEMAP_TOP_CITIES].map(async (city) => {
     const date = await getLastUpdatedDate(city);
     cityDates.set(city, date);
   });
-  
+
   await Promise.allSettled(cityPromises);
 
   // Metal-city combinations (new route structure)
-  for (const city of TOP_CITIES) {
+  for (const city of SITEMAP_TOP_CITIES) {
     const lastModified = cityDates.get(city) || now;
     for (const metal of METALS) {
       sitemapEntries.push({

@@ -11,36 +11,18 @@
 import { MetadataRoute } from 'next';
 import { BLOG_SITEMAP_ENTRIES } from '@/utils/blogSitemapData';
 import { getSiteUrl } from '@/utils/siteUrl';
+import { SITEMAP_GUIDE_SLUGS, SITEMAP_METALS, SITEMAP_TOP_CITIES } from '@/utils/sitemapConstants';
 
 const BASE_URL = getSiteUrl();
 
-const METALS = ['gold', 'silver', 'copper', 'platinum', 'palladium'] as const;
+const METALS = [...SITEMAP_METALS];
 
-const TOP_CITIES = [
-  'mumbai', 'delhi', 'bangalore', 'kolkata', 'chennai',
-  'hyderabad', 'pune', 'ahmedabad', 'jaipur', 'surat',
-  'lucknow', 'kanpur', 'nagpur', 'indore', 'thane',
-  'bhopal', 'visakhapatnam', 'patna', 'vadodara', 'ghaziabad',
-  'coimbatore', 'agra', 'madurai', 'nashik', 'meerut',
-  'rajkot', 'varanasi', 'srinagar', 'amritsar', 'jodhpur',
-];
+const GUIDE_PAGES = SITEMAP_GUIDE_SLUGS.map((path) => ({ path, priority: 0.85 as const }));
 
-/** Guide pages that exist in app (from /guides) */
-const GUIDE_PAGES = [
-  { path: 'gold-price-guide', priority: 0.85 },
-  { path: 'silver-investment-guide', priority: 0.85 },
-  { path: 'investment-guide', priority: 0.85 },
-  { path: 'gold-vs-silver-investment', priority: 0.85 },
-  { path: '24k-vs-22k-vs-18k-gold', priority: 0.85 },
-  { path: 'gold-price-trends-2025', priority: 0.85 },
-  { path: 'best-cities-to-buy-gold', priority: 0.85 },
-];
-
-/** Fetch last updated for a city from API (cached) */
+/** Fetch last updated for a city from API (cached). */
 async function getCityLastMod(city: string): Promise<Date> {
   try {
-    const origin = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : BASE_URL;
-    const res = await fetch(`${origin}/api/metals?city=${encodeURIComponent(city)}`, {
+    const res = await fetch(`${BASE_URL}/api/metals?city=${encodeURIComponent(city)}`, {
       next: { revalidate: 600 },
       headers: { 'Content-Type': 'application/json' },
     });
@@ -144,6 +126,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   // —— Tier 5: City & metal–city URLs (with lastmod from API where possible) ——
+  const TOP_CITIES = [...SITEMAP_TOP_CITIES];
   const cityDates = await Promise.all(
     TOP_CITIES.map(async (city) => ({ city, date: await getCityLastMod(city) }))
   ).then((list) => new Map(list.map(({ city, date }) => [city, date])));

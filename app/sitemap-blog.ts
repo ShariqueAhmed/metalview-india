@@ -5,9 +5,10 @@
 
 import { MetadataRoute } from 'next';
 import { BLOG_SITEMAP_ENTRIES } from '@/utils/blogSitemapData';
+import { getSiteUrl } from '@/utils/siteUrl';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://metalview.in';
+  const baseUrl = getSiteUrl();
   const now = new Date();
 
   const blogDatesSorted = [...BLOG_SITEMAP_ENTRIES.map((p) => p.date)].sort().reverse();

@@ -1,29 +1,11 @@
 /**
  * Cities Sitemap
- * Contains city overview pages and static pages
+ * Contains city overview pages, homepage, and guide pages.
  */
 
 import { MetadataRoute } from 'next';
 import { getSiteUrl } from '@/utils/siteUrl';
-
-const TOP_CITIES = [
-  'mumbai', 'delhi', 'bangalore', 'kolkata', 'chennai',
-  'hyderabad', 'pune', 'ahmedabad', 'jaipur', 'surat',
-  'lucknow', 'kanpur', 'nagpur', 'indore', 'thane',
-  'bhopal', 'visakhapatnam', 'patna', 'vadodara', 'ghaziabad',
-  'coimbatore', 'agra', 'madurai', 'nashik', 'meerut',
-  'rajkot', 'varanasi', 'srinagar', 'amritsar', 'jodhpur',
-];
-
-const GUIDE_PAGES = [
-  'gold-price-guide',
-  'silver-investment-guide',
-  'investment-guide',
-  'gold-vs-silver-investment',
-  '24k-vs-22k-vs-18k-gold',
-  'best-cities-to-buy-gold',
-  'gold-price-trends-2025',
-];
+import { SITEMAP_GUIDE_SLUGS, SITEMAP_TOP_CITIES } from '@/utils/sitemapConstants';
 
 /**
  * Fetch last updated date for a city from API
@@ -31,7 +13,7 @@ const GUIDE_PAGES = [
 async function getLastUpdatedDate(city: string): Promise<Date> {
   try {
     const baseUrl = getSiteUrl();
-    
+
     const response = await fetch(`${baseUrl}/api/metals?city=${encodeURIComponent(city)}`, {
       next: { revalidate: 600 },
       headers: { 'Content-Type': 'application/json' },
@@ -46,7 +28,7 @@ async function getLastUpdatedDate(city: string): Promise<Date> {
   } catch (error) {
     console.error(`Error fetching last updated date for ${city}:`, error);
   }
-  
+
   return new Date();
 }
 
@@ -66,15 +48,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Fetch last updated dates for cities
   const cityDates = new Map<string, Date>();
-  const cityPromises = TOP_CITIES.map(async (city) => {
+  const cityPromises = [...SITEMAP_TOP_CITIES].map(async (city) => {
     const date = await getLastUpdatedDate(city);
     cityDates.set(city, date);
   });
-  
+
   await Promise.allSettled(cityPromises);
 
   // City overview pages
-  for (const city of TOP_CITIES) {
+  for (const city of SITEMAP_TOP_CITIES) {
     const lastModified = cityDates.get(city) || now;
     sitemapEntries.push({
       url: `${baseUrl}/city/${city}`,
@@ -85,11 +67,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   // Guide pages
-  const guideLastModified = new Date('2025-01-15');
-  for (const guide of GUIDE_PAGES) {
+  for (const guide of SITEMAP_GUIDE_SLUGS) {
     sitemapEntries.push({
       url: `${baseUrl}/${guide}`,
-      lastModified: guideLastModified,
+      lastModified: now,
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     });
