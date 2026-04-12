@@ -46,7 +46,7 @@ const relatedSearches: Record<string, Array<{
   copper: [
     { label: 'Copper Price Today', href: '/', type: 'trend' },
     { label: 'Copper Rate per kg', href: '/copper/price-in/mumbai', type: 'trend' },
-    { label: 'Copper Price Guide', href: '/copper-price-guide', type: 'guide' },
+    { label: 'Copper Price Guide', href: '/blog/copper-price-india-guide-industrial-demand', type: 'guide' },
     { label: 'Copper Price Trends', href: '/', type: 'trend' },
     { label: 'Copper Price in Mumbai', href: '/copper/price-in/mumbai', type: 'city' },
     { label: 'Copper Price in Delhi', href: '/copper/price-in/delhi', type: 'city' },
@@ -54,15 +54,15 @@ const relatedSearches: Record<string, Array<{
   platinum: [
     { label: 'Platinum Price Today', href: '/', type: 'trend' },
     { label: 'Platinum Rate per 10g', href: '/platinum/price-in/mumbai', type: 'trend' },
-    { label: 'Platinum Investment Guide', href: '/platinum-investment-guide', type: 'guide' },
+    { label: 'Platinum Price Guide', href: '/blog/platinum-palladium-prices-india-guide', type: 'guide' },
     { label: 'Platinum Price in Mumbai', href: '/platinum/price-in/mumbai', type: 'city' },
     { label: 'Platinum Price Trends', href: '/', type: 'trend' },
-    { label: 'Platinum vs Gold', href: '/', type: 'comparison' },
+    { label: 'Gold vs Silver Investment', href: '/gold-vs-silver-investment', type: 'comparison' },
   ],
   palladium: [
     { label: 'Palladium Price Today', href: '/', type: 'trend' },
     { label: 'Palladium Rate per 10g', href: '/palladium/price-in/mumbai', type: 'trend' },
-    { label: 'Palladium Investment Guide', href: '/palladium-investment-guide', type: 'guide' },
+    { label: 'Palladium Price Guide', href: '/blog/platinum-palladium-prices-india-guide', type: 'guide' },
     { label: 'Palladium Price in Mumbai', href: '/palladium/price-in/mumbai', type: 'city' },
     { label: 'Palladium Price Trends', href: '/', type: 'trend' },
   ],

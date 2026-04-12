@@ -25,7 +25,6 @@ import Footer from '@/components/Footer';
 import StructuredData from '@/components/StructuredData';
 import FAQSchema from '@/components/FAQSchema';
 import FAQSection from '@/components/FAQSection';
-import PeopleAlsoAsk from '@/components/PeopleAlsoAsk';
 import { getPeopleAlsoAskQuestions } from '@/utils/peopleAlsoAsk';
 import { generateAggregateOfferSchema } from '@/utils/seo';
 import LastUpdated from '@/components/LastUpdated';
@@ -411,10 +410,10 @@ export default function MetalPageClient({ metal, initialCity }: MetalPageClientP
 
             <RelatedSearches metal={metal} city={data?.city || selectedCity} />
             <section className="mb-8">
-              <PeopleAlsoAsk questions={getPeopleAlsoAskQuestions(metal)} title="People Also Ask" />
-            </section>
-            <section className="mb-8">
-              <FAQSection faqs={generateFAQs()} />
+              <FAQSection
+                title={`Frequently Asked Questions About ${metalName}`}
+                faqs={[...generateFAQs(), ...getPeopleAlsoAskQuestions(metal)]}
+              />
             </section>
             <YouMayAlsoLike currentMetal={metal} currentCity={data?.city || selectedCity} pageType="home" />
 

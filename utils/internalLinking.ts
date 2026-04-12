@@ -36,8 +36,9 @@ const GUIDE_PAGES: Array<{ slug: string; title: string; href: string; descriptio
   { slug: 'silver-investment-guide', title: 'Silver Investment Guide', href: '/silver-investment-guide', description: 'Complete guide to silver prices and investment strategies', metal: 'silver' },
   { slug: 'investment-guide', title: 'Investment Guide', href: '/investment-guide', description: 'Complete guide to metal investments and strategies' },
   { slug: 'best-cities-to-buy-gold', title: 'Best Cities to Buy Gold', href: '/best-cities-to-buy-gold', description: 'Compare prices across major Indian cities', metal: 'gold' },
-  { slug: 'copper-price-guide', title: 'Copper Price Guide', href: '/copper-price-guide', description: 'Complete guide to copper prices and trends', metal: 'copper' },
-  { slug: 'platinum-investment-guide', title: 'Platinum Investment Guide', href: '/platinum-investment-guide', description: 'Complete guide to platinum prices and investment', metal: 'platinum' },
+  { slug: 'copper-price-india-guide-industrial-demand', title: 'Copper Price in India Guide', href: '/blog/copper-price-india-guide-industrial-demand', description: 'How copper prices work in India and why they matter beyond the headline', metal: 'copper' },
+  { slug: 'platinum-palladium-prices-india-guide', title: 'Platinum and Palladium Guide', href: '/blog/platinum-palladium-prices-india-guide', description: 'How platinum and palladium prices are quoted in India', metal: 'platinum' },
+  { slug: 'platinum-palladium-prices-india-guide', title: 'Palladium and Platinum Guide', href: '/blog/platinum-palladium-prices-india-guide', description: 'How palladium and platinum prices are quoted in India', metal: 'palladium' },
 ];
 
 // Comparison pages

@@ -4,6 +4,7 @@
  */
 
 import { MetadataRoute } from 'next';
+import { getSiteUrl } from '@/utils/siteUrl';
 
 const TOP_CITIES = [
   'mumbai', 'delhi', 'bangalore', 'kolkata', 'chennai',
@@ -17,14 +18,11 @@ const TOP_CITIES = [
 const GUIDE_PAGES = [
   'gold-price-guide',
   'silver-investment-guide',
-  'metal-price-factors',
-  'best-time-to-buy-gold',
+  'investment-guide',
   'gold-vs-silver-investment',
   '24k-vs-22k-vs-18k-gold',
   'best-cities-to-buy-gold',
   'gold-price-trends-2025',
-  'copper-price-guide',
-  'platinum-investment-guide',
 ];
 
 /**
@@ -32,8 +30,7 @@ const GUIDE_PAGES = [
  */
 async function getLastUpdatedDate(city: string): Promise<Date> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 
-      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
+    const baseUrl = getSiteUrl();
     
     const response = await fetch(`${baseUrl}/api/metals?city=${encodeURIComponent(city)}`, {
       next: { revalidate: 600 },
@@ -54,7 +51,7 @@ async function getLastUpdatedDate(city: string): Promise<Date> {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://metalview.in';
+  const baseUrl = getSiteUrl();
   const now = new Date();
 
   const sitemapEntries: MetadataRoute.Sitemap = [];
@@ -65,14 +62,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: now,
     changeFrequency: 'hourly' as const,
     priority: 1.0,
-  });
-
-  // Dashboard page
-  sitemapEntries.push({
-    url: `${baseUrl}/dashboard`,
-    lastModified: now,
-    changeFrequency: 'hourly' as const,
-    priority: 0.9,
   });
 
   // Fetch last updated dates for cities
@@ -105,21 +94,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     });
   }
-
-  // Comparison pages
-  sitemapEntries.push({
-    url: `${baseUrl}/gold-price-comparison`,
-    lastModified: now,
-    changeFrequency: 'daily' as const,
-    priority: 0.75,
-  });
-
-  sitemapEntries.push({
-    url: `${baseUrl}/metal-price-trends`,
-    lastModified: now,
-    changeFrequency: 'daily' as const,
-    priority: 0.75,
-  });
 
   return sitemapEntries;
 }

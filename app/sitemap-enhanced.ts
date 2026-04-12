@@ -7,6 +7,7 @@
  */
 
 import { MetadataRoute } from 'next';
+import { getSiteUrl } from '@/utils/siteUrl';
 
 const TOP_CITIES = [
   'mumbai', 'delhi', 'bangalore', 'kolkata', 'chennai',
@@ -29,15 +30,15 @@ const BLOG_SLUGS = [
 const GUIDE_PAGES = [
   'gold-price-guide',
   'silver-investment-guide',
-  'metal-price-factors',
-  'best-time-to-buy-gold',
+  'investment-guide',
   'gold-vs-silver-investment',
-  'copper-price-guide',
-  'platinum-investment-guide',
+  '24k-vs-22k-vs-18k-gold',
+  'best-cities-to-buy-gold',
+  'gold-price-trends-2025',
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://metalview.in';
+  const baseUrl = getSiteUrl();
   const now = new Date();
 
   const sitemapEntries: MetadataRoute.Sitemap = [];
@@ -48,14 +49,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: now,
     changeFrequency: 'hourly',
     priority: 1.0,
-  });
-
-  // Dashboard page
-  sitemapEntries.push({
-    url: `${baseUrl}/dashboard`,
-    lastModified: now,
-    changeFrequency: 'hourly',
-    priority: 0.9,
   });
 
   // City overview pages (all metals for a city)
@@ -76,18 +69,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
         lastModified: now,
         changeFrequency: 'hourly',
         priority: 0.85,
-      });
-    });
-  });
-
-  // Legacy metal-city routes (for backward compatibility)
-  TOP_CITIES.forEach((city) => {
-    METALS.forEach((metal) => {
-      sitemapEntries.push({
-        url: `${baseUrl}/${metal}-price-today-in-${city}`,
-        lastModified: now,
-        changeFrequency: 'hourly',
-        priority: 0.8,
       });
     });
   });
@@ -118,21 +99,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.7,
     });
-  });
-
-  // Comparison pages
-  sitemapEntries.push({
-    url: `${baseUrl}/gold-price-comparison`,
-    lastModified: now,
-    changeFrequency: 'daily',
-    priority: 0.75,
-  });
-
-  sitemapEntries.push({
-    url: `${baseUrl}/metal-price-trends`,
-    lastModified: now,
-    changeFrequency: 'daily',
-    priority: 0.75,
   });
 
   return sitemapEntries;

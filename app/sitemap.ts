@@ -10,8 +10,9 @@
 
 import { MetadataRoute } from 'next';
 import { BLOG_SITEMAP_ENTRIES } from '@/utils/blogSitemapData';
+import { getSiteUrl } from '@/utils/siteUrl';
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://metalview.in';
+const BASE_URL = getSiteUrl();
 
 const METALS = ['gold', 'silver', 'copper', 'platinum', 'palladium'] as const;
 
@@ -63,13 +64,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: now,
     changeFrequency: 'hourly',
     priority: 1,
-  });
-
-  entries.push({
-    url: `${BASE_URL}/dashboard`,
-    lastModified: now,
-    changeFrequency: 'hourly',
-    priority: 0.9,
   });
 
   // Metal hub pages (primary SEO targets)

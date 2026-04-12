@@ -1,0 +1,4 @@
+export function getSiteUrl(): string {
+  return process.env.NEXT_PUBLIC_BASE_URL ||
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://metalview.in');
+}

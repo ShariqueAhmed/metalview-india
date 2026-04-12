@@ -15,10 +15,10 @@ import PriceHistoryTable from '@/components/PriceHistoryTable';
 import ChartSection from '@/components/ChartSection';
 import { generateMetalMetadata, generateStructuredData, generateDatasetSchema } from '@/utils/seo';
 import { formatCityName } from '@/utils/conversions';
+import { getSiteUrl } from '@/utils/siteUrl';
 import Link from 'next/link';
 import { Info, HelpCircle } from 'lucide-react';
 import CityNavigationClient from './CityNavigationClient';
-import PeopleAlsoAsk from '@/components/PeopleAlsoAsk';
 import { getPeopleAlsoAskQuestions } from '@/utils/peopleAlsoAsk';
 import FAQSchema from '@/components/FAQSchema';
 import Breadcrumbs from '@/components/Breadcrumbs';
@@ -278,8 +278,7 @@ export async function generateMetadata({ params }: CityPageProps): Promise<Metad
   let priceRange: { min: number; max: number } | undefined = undefined;
   
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 
-      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
+    const baseUrl = getSiteUrl();
     
     // Fetch current city price
     const apiUrl = `${baseUrl}/api/metals?city=${encodeURIComponent(city)}`;
@@ -428,12 +427,7 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
   let data = null;
   try {
     // Use absolute URL for server-side fetch
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 
-      (typeof window === 'undefined' 
-        ? process.env.VERCEL_URL 
-          ? `https://${process.env.VERCEL_URL}`
-          : 'http://localhost:3000'
-        : window.location.origin);
+    const baseUrl = getSiteUrl();
     
     const apiUrl = `${baseUrl}/api/metals?city=${encodeURIComponent(city)}`;
     const response = await fetch(apiUrl, {
@@ -469,17 +463,14 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
         metal: metalType,
         city: city,
         dataPoints: priceHistoryData,
-        baseUrl: process.env.NEXT_PUBLIC_BASE_URL || 
-          (typeof window === 'undefined' 
-            ? process.env.VERCEL_URL 
-              ? `https://${process.env.VERCEL_URL}`
-              : 'http://localhost:3000'
-            : typeof window !== 'undefined' ? window.location.origin : 'https://metalview.in'),
+        baseUrl: getSiteUrl(),
       })
     : null;
 
   const cityInsight = getCityInsight(city, cityName, metalType);
   const cityFAQs = getCityFAQs(city, cityName, metalType);
+  const peopleAlsoAsk = getPeopleAlsoAskQuestions(metalType);
+  const visibleFaqs = [...cityFAQs, ...peopleAlsoAsk];
 
   return (
     <>
@@ -694,30 +685,19 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
             pageType="metal-city"
           />
 
-          {/* People Also Ask Section */}
-          <section aria-labelledby="people-also-ask" className="mb-8">
-            <h2 id="people-also-ask" className="sr-only">
-              People Also Ask
-            </h2>
-            <PeopleAlsoAsk
-              questions={getPeopleAlsoAskQuestions(metalType)}
-              title="People Also Ask"
-            />
-          </section>
-
-          {/* City-Specific FAQs */}
-          {cityFAQs.length > 0 && (
+          {/* Combined FAQs */}
+          {visibleFaqs.length > 0 && (
             <div className="mb-8 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 p-6 sm:p-8 card-shadow">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
                   <HelpCircle className="w-5 h-5 text-amber-600 dark:text-amber-400" />
                 </div>
                 <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50">
-                  Frequently Asked Questions - {cityName}
+                  Frequently Asked Questions About {metal.charAt(0).toUpperCase() + metal.slice(1)} in {cityName}
                 </h2>
               </div>
               <div className="space-y-4">
-                {cityFAQs.map((faq, index) => (
+                {visibleFaqs.map((faq, index) => (
                   <div
                     key={index}
                     className="border border-slate-200 dark:border-slate-700 rounded-lg p-4"
@@ -732,12 +712,9 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
             </div>
           )}
 
-          {/* FAQ Schema for People Also Ask */}
+          {/* FAQ Schema */}
           <FAQSchema
-            faqs={[
-              ...getPeopleAlsoAskQuestions(metalType),
-              ...cityFAQs,
-            ]}
+            faqs={visibleFaqs}
             metal={metalType}
             city={city}
           />

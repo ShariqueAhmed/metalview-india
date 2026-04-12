@@ -4,6 +4,7 @@
  */
 
 import { MetadataRoute } from 'next';
+import { getSiteUrl } from '@/utils/siteUrl';
 
 const TOP_CITIES = [
   'mumbai', 'delhi', 'bangalore', 'kolkata', 'chennai',
@@ -21,8 +22,7 @@ const METALS = ['gold', 'silver', 'copper', 'platinum', 'palladium'];
  */
 async function getLastUpdatedDate(city: string): Promise<Date> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 
-      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
+    const baseUrl = getSiteUrl();
     
     const response = await fetch(`${baseUrl}/api/metals?city=${encodeURIComponent(city)}`, {
       next: { revalidate: 600 }, // Cache for 10 minutes
@@ -43,7 +43,7 @@ async function getLastUpdatedDate(city: string): Promise<Date> {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://metalview.in';
+  const baseUrl = getSiteUrl();
   const now = new Date();
 
   const sitemapEntries: MetadataRoute.Sitemap = [];
@@ -66,19 +66,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         lastModified,
         changeFrequency: 'hourly' as const,
         priority: 0.85,
-      });
-    }
-  }
-
-  // Legacy metal-city routes (for backward compatibility)
-  for (const city of TOP_CITIES) {
-    const lastModified = cityDates.get(city) || now;
-    for (const metal of METALS) {
-      sitemapEntries.push({
-        url: `${baseUrl}/${metal}-price-today-in-${city}`,
-        lastModified,
-        changeFrequency: 'hourly' as const,
-        priority: 0.8,
       });
     }
   }

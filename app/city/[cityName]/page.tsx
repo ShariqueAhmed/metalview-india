@@ -16,6 +16,7 @@ import GoldWeightPrices from '@/components/GoldWeightPrices';
 import ChartSection from '@/components/ChartSection';
 import { formatCityName } from '@/utils/conversions';
 import { getCityLatitude, getCityLongitude } from '@/utils/cityCoordinates';
+import { getSiteUrl } from '@/utils/siteUrl';
 import Link from 'next/link';
 import { TrendingUp, MapPin, Store, MapPin as LocationIcon } from 'lucide-react';
 import CityNavigationClient from './CityNavigationClient';
@@ -238,10 +239,10 @@ export default async function CityOverviewPage({ params }: CityPageProps) {
   // Fetch data server-side
   let data = null;
   try {
-    // Use relative URL for server-side fetch (works in both dev and production)
-    const apiUrl = `/api/metals?city=${encodeURIComponent(cityName)}`;
+    const apiUrl = `${getSiteUrl()}/api/metals?city=${encodeURIComponent(cityName)}`;
     const response = await fetch(apiUrl, {
       next: { revalidate: 600 }, // Revalidate every 10 minutes
+      headers: { 'Content-Type': 'application/json' },
     });
 
     if (response.ok) {
@@ -253,7 +254,7 @@ export default async function CityOverviewPage({ params }: CityPageProps) {
 
   const cityInsight = CITY_INSIGHTS[cityName.toLowerCase()] || `Metal prices in ${city} are influenced by local market demand, transportation costs, and regional economic factors.`;
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://metalview.in';
+  const baseUrl = getSiteUrl();
   const cityLatitude = getCityLatitude(cityName);
   const cityLongitude = getCityLongitude(cityName);
 
