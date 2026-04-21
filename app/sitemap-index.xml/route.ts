@@ -4,9 +4,10 @@
  */
 
 import { NextResponse } from 'next/server';
+import { getSiteUrl } from '@/utils/siteUrl';
 
 export async function GET() {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://metalview.in';
+  const baseUrl = getSiteUrl();
   const now = new Date().toISOString().split('T')[0];
 
   const sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>

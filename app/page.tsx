@@ -5,8 +5,9 @@
 
 import type { Metadata } from 'next';
 import HomeClient from './page-client';
+import { getSiteUrl } from '@/utils/siteUrl';
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://metalview.in';
+  const baseUrl = getSiteUrl();
   
 export const metadata: Metadata = {
   title: 'Gold, Silver, Copper, Platinum & Palladium Price Today in India | MetalView',

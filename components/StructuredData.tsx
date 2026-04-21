@@ -12,6 +12,8 @@ interface StructuredDataProps {
   metalType?: 'gold' | 'silver' | 'copper' | 'platinum' | 'palladium';
 }
 
+const FALLBACK_SITE_URL = (process.env.NEXT_PUBLIC_BASE_URL || 'https://metalview.in').replace(/\/$/, '');
+
 export default function StructuredData({
   gold24k_10g,
   gold22k_10g,
@@ -32,7 +34,7 @@ export default function StructuredData({
     }
   };
 
-  const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://metalview.in';
+  const baseUrl = typeof window !== 'undefined' ? window.location.origin : FALLBACK_SITE_URL;
   const cityName = location ? location.charAt(0).toUpperCase() + location.slice(1) : 'India';
 
   // Organization Schema

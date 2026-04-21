@@ -3,6 +3,9 @@ import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Calendar, Clock, ArrowRight, Sparkles } from 'lucide-react';
+import { getSiteUrl } from '@/utils/siteUrl';
+
+const SITE_URL = getSiteUrl();
 
 export const metadata: Metadata = {
   title: 'MetalView Blog - Metal Price Guides & Insights | MetalView',
@@ -21,7 +24,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'MetalView Blog | Gold, Silver & Metal Price Guides',
     description: 'In-depth guides on gold, silver, copper, platinum, and palladium prices and policies in India.',
-    url: 'https://metalview.in/blog',
+    url: `${SITE_URL}/blog`,
   },
 };
 

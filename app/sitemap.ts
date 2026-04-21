@@ -67,6 +67,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   });
 
   entries.push({
+    url: `${BASE_URL}/cities`,
+    lastModified: now,
+    changeFrequency: 'weekly',
+    priority: 0.86,
+  });
+
+  entries.push({
     url: `${BASE_URL}/about`,
     lastModified: now,
     changeFrequency: 'monthly',

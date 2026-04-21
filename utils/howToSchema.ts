@@ -3,6 +3,8 @@
  * Generates Schema.org HowTo structured data from blog post content
  */
 
+import { getSiteUrl } from './siteUrl';
+
 export interface HowToStep {
   position: number;
   name: string;
@@ -17,7 +19,7 @@ export function generateHowToSchema(
   title: string,
   content: string,
   slug: string,
-  baseUrl: string = 'https://metalview.in'
+  baseUrl: string = getSiteUrl()
 ): object | null {
   // Check if this is a "how-to" guide
   const isHowTo = 

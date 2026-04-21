@@ -46,6 +46,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 1.0,
   });
 
+  sitemapEntries.push({
+    url: `${baseUrl}/cities`,
+    lastModified: now,
+    changeFrequency: 'weekly' as const,
+    priority: 0.86,
+  });
+
   // Fetch last updated dates for cities
   const cityDates = new Map<string, Date>();
   const cityPromises = [...SITEMAP_TOP_CITIES].map(async (city) => {

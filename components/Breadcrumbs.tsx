@@ -18,6 +18,8 @@ interface BreadcrumbsProps {
   className?: string;
 }
 
+const FALLBACK_SITE_URL = (process.env.NEXT_PUBLIC_BASE_URL || 'https://metalview.in').replace(/\/$/, '');
+
 export default function Breadcrumbs({ items, className = '' }: BreadcrumbsProps) {
   if (!items || items.length === 0) {
     return null;
@@ -38,7 +40,7 @@ export default function Breadcrumbs({ items, className = '' }: BreadcrumbsProps)
       name: item.label,
       item: typeof window !== 'undefined' 
         ? `${window.location.origin}${item.href}`
-        : `https://metalview.in${item.href}`,
+        : `${FALLBACK_SITE_URL}${item.href}`,
     })),
   };
 

@@ -8,6 +8,9 @@ import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Shield, Lock, Eye, FileText } from 'lucide-react';
+import { getSiteUrl } from '@/utils/siteUrl';
+
+const SITE_URL = getSiteUrl();
 
 export const metadata: Metadata = {
   title: 'Privacy Policy | MetalView India',
@@ -18,7 +21,7 @@ export const metadata: Metadata = {
     description: 'How MetalView collects, uses, and protects your data.',
     type: 'website',
     locale: 'en_IN',
-    url: 'https://metalview.in/privacy-policy',
+    url: `${SITE_URL}/privacy-policy`,
   },
   alternates: {
     canonical: '/privacy-policy',

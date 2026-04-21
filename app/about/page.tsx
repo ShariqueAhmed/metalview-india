@@ -7,6 +7,9 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
 import { Info, RefreshCw, Shield, BarChart3, BookOpen, Sparkles, Users, BadgeCheck, Mail } from 'lucide-react';
+import { getSiteUrl } from '@/utils/siteUrl';
+
+const SITE_URL = getSiteUrl();
 
 export const metadata: Metadata = {
   title: 'About MetalView - How We Get Gold & Silver Prices in India',
@@ -23,7 +26,7 @@ export const metadata: Metadata = {
     description: 'How MetalView provides live gold, silver, copper, platinum, and palladium prices. Data sources and update frequency.',
     type: 'website',
     locale: 'en_IN',
-    url: 'https://metalview.in/about',
+    url: `${SITE_URL}/about`,
   },
   alternates: {
     canonical: '/about',

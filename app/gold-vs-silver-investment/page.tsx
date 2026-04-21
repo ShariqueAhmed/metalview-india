@@ -8,6 +8,7 @@ import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { TrendingUp, TrendingDown, DollarSign, Award, BarChart3, Shield } from 'lucide-react';
+import { getSiteUrl } from '@/utils/siteUrl';
 
 export const metadata: Metadata = {
   title: 'Gold vs Silver Investment: Which is Better in 2025? | MetalView India',
@@ -39,7 +40,7 @@ export const metadata: Metadata = {
 };
 
 export default function GoldVsSilverInvestmentPage() {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://metalview.in';
+  const baseUrl = getSiteUrl();
 
   // Article schema for SEO
   const articleSchema = {

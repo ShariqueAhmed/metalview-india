@@ -1,6 +1,6 @@
 /**
  * Robots.txt for SEO
- * Allows all crawlers, references sitemap, and optionally disallows admin/API paths.
+ * Allows crawlers to render public pages, references sitemaps, and disallows admin/API paths.
  *
  * Important for AdSense: if you ever use `Disallow: /ads`, crawlers treat it as blocking
  * `/ads.txt` (prefix match). Always keep `Allow: /ads.txt` before any `/ads` disallow, or
@@ -20,18 +20,18 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: '*',
         // Explicit allow so ads.txt stays crawlable if any rule uses Disallow: /ads (prefix blocks /ads.txt)
         allow: ['/ads.txt', '/'],
-        disallow: ['/api/', '/_next/', '/private/', '/dashboard'],
+        disallow: ['/api/', '/private/', '/dashboard'],
         crawlDelay: 1,
       },
       {
         userAgent: 'Googlebot',
         allow: ['/ads.txt', '/'],
-        disallow: ['/api/', '/_next/', '/dashboard'],
+        disallow: ['/api/', '/dashboard'],
       },
       {
         userAgent: 'Bingbot',
         allow: ['/ads.txt', '/'],
-        disallow: ['/api/', '/_next/', '/dashboard'],
+        disallow: ['/api/', '/dashboard'],
       },
     ],
     sitemap: [

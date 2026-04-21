@@ -10,6 +10,7 @@ import Footer from '@/components/Footer';
 import TopicClusterNav from '@/components/TopicClusterNav';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { DollarSign, BookOpen, BarChart3, Shield } from 'lucide-react';
+import { getSiteUrl } from '@/utils/siteUrl';
 
 export const metadata: Metadata = {
   title: 'Silver Investment Guide: Complete Guide to Silver Prices & Investment | MetalView India',
@@ -42,7 +43,7 @@ export const metadata: Metadata = {
 };
 
 export default function SilverInvestmentGuidePage() {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://metalview.in';
+  const baseUrl = getSiteUrl();
 
   const articleSchema = {
     '@context': 'https://schema.org',

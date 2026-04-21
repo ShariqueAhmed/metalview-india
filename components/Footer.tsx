@@ -44,6 +44,12 @@ export default function Footer() {
               Blog
             </Link>
             <Link
+              href="/cities"
+              className="py-2 text-slate-600 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors touch-manipulation"
+            >
+              Cities
+            </Link>
+            <Link
               href="/about"
               className="py-2 text-slate-600 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors touch-manipulation"
             >

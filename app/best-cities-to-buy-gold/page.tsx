@@ -10,6 +10,7 @@ import Footer from '@/components/Footer';
 import TopicClusterNav from '@/components/TopicClusterNav';
 import { MapPin, TrendingDown, Award, DollarSign, Shield } from 'lucide-react';
 import { formatCityName } from '@/utils/conversions';
+import { getSiteUrl } from '@/utils/siteUrl';
 
 export const metadata: Metadata = {
   title: 'Best Cities to Buy Gold in India: A Practical Price Comparison Guide | MetalView',
@@ -54,7 +55,7 @@ const CITY_RANKINGS = [
 ];
 
 export default function BestCitiesToBuyGoldPage() {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://metalview.in';
+  const baseUrl = getSiteUrl();
 
   const articleSchema = {
     '@context': 'https://schema.org',

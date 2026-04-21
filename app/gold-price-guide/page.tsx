@@ -10,6 +10,7 @@ import Footer from '@/components/Footer';
 import TopicClusterNav from '@/components/TopicClusterNav';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { Award, TrendingUp, BookOpen, DollarSign, Shield, BarChart3 } from 'lucide-react';
+import { getSiteUrl } from '@/utils/siteUrl';
 
 export const metadata: Metadata = {
   title: 'Gold Price Guide: Complete Guide to Gold Prices, Purity & Investment | MetalView India',
@@ -42,7 +43,7 @@ export const metadata: Metadata = {
 };
 
 export default function GoldPriceGuidePage() {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://metalview.in';
+  const baseUrl = getSiteUrl();
 
   const articleSchema = {
     '@context': 'https://schema.org',

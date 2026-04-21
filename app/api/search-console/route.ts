@@ -18,6 +18,8 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+
 interface SearchConsoleQuery {
   query: string;
   clicks: number;
@@ -115,7 +117,7 @@ export async function GET(request: NextRequest) {
     // Example API call structure (commented out - requires actual implementation):
     /*
     const accessToken = await getAccessToken(); // OAuth or Service Account
-    const siteUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://metalview.in';
+    const siteUrl = '<configured canonical site URL>';
     
     const response = await fetch(
       `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(siteUrl)}/searchAnalytics/query`,

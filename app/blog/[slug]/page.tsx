@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { ArrowLeft, ArrowRight, Calendar, Clock, MapPin } from 'lucide-react';
 import { generateHowToSchema } from '@/utils/howToSchema';
 import Breadcrumbs from '@/components/Breadcrumbs';
+import { getSiteUrl } from '@/utils/siteUrl';
 
 interface BlogPost {
   slug: string;
@@ -1130,7 +1131,7 @@ Jaipur is excellent for buyers who value traditional artistry, but that same str
     content: `
 # Gold Price in Surat: Diamond City Gold Market
 
-Surat's gold market is often overshadowed by the city's diamond identity, but that is precisely why buyers should pay attention to it. The city has active jewellery demand, strong business connectivity, and enough retail competition that a careful shopper can usually compare offers well.
+Surat is better known globally for diamonds, but its gold-buying ecosystem deserves careful attention too. The city has active jewellery demand, strong business connectivity, and enough retail competition that a careful shopper can usually compare offers well.
 
 ## What Makes Surat Interesting
 
@@ -1433,7 +1434,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     };
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://metalview.in';
+  const baseUrl = getSiteUrl();
   const postUrl = `/blog/${slug}`;
   const publishedTime = new Date(post.date).toISOString();
 
@@ -1517,7 +1518,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   }
 
   // Generate HowTo schema if applicable
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://metalview.in';
+  const baseUrl = getSiteUrl();
   const howToSchema = generateHowToSchema(post.title, post.content, post.slug, baseUrl);
 
   // Generate Article schema (full fields for rich results)

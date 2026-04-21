@@ -20,6 +20,7 @@ const METAL_LINKS = [
 
 const SECONDARY_LINKS = [
   { href: '/guides', label: 'Guides' },
+  { href: '/cities', label: 'Cities' },
   { href: '/blog', label: 'Blog' },
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
@@ -105,7 +106,7 @@ export default function Header() {
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden sm:flex items-center gap-1" aria-label="Main navigation">
+          <nav className="hidden xl:flex items-center gap-1" aria-label="Main navigation">
             <div className="flex items-center gap-0.5">
               {METAL_LINKS.map((link) => (
                 <NavLink key={link.href} href={link.href} label={link.label} isActive={isActive(link.href)} />
@@ -123,7 +124,7 @@ export default function Header() {
           <button
             type="button"
             onClick={() => setMobileMenuOpen((o) => !o)}
-            className="sm:hidden flex items-center justify-center w-11 h-11 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-amber-600 dark:hover:text-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 touch-manipulation"
+            className="xl:hidden flex items-center justify-center w-11 h-11 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-amber-600 dark:hover:text-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 touch-manipulation"
             aria-expanded={mobileMenuOpen}
             aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
           >
@@ -134,7 +135,7 @@ export default function Header() {
 
       {/* Mobile nav dropdown */}
       {mobileMenuOpen && (
-        <div className="sm:hidden border-t border-slate-200/80 dark:border-slate-800/80 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md">
+        <div className="xl:hidden border-t border-slate-200/80 dark:border-slate-800/80 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md">
           <nav className="max-w-7xl mx-auto px-4 py-4" aria-label="Mobile navigation">
             <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 px-3 mb-2">
               Metals

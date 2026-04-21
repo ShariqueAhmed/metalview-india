@@ -251,7 +251,7 @@ export function generatePricePredictionSchema(data: {
   city?: string;
   baseUrl?: string;
 }): object {
-  const { metal, currentPrice, predictedPrice, predictionDate, confidence, unit = '10g', city, baseUrl = 'https://metalview.in' } = data;
+  const { metal, currentPrice, predictedPrice, predictionDate, confidence, unit = '10g', city, baseUrl = getSiteUrl() } = data;
   
   const metalName = metal.charAt(0).toUpperCase() + metal.slice(1);
   const cityName = city ? formatCityName(city) : 'India';
@@ -316,7 +316,7 @@ export function generateDatasetSchema(data: {
   dataPoints: Array<{ date: string; price: number }>;
   baseUrl?: string;
 }): object {
-  const { metal, city, dataPoints, baseUrl = 'https://metalview.in' } = data;
+  const { metal, city, dataPoints, baseUrl = getSiteUrl() } = data;
   
   if (!dataPoints || dataPoints.length === 0) {
     return {};

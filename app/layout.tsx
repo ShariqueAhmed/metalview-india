@@ -5,9 +5,11 @@ import Script from 'next/script';
 import { Analytics as VercelAnalytics } from '@vercel/analytics/next';
 import './globals.css';
 import { Analytics } from './analytics';
+import { getSiteUrl } from '@/utils/siteUrl';
 
 /** Google Analytics 4 (gtag). Override with NEXT_PUBLIC_GA_MEASUREMENT_ID in env. */
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? 'G-ZMRV17R3P2';
+const SITE_URL = getSiteUrl();
 
 // Optimize font loading with display swap to prevent FOIT (Flash of Invisible Text)
 const inter = Inter({ 
@@ -46,13 +48,13 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://metalview.in'),
+  metadataBase: new URL(SITE_URL),
   alternates: {
     canonical: '/',
     languages: {
-      'en-IN': 'https://metalview.in',
-      'en': 'https://metalview.in',
-      'x-default': 'https://metalview.in',
+      'en-IN': SITE_URL,
+      'en': SITE_URL,
+      'x-default': SITE_URL,
       // Add Hindi language support when available
       // 'hi-IN': 'https://metalview.in/hi',
     },
@@ -60,7 +62,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_IN',
-    url: 'https://metalview.in',
+    url: SITE_URL,
     title: 'MetalView - Live Metal Prices in India | Gold, Silver, Copper, Platinum',
     description: 'Get live metal prices in India - Gold, Silver, Copper, and Platinum. Check today\'s rates in major cities. Real-time updates with historical trends.',
     siteName: 'MetalView',
@@ -115,9 +117,9 @@ export default function RootLayout({
       <head>
         {/* Canonical is set per-page via metadata alternates.canonical; do not add a static canonical here. */}
         {/* Hreflang tags for regional targeting */}
-        <link rel="alternate" hrefLang="en-IN" href="https://metalview.in" />
-        <link rel="alternate" hrefLang="en" href="https://metalview.in" />
-        <link rel="alternate" hrefLang="x-default" href="https://metalview.in" />
+        <link rel="alternate" hrefLang="en-IN" href={SITE_URL} />
+        <link rel="alternate" hrefLang="en" href={SITE_URL} />
+        <link rel="alternate" hrefLang="x-default" href={SITE_URL} />
         {/* Add Hindi language support when available */}
         {/* <link rel="alternate" hrefLang="hi-IN" href="https://metalview.in/hi" /> */}
         
@@ -126,7 +128,7 @@ export default function RootLayout({
         {/* DNS Prefetch for external resources - Resolve DNS early */}
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-        <link rel="dns-prefetch" href="https://metalview.in" />
+        <link rel="dns-prefetch" href={SITE_URL} />
         
         {/* Preconnect to external domains - Establish connections early */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />

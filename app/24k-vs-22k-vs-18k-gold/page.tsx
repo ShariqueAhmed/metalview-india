@@ -9,6 +9,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import TopicClusterNav from '@/components/TopicClusterNav';
 import { Award, Gem, Sparkles, TrendingUp, Shield, AlertCircle } from 'lucide-react';
+import { getSiteUrl } from '@/utils/siteUrl';
 
 export const metadata: Metadata = {
   title: '24K vs 22K vs 18K Gold: Complete Comparison Guide | MetalView India',
@@ -40,7 +41,7 @@ export const metadata: Metadata = {
 };
 
 export default function GoldPurityComparisonPage() {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://metalview.in';
+  const baseUrl = getSiteUrl();
 
   const articleSchema = {
     '@context': 'https://schema.org',

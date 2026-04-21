@@ -10,6 +10,7 @@ import Footer from '@/components/Footer';
 import TopicClusterNav from '@/components/TopicClusterNav';
 import YouMayAlsoLike from '@/components/YouMayAlsoLike';
 import { TrendingUp, TrendingDown, BarChart3, Calendar, AlertCircle, DollarSign } from 'lucide-react';
+import { getSiteUrl } from '@/utils/siteUrl';
 
 export const metadata: Metadata = {
   title: 'Gold Price Trends 2025: Context, Drivers & Scenarios | MetalView India',
@@ -39,7 +40,7 @@ export const metadata: Metadata = {
 };
 
 export default async function GoldPriceTrends2025Page() {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://metalview.in';
+  const baseUrl = getSiteUrl();
 
   const articleSchema = {
     '@context': 'https://schema.org',

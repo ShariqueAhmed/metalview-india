@@ -9,6 +9,9 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { BookOpen, BarChart3, DollarSign, MapPin, Award, FileText, ArrowRight, Sparkles } from 'lucide-react';
+import { getSiteUrl } from '@/utils/siteUrl';
+
+const SITE_URL = getSiteUrl();
 
 export const metadata: Metadata = {
   title: 'Guides & Resources - Gold, Silver & Metal Prices in India | MetalView',
@@ -24,7 +27,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Guides & Resources - Gold, Silver & Metal Prices | MetalView',
     description: 'Expert guides on metal prices, investment, purity, and market trends in India.',
-    url: 'https://metalview.in/guides',
+    url: `${SITE_URL}/guides`,
     type: 'website',
     locale: 'en_IN',
   },
