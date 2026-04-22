@@ -21,6 +21,7 @@ import { Info, HelpCircle } from 'lucide-react';
 import CityNavigationClient from './CityNavigationClient';
 import { getPeopleAlsoAskQuestions } from '@/utils/peopleAlsoAsk';
 import FAQSchema from '@/components/FAQSchema';
+import InlineMarkdown from '@/components/InlineMarkdown';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import LastUpdated from '@/components/LastUpdated';
 import YouMayAlsoLike from '@/components/YouMayAlsoLike';
@@ -464,12 +465,17 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
     // Continue with null data - page will still render
   }
 
+  const structuredDataUnit =
+    metalType === 'gold' || metalType === 'platinum' || metalType === 'palladium'
+      ? '10g'
+      : '1kg';
+
   // Generate structured data
   const structuredData = data
     ? generateStructuredData({
         metal: metalType,
         price: getMetalPrice(data, metalType),
-        unit: metalType === 'gold' ? '10g' : metalType === 'silver' ? '1kg' : '1kg',
+        unit: structuredDataUnit,
         city: city,
         updatedAt: data.updated_at || new Date().toISOString(),
       })
@@ -535,7 +541,7 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
               trends, and market insights. Prices are updated in real-time from trusted sources.
             </p>
             <p className="text-slate-600 dark:text-slate-400 mb-4">
-              Use this page to see the current {metal} rate in {cityName}, compare with other cities using the table and chart below, and understand why prices vary by location. All rates are indicative; confirm with local dealers before buying.
+              Use this page to see the current {metal} rate in {cityName}, compare it with other cities, and understand why prices vary by location. All rates are indicative; confirm with local dealers before buying.
             </p>
             <p className="text-slate-600 dark:text-slate-400 mb-4">
               {getMetalPurposeLine(metalType)}
@@ -622,12 +628,15 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
           )}
 
           {/* Historical Trends Chart */}
-          {data && (
+          {data && priceHistoryData.length > 0 && (
             <div className="mb-8">
               <ChartSection
                 goldData={metalType === 'gold' ? data.goldTrend : undefined}
                 silverData={metalType === 'silver' ? data.silverTrend : undefined}
                 copperData={metalType === 'copper' ? data.copperTrend : undefined}
+                title={`${metal.charAt(0).toUpperCase() + metal.slice(1)} Price Trends`}
+                subtitle={`Historical price movement for ${metal.charAt(0).toUpperCase() + metal.slice(1)} in ${cityName}`}
+                disableMockData={metalType === 'platinum' || metalType === 'palladium'}
               />
             </div>
           )}
@@ -639,7 +648,7 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
             <div className="grid gap-6 lg:grid-cols-2">
               <div>
                 <p className="text-slate-600 dark:text-slate-400 mb-4">
-                  Start with the live rate and visible timestamp, then compare the history table and chart to understand whether today&apos;s move looks ordinary or unusually sharp. That helps you avoid reacting to a single number without context.
+                  Start with the live rate and visible timestamp, then compare the history section to understand whether today&apos;s move looks ordinary or unusually sharp. That helps you avoid reacting to a single number without context.
                 </p>
                 <p className="text-slate-600 dark:text-slate-400">
                   If you are buying locally in {cityName}, use this page as a benchmark before you ask for a final quote. For physical purchases, the real decision should be based on the full bill and product details, not on the benchmark rate alone.
@@ -725,7 +734,9 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
                     <h3 className="font-semibold text-slate-900 dark:text-slate-50 mb-2">
                       {faq.question}
                     </h3>
-                    <p className="text-slate-600 dark:text-slate-400">{faq.answer}</p>
+                    <p className="text-slate-600 dark:text-slate-400">
+                      <InlineMarkdown text={faq.answer} />
+                    </p>
                   </div>
                 ))}
               </div>

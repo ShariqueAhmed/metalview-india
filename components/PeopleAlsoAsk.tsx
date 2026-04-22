@@ -8,6 +8,7 @@
 
 import { useState } from 'react';
 import { HelpCircle, ChevronDown, ChevronUp } from 'lucide-react';
+import InlineMarkdown from './InlineMarkdown';
 
 interface PeopleAlsoAskItem {
   question: string;
@@ -75,7 +76,7 @@ export default function PeopleAlsoAsk({ questions, title = 'People Also Ask' }: 
                 aria-labelledby={`paa-question-${index}`}
               >
                 <div className="prose prose-slate dark:prose-invert max-w-none">
-                  {item.answer}
+                  <InlineMarkdown text={item.answer} />
                 </div>
               </div>
             )}

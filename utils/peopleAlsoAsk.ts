@@ -3,6 +3,8 @@
  * Based on common search queries for gold and metals
  */
 
+import { stripSimpleMarkdown } from './markdownText';
+
 export interface PeopleAlsoAskItem {
   question: string;
   answer: string;
@@ -88,16 +90,26 @@ export function generateGeneralPeopleAlsoAsk(): PeopleAlsoAskItem[] {
  * Get People Also Ask questions based on metal type
  */
 export function getPeopleAlsoAskQuestions(metal: 'gold' | 'silver' | 'copper' | 'platinum' | 'palladium' | 'general' = 'general'): PeopleAlsoAskItem[] {
+  let questions: PeopleAlsoAskItem[];
+
   switch (metal) {
     case 'gold':
-      return generateGoldPeopleAlsoAsk();
+      questions = generateGoldPeopleAlsoAsk();
+      break;
     case 'silver':
-      return generateSilverPeopleAlsoAsk();
+      questions = generateSilverPeopleAlsoAsk();
+      break;
     case 'copper':
     case 'platinum':
     case 'palladium':
     case 'general':
     default:
-      return generateGeneralPeopleAlsoAsk();
+      questions = generateGeneralPeopleAlsoAsk();
+      break;
   }
+
+  return questions.map((item) => ({
+    ...item,
+    answer: stripSimpleMarkdown(item.answer),
+  }));
 }

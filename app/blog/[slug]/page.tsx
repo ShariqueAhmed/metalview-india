@@ -1,10 +1,12 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import type React from 'react';
 import { ArrowLeft, ArrowRight, Calendar, Clock, MapPin } from 'lucide-react';
 import { generateHowToSchema } from '@/utils/howToSchema';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { getSiteUrl } from '@/utils/siteUrl';
+import { renderInlineMarkdown } from '@/components/InlineMarkdown';
 
 interface BlogPost {
   slug: string;
@@ -1509,6 +1511,112 @@ function getArticleChecklist(post: BlogPost): string[] {
   ];
 }
 
+function renderArticleContent(content: string): React.ReactNode[] {
+  const blocks: React.ReactNode[] = [];
+  let unorderedItems: string[] = [];
+  let orderedItems: string[] = [];
+
+  const flushLists = () => {
+    if (unorderedItems.length > 0) {
+      blocks.push(
+        <ul key={`ul-${blocks.length}`} className="list-disc ml-6 mb-4 space-y-2 text-gray-700 dark:text-gray-300">
+          {unorderedItems.map((item, index) => (
+            <li key={`unordered-${index}`}>
+              {renderInlineMarkdown(item, 'font-semibold text-gray-900 dark:text-white')}
+            </li>
+          ))}
+        </ul>
+      );
+      unorderedItems = [];
+    }
+
+    if (orderedItems.length > 0) {
+      blocks.push(
+        <ol key={`ol-${blocks.length}`} className="list-decimal ml-6 mb-4 space-y-2 text-gray-700 dark:text-gray-300">
+          {orderedItems.map((item, index) => (
+            <li key={`ordered-${index}`}>
+              {renderInlineMarkdown(item, 'font-semibold text-gray-900 dark:text-white')}
+            </li>
+          ))}
+        </ol>
+      );
+      orderedItems = [];
+    }
+  };
+
+  content.split('\n').forEach((rawLine, index) => {
+    const line = rawLine.trim();
+
+    if (!line) {
+      flushLists();
+      return;
+    }
+
+    if (line.startsWith('### ')) {
+      flushLists();
+      blocks.push(
+        <h4 key={index} className="text-lg font-semibold mt-5 mb-2 text-gray-900 dark:text-white">
+          {renderInlineMarkdown(line.substring(4), 'font-semibold text-gray-900 dark:text-white')}
+        </h4>
+      );
+      return;
+    }
+
+    if (line.startsWith('## ')) {
+      flushLists();
+      blocks.push(
+        <h3 key={index} className="text-xl font-semibold mt-6 mb-3 text-gray-900 dark:text-white">
+          {renderInlineMarkdown(line.substring(3), 'font-semibold text-gray-900 dark:text-white')}
+        </h3>
+      );
+      return;
+    }
+
+    if (line.startsWith('# ')) {
+      flushLists();
+      blocks.push(
+        <h2 key={index} className="text-2xl font-bold mt-8 mb-4 text-gray-900 dark:text-white">
+          {renderInlineMarkdown(line.substring(2), 'font-semibold text-gray-900 dark:text-white')}
+        </h2>
+      );
+      return;
+    }
+
+    if (line.startsWith('- ') || line.startsWith('* ')) {
+      orderedItems = [];
+      unorderedItems.push(line.substring(2));
+      return;
+    }
+
+    const orderedMatch = line.match(/^\d+\.\s+(.+)$/);
+    if (orderedMatch?.[1]) {
+      unorderedItems = [];
+      orderedItems.push(orderedMatch[1]);
+      return;
+    }
+
+    flushLists();
+
+    if (line.startsWith('**') && line.endsWith('**')) {
+      blocks.push(
+        <p key={index} className="font-semibold text-gray-900 dark:text-white mb-4">
+          {renderInlineMarkdown(line, 'font-semibold text-gray-900 dark:text-white')}
+        </p>
+      );
+      return;
+    }
+
+    blocks.push(
+      <p key={index} className="mb-4 text-gray-700 dark:text-gray-300 leading-relaxed">
+        {renderInlineMarkdown(line, 'font-semibold text-gray-900 dark:text-white')}
+      </p>
+    );
+  });
+
+  flushLists();
+  return blocks;
+}
+
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params;
   const post = blogPosts[slug];
@@ -1671,24 +1779,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           )}
 
           <div className="prose prose-amber dark:prose-invert max-w-none">
-            {post.content.split('\n').map((paragraph, index) => {
-              if (paragraph.startsWith('# ')) {
-                return <h2 key={index} className="text-2xl font-bold mt-8 mb-4 text-gray-900 dark:text-white">{paragraph.substring(2)}</h2>;
-              }
-              if (paragraph.startsWith('## ')) {
-                return <h3 key={index} className="text-xl font-semibold mt-6 mb-3 text-gray-900 dark:text-white">{paragraph.substring(3)}</h3>;
-              }
-              if (paragraph.startsWith('- ')) {
-                return <li key={index} className="ml-6 mb-2 text-gray-700 dark:text-gray-300">{paragraph.substring(2)}</li>;
-              }
-              if (paragraph.startsWith('**') && paragraph.endsWith('**')) {
-                return <p key={index} className="font-semibold text-gray-900 dark:text-white mb-4">{paragraph.replace(/\*\*/g, '')}</p>;
-              }
-              if (paragraph.trim()) {
-                return <p key={index} className="mb-4 text-gray-700 dark:text-gray-300 leading-relaxed">{paragraph}</p>;
-              }
-              return null;
-            })}
+            {renderArticleContent(post.content)}
           </div>
 
           <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-800">

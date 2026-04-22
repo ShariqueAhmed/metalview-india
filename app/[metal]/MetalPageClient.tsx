@@ -373,6 +373,7 @@ export default function MetalPageClient({ metal, initialCity }: MetalPageClientP
                 silverData={metal === 'silver' && data.silverTrend ? data.silverTrend.map((p) => ({ date: p.date, price: p.price })) : undefined}
                 copperData={metal === 'copper' && data.copperTrend ? data.copperTrend.map((p) => ({ date: p.date, price: p.price })) : undefined}
                 subtitle={`Historical trends for ${metalName}`}
+                disableMockData={metal === 'platinum' || metal === 'palladium'}
               />
             </section>
 

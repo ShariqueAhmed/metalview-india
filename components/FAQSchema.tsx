@@ -5,6 +5,8 @@
 
 'use client';
 
+import { stripSimpleMarkdown } from '@/utils/markdownText';
+
 interface FAQItem {
   question: string;
   answer: string;
@@ -65,7 +67,7 @@ export default function FAQSchema({ faqs, metal = 'gold', city }: FAQSchemaProps
       name: faq.question,
       acceptedAnswer: {
         '@type': 'Answer',
-        text: faq.answer,
+        text: stripSimpleMarkdown(faq.answer),
       },
     })),
   };

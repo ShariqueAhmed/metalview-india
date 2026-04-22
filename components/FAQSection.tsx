@@ -7,6 +7,7 @@
 
 import { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import InlineMarkdown from './InlineMarkdown';
 
 interface FAQItem {
   question: string;
@@ -68,7 +69,7 @@ export default function FAQSection({ faqs, title = 'Frequently Asked Questions' 
                 role="region"
                 aria-labelledby={`faq-question-${index}`}
               >
-                {faq.answer}
+                <InlineMarkdown text={faq.answer} />
               </div>
             )}
           </div>

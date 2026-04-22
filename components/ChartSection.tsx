@@ -26,6 +26,7 @@ interface ChartSectionProps {
   platinumData?: Array<{ date: string; price: number }>;
   title?: string;
   subtitle?: string;
+  disableMockData?: boolean;
 }
 
 // Generate mock historical data (7 days)
@@ -54,7 +55,8 @@ export default function ChartSection({
   copperData,
   platinumData,
   title,
-  subtitle 
+  subtitle,
+  disableMockData = false,
 }: ChartSectionProps) {
   // Determine which metal data to use
   const hasCopper = Array.isArray(copperData) && copperData.length > 0;
@@ -65,8 +67,9 @@ export default function ChartSection({
   // Use provided data or generate mock data (only if not metal-specific)
   // If silverData is explicitly undefined, don't show silver even if gold is provided
   const shouldShowSilver = silverData !== undefined && hasSilver;
-  const goldChartData = (hasCopper || hasPlatinum) ? [] : (goldData || (goldData === undefined && silverData === undefined ? generateMockData(65000, 7) : []));
-  const silverChartData = (hasCopper || hasPlatinum || !shouldShowSilver) ? [] : (silverData || (silverData === undefined && goldData === undefined ? generateMockData(85000, 7) : []));
+  const canUseMockData = !disableMockData && goldData === undefined && silverData === undefined;
+  const goldChartData = (hasCopper || hasPlatinum) ? [] : (goldData || (canUseMockData ? generateMockData(65000, 7) : []));
+  const silverChartData = (hasCopper || hasPlatinum || !shouldShowSilver) ? [] : (silverData || (canUseMockData ? generateMockData(85000, 7) : []));
   const copperChartData = copperData || [];
   const platinumChartData = platinumData || [];
 
