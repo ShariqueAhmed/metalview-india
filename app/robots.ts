@@ -35,6 +35,7 @@ export default function robots(): MetadataRoute.Robots {
       },
     ],
     sitemap: [
+      `${BASE_URL}/sitemap-index.xml`,
       `${BASE_URL}/sitemap.xml`,
       `${BASE_URL}/sitemap-metals.xml`,
       `${BASE_URL}/sitemap-cities.xml`,
