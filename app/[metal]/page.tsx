@@ -7,22 +7,34 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import MetalPageClient from './MetalPageClient';
 import { getSiteUrl } from '@/utils/siteUrl';
-
-const METALS = ['gold', 'silver', 'copper', 'platinum', 'palladium'] as const;
-type MetalSlug = (typeof METALS)[number];
-
-function isValidMetal(metal: string): metal is MetalSlug {
-  return METALS.includes(metal as MetalSlug);
-}
+import type { MetalsApiResponse } from '@/app/api/metals/route';
+import { isSupportedMetal } from '@/utils/routeConstants';
 
 interface PageProps {
   params: Promise<{ metal: string }>;
   searchParams: Promise<{ city?: string }>;
 }
 
+async function getInitialMetalData(city: string): Promise<MetalsApiResponse | null> {
+  try {
+    const response = await fetch(`${getSiteUrl()}/api/metals?city=${encodeURIComponent(city)}`, {
+      next: { revalidate: 600 },
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    if (!response.ok) {
+      return null;
+    }
+
+    return (await response.json()) as MetalsApiResponse;
+  } catch {
+    return null;
+  }
+}
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { metal } = await params;
-  if (!isValidMetal(metal)) return { title: 'Metal | MetalView' };
+  if (!isSupportedMetal(metal)) return { title: 'Metal | MetalView' };
   const name = metal.charAt(0).toUpperCase() + metal.slice(1);
   const baseUrl = getSiteUrl();
   return {
@@ -64,14 +76,21 @@ export default async function MetalPage({ params, searchParams }: PageProps) {
   const { metal } = await params;
   const { city: cityQuery } = await searchParams;
 
-  if (!metal || !isValidMetal(metal)) {
+  if (!metal || !isSupportedMetal(metal)) {
     notFound();
   }
+
+  const normalizedCity =
+    typeof cityQuery === 'string' && cityQuery.trim().length > 0
+      ? cityQuery.toLowerCase()
+      : 'mumbai';
+  const initialData = await getInitialMetalData(normalizedCity);
 
   return (
     <MetalPageClient
       metal={metal}
-      initialCity={typeof cityQuery === 'string' ? cityQuery : undefined}
+      initialCity={normalizedCity}
+      initialData={initialData}
     />
   );
 }

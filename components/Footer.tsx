@@ -18,7 +18,7 @@ export default function Footer() {
             </p>
             <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/50 rounded-full">
               <span className="w-1.5 h-1.5 bg-emerald-500 dark:bg-emerald-400 rounded-full"></span>
-              <span className="text-[10px] font-semibold text-emerald-700 dark:text-emerald-300">Verified</span>
+              <span className="text-[10px] font-semibold text-emerald-700 dark:text-emerald-300">Live Data</span>
             </span>
           </div>
           <p className="text-sm text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
@@ -54,6 +54,24 @@ export default function Footer() {
               className="py-2 text-slate-600 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors touch-manipulation"
             >
               About
+            </Link>
+            <Link
+              href="/editorial-policy"
+              className="py-2 text-slate-600 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors touch-manipulation"
+            >
+              Editorial Policy
+            </Link>
+            <Link
+              href="/methodology"
+              className="py-2 text-slate-600 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors touch-manipulation"
+            >
+              Methodology
+            </Link>
+            <Link
+              href="/corrections-policy"
+              className="py-2 text-slate-600 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors touch-manipulation"
+            >
+              Corrections Policy
             </Link>
             <Link
               href="/privacy-policy"

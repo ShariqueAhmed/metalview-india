@@ -7,6 +7,8 @@
 
 import Link from 'next/link';
 import { Network, BookOpen, TrendingUp, DollarSign } from 'lucide-react';
+import { BLOG_PAGES, COMPARISON_PAGES, GUIDE_PAGES, PRIMARY_LINK_CITY_SLUGS, TREND_PAGES } from '@/utils/contentCatalog';
+import { formatCityName } from '@/utils/conversions';
 
 interface TopicCluster {
   hub: {
@@ -26,51 +28,91 @@ interface TopicClusterNavProps {
   className?: string;
 }
 
-// Define topic clusters
-const topicClusters: Record<string, TopicCluster> = {
-  gold: {
-    hub: {
-      title: 'Gold Price Guide',
-      href: '/gold-price-guide',
-      description: 'Complete guide to gold prices, purity, and investment',
+function buildTopicClusters(): Record<string, TopicCluster> {
+  const goldHub = GUIDE_PAGES.find((page) => page.slug === 'gold-price-guide');
+  const silverHub = GUIDE_PAGES.find((page) => page.slug === 'silver-investment-guide');
+  const investmentHub = GUIDE_PAGES.find((page) => page.slug === 'investment-guide');
+
+  return {
+    gold: {
+      hub: {
+        title: goldHub?.title ?? 'Gold Price Guide',
+        href: goldHub?.href ?? '/gold-price-guide',
+        description: goldHub?.description ?? 'Complete guide to gold prices, purity, and investment',
+      },
+      spokes: [
+        ...COMPARISON_PAGES.filter((page) => page.metals?.includes('gold')).map((page) => ({
+          title: page.title,
+          href: page.href,
+          type: 'comparison' as const,
+        })),
+        ...TREND_PAGES.filter((page) => page.metal === 'gold').map((page) => ({
+          title: page.title,
+          href: page.href,
+          type: 'trend' as const,
+        })),
+        ...GUIDE_PAGES.filter((page) => page.metal === 'gold' && page.slug !== 'gold-price-guide').map((page) => ({
+          title: page.title,
+          href: page.href,
+          type: 'guide' as const,
+        })),
+        ...PRIMARY_LINK_CITY_SLUGS.slice(0, 3).map((city) => ({
+          title: `Gold Price in ${formatCityName(city)}`,
+          href: `/gold/price-in/${city}`,
+          type: 'city' as const,
+        })),
+      ],
     },
-    spokes: [
-      { title: '24K vs 22K vs 18K Gold', href: '/24k-vs-22k-vs-18k-gold', type: 'comparison' },
-      { title: 'Gold Price Trends 2025', href: '/gold-price-trends-2025', type: 'trend' },
-      { title: 'Best Cities to Buy Gold', href: '/best-cities-to-buy-gold', type: 'guide' },
-      { title: 'Gold vs Silver Investment', href: '/gold-vs-silver-investment', type: 'comparison' },
-      { title: 'Gold Price in Mumbai', href: '/gold/price-in/mumbai', type: 'city' },
-      { title: 'Gold Price in Delhi', href: '/gold/price-in/delhi', type: 'city' },
-      { title: 'Gold Price in Bangalore', href: '/gold/price-in/bangalore', type: 'city' },
-    ],
-  },
-  silver: {
-    hub: {
-      title: 'Silver Investment Guide',
-      href: '/silver-investment-guide',
-      description: 'Complete guide to silver prices and investment strategies',
+    silver: {
+      hub: {
+        title: silverHub?.title ?? 'Silver Investment Guide',
+        href: silverHub?.href ?? '/silver-investment-guide',
+        description: silverHub?.description ?? 'Complete guide to silver prices and investment strategies',
+      },
+      spokes: [
+        ...COMPARISON_PAGES.filter((page) => page.metals?.includes('silver')).map((page) => ({
+          title: page.title,
+          href: page.href,
+          type: 'comparison' as const,
+        })),
+        ...BLOG_PAGES.filter((page) => page.metal === 'silver').slice(0, 1).map((page) => ({
+          title: page.title,
+          href: page.href,
+          type: 'blog' as const,
+        })),
+        ...PRIMARY_LINK_CITY_SLUGS.slice(0, 3).map((city) => ({
+          title: `Silver Price in ${formatCityName(city)}`,
+          href: `/silver/price-in/${city}`,
+          type: 'city' as const,
+        })),
+      ],
     },
-    spokes: [
-      { title: 'Silver Price in Mumbai', href: '/silver/price-in/mumbai', type: 'city' },
-      { title: 'Silver Price in Delhi', href: '/silver/price-in/delhi', type: 'city' },
-      { title: 'Silver Price in Bangalore', href: '/silver/price-in/bangalore', type: 'city' },
-      { title: 'Gold vs Silver Investment', href: '/gold-vs-silver-investment', type: 'comparison' },
-    ],
-  },
-  investment: {
-    hub: {
-      title: 'Investment Guide',
-      href: '/investment-guide',
-      description: 'Complete guide to metal investments and strategies',
+    investment: {
+      hub: {
+        title: investmentHub?.title ?? 'Investment Guide',
+        href: investmentHub?.href ?? '/investment-guide',
+        description: investmentHub?.description ?? 'Complete guide to metal investments and strategies',
+      },
+      spokes: [
+        ...COMPARISON_PAGES.map((page) => ({
+          title: page.title,
+          href: page.href,
+          type: 'comparison' as const,
+        })),
+        ...TREND_PAGES.map((page) => ({
+          title: page.title,
+          href: page.href,
+          type: 'trend' as const,
+        })),
+        ...GUIDE_PAGES.filter((page) => page.slug !== 'investment-guide').slice(0, 2).map((page) => ({
+          title: page.title,
+          href: page.href,
+          type: 'guide' as const,
+        })),
+      ],
     },
-    spokes: [
-      { title: 'Gold vs Silver Investment', href: '/gold-vs-silver-investment', type: 'comparison' },
-      { title: 'Best Cities to Buy Gold', href: '/best-cities-to-buy-gold', type: 'guide' },
-      { title: 'Gold Price Trends 2025', href: '/gold-price-trends-2025', type: 'trend' },
-      { title: '24K vs 22K vs 18K Gold', href: '/24k-vs-22k-vs-18k-gold', type: 'comparison' },
-    ],
-  },
-};
+  };
+}
 
 const getIconForType = (type: string) => {
   switch (type) {
@@ -91,6 +133,7 @@ export default function TopicClusterNav({
   cluster, 
   className = '' 
 }: TopicClusterNavProps) {
+  const topicClusters = buildTopicClusters();
   const clustersToShow = cluster === 'all' 
     ? Object.values(topicClusters)
     : topicClusters[cluster] 

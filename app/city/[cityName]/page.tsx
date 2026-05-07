@@ -5,6 +5,7 @@
  */
 
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import CombinedGoldPriceSection from '@/components/CombinedGoldPriceSection';
@@ -15,7 +16,6 @@ import PalladiumPriceSection from '@/components/PalladiumPriceSection';
 import GoldWeightPrices from '@/components/GoldWeightPrices';
 import ChartSection from '@/components/ChartSection';
 import { formatCityName } from '@/utils/conversions';
-import { getCityLatitude, getCityLongitude } from '@/utils/cityCoordinates';
 import { getSiteUrl } from '@/utils/siteUrl';
 import Link from 'next/link';
 import { TrendingUp, MapPin, Store, MapPin as LocationIcon } from 'lucide-react';
@@ -25,6 +25,7 @@ import FAQSchema from '@/components/FAQSchema';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import LastUpdated from '@/components/LastUpdated';
 import YouMayAlsoLike from '@/components/YouMayAlsoLike';
+import { isSupportedCity } from '@/utils/routeConstants';
 
 interface CityPageProps {
   params: Promise<{ cityName: string }>;
@@ -146,6 +147,41 @@ function getCityPageChecklist(city: string): string[] {
   ];
 }
 
+function getPriorityMetalCards(city: string) {
+  return [
+    {
+      metal: 'gold',
+      href: `/gold/price-in/${city}`,
+      title: 'Gold',
+      summary: 'Usually the most decision-sensitive page for jewellery buyers, savers, and anyone comparing 24K, 22K, or 18K quotes.',
+    },
+    {
+      metal: 'silver',
+      href: `/silver/price-in/${city}`,
+      title: 'Silver',
+      summary: 'Useful when you are comparing bullion, utensils, or lower-ticket precious-metal buying with a different unit structure than gold.',
+    },
+    {
+      metal: 'copper',
+      href: `/copper/price-in/${city}`,
+      title: 'Copper',
+      summary: 'Best treated as a commodity and business-context page rather than a retail jewellery decision page.',
+    },
+    {
+      metal: 'platinum',
+      href: `/platinum/price-in/${city}`,
+      title: 'Platinum',
+      summary: 'Helpful for premium jewellery comparison and niche buyers who want context beyond the gold benchmark.',
+    },
+    {
+      metal: 'palladium',
+      href: `/palladium/price-in/${city}`,
+      title: 'Palladium',
+      summary: 'Primarily a context page for industrial and precious-metals followers because mainstream retail availability is thinner.',
+    },
+  ];
+}
+
 // Generate static params for top cities
 export async function generateStaticParams() {
   return TOP_CITIES.map((city) => ({
@@ -160,7 +196,7 @@ export const revalidate = 600; // Revalidate every 10 minutes
 // Generate metadata for SEO
 export async function generateMetadata({ params }: CityPageProps): Promise<Metadata> {
   const { cityName } = await params;
-  if (!cityName || typeof cityName !== 'string') {
+  if (!cityName || typeof cityName !== 'string' || !isSupportedCity(cityName)) {
     return {
       title: 'City Metal Prices | MetalView India',
       description: 'Get live metal prices for cities in India',
@@ -213,25 +249,8 @@ export async function generateMetadata({ params }: CityPageProps): Promise<Metad
 export default async function CityOverviewPage({ params }: CityPageProps) {
   const { cityName } = await params;
 
-  if (!cityName || typeof cityName !== 'string') {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-4">
-            Invalid City
-          </h2>
-          <p className="text-slate-600 dark:text-slate-400 mb-6">
-            The requested city page could not be found.
-          </p>
-          <Link
-            href="/"
-            className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors inline-block"
-          >
-            Go back home
-          </Link>
-        </div>
-      </div>
-    );
+  if (!cityName || typeof cityName !== 'string' || !isSupportedCity(cityName)) {
+    notFound();
   }
 
   const city = formatCityName(cityName);
@@ -255,39 +274,7 @@ export default async function CityOverviewPage({ params }: CityPageProps) {
   const cityInsight = CITY_INSIGHTS[cityName.toLowerCase()] || `Metal prices in ${city} are influenced by local market demand, transportation costs, and regional economic factors.`;
 
   const baseUrl = getSiteUrl();
-  const cityLatitude = getCityLatitude(cityName);
-  const cityLongitude = getCityLongitude(cityName);
-
-  // Generate LocalBusiness schema for city pages
-  const localBusinessSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
-    name: `MetalView - ${city} Metal Prices`,
-    description: `Live metal prices in ${city}, India. Real-time pricing for Gold, Silver, Copper, Platinum, and Palladium.`,
-    url: `${baseUrl}/city/${cityName}`,
-    address: {
-      '@type': 'PostalAddress',
-      addressLocality: city,
-      addressCountry: 'IN',
-    },
-    ...(cityLatitude && cityLongitude
-      ? {
-          geo: {
-            '@type': 'GeoCoordinates',
-            latitude: cityLatitude,
-            longitude: cityLongitude,
-          },
-        }
-      : {}),
-    areaServed: {
-      '@type': 'City',
-      name: city,
-      containedIn: {
-        '@type': 'Country',
-        name: 'India',
-      },
-    },
-  };
+  const priorityMetalCards = getPriorityMetalCards(cityName.toLowerCase());
 
   // Generate structured data
   const structuredData = {
@@ -329,11 +316,6 @@ export default async function CityOverviewPage({ params }: CityPageProps) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-      />
-      {/* LocalBusiness structured data for local SEO */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
       />
       <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950">
         <Header />
@@ -532,6 +514,28 @@ export default async function CityOverviewPage({ params }: CityPageProps) {
             </div>
           </div>
 
+          <div className="mb-8 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 p-6 sm:p-8 card-shadow">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-4">
+              Which Metal Pages Matter Most in {city}
+            </h2>
+            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+              {priorityMetalCards.map((item) => (
+                <Link
+                  key={item.metal}
+                  href={item.href}
+                  className="rounded-xl border border-slate-200 dark:border-slate-700 p-4 bg-slate-50 dark:bg-slate-800/40 hover:border-amber-300 dark:hover:border-amber-700 transition-colors"
+                >
+                  <h3 className="text-base font-semibold text-slate-900 dark:text-slate-50 mb-2">
+                    {item.title} in {city}
+                  </h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                    {item.summary}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </div>
+
           {/* City Market Insights */}
           <div className="mb-8 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 p-6 sm:p-8 card-shadow">
             <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-4">
@@ -559,6 +563,58 @@ export default async function CityOverviewPage({ params }: CityPageProps) {
               <p className="text-slate-600 dark:text-slate-400">
                 Prices on this page are for reference only. Actual dealer rates may include making charges, taxes, and premiums. Always confirm with your jeweller or broker before making a purchase.
               </p>
+            </div>
+          </div>
+
+          <div className="mb-8 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 p-6 sm:p-8 card-shadow">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-4">
+              How MetalView Sources Prices for {city}
+            </h2>
+            <div className="grid gap-4 md:grid-cols-3">
+              <div>
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Source mix</h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                  Gold and silver benchmarks come from Angel One city feeds, while copper, platinum, and palladium are drawn from trusted commodity data sources used for market tracking.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Update visibility</h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                  We refresh benchmark data regularly and show a visible last-updated timestamp so readers can judge freshness before using any number as a benchmark.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">How to use it</h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                  This city page is a comparison hub, not a dealer quotation engine. Always compare the benchmark with the final seller invoice. See our <Link href="/about" className="text-amber-600 dark:text-amber-400 hover:underline">About</Link> page for methodology.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="mb-8 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 p-6 sm:p-8 card-shadow">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-4">
+              Editorial Standards Behind This {city} Page
+            </h2>
+            <div className="grid gap-4 md:grid-cols-3">
+              <div className="rounded-xl border border-slate-200 dark:border-slate-700 p-4 bg-slate-50 dark:bg-slate-800/40">
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-2">Why we publish it</h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                  This city overview exists to help readers compare local benchmarks in one place before opening deeper metal-specific pages and editorial guides.
+                </p>
+              </div>
+              <div className="rounded-xl border border-slate-200 dark:border-slate-700 p-4 bg-slate-50 dark:bg-slate-800/40">
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-2">How it is supported</h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                  We supplement live rates with market context, checklists, FAQs, and follow-up guide pages so the page helps readers make sense of the number instead of only repeating it.
+                </p>
+              </div>
+              <div className="rounded-xl border border-slate-200 dark:border-slate-700 p-4 bg-slate-50 dark:bg-slate-800/40">
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-2">Where to verify</h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                  See our <Link href="/about" className="text-amber-600 dark:text-amber-400 hover:underline">About</Link>, <Link href="/editorial-policy" className="text-amber-600 dark:text-amber-400 hover:underline">Editorial Policy</Link>, and <Link href="/corrections-policy" className="text-amber-600 dark:text-amber-400 hover:underline">Corrections Policy</Link> pages for sourcing and review details.
+                </p>
+              </div>
             </div>
           </div>
 
@@ -678,6 +734,14 @@ export default async function CityOverviewPage({ params }: CityPageProps) {
                 </Link>
               ))}
             </div>
+            <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700">
+              <Link
+                href="/cities"
+                className="text-sm font-medium text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors"
+              >
+                Browse the full city index →
+              </Link>
+            </div>
           </section>
 
           {/* Related Metals Section */}
@@ -718,6 +782,26 @@ export default async function CityOverviewPage({ params }: CityPageProps) {
                 );
               })}
           </div>
+          </section>
+
+          <section className="mb-8 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 p-6 sm:p-8 card-shadow">
+            <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-4">
+              Continue with Related Hubs
+            </h2>
+            <div className="grid gap-3 md:grid-cols-3">
+              <Link href="/" className="rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:border-amber-300 dark:hover:border-amber-700 transition-colors">
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Homepage</h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400">Jump back to the main live-price hub for all metals and featured pathways.</p>
+              </Link>
+              <Link href="/cities" className="rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:border-amber-300 dark:hover:border-amber-700 transition-colors">
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Cities index</h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400">Compare other city hubs when you want broader geographic context.</p>
+              </Link>
+              <Link href="/guides" className="rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:border-amber-300 dark:hover:border-amber-700 transition-colors">
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Guides &amp; resources</h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400">Read the explainers that help interpret benchmark rates and buyer trade-offs.</p>
+              </Link>
+            </div>
           </section>
 
           {/* You May Also Like Section */}

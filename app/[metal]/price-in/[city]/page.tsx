@@ -5,6 +5,7 @@
  */
 
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SilverPriceSection from '@/components/SilverPriceSection';
@@ -26,6 +27,8 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import LastUpdated from '@/components/LastUpdated';
 import YouMayAlsoLike from '@/components/YouMayAlsoLike';
 import { GoldPriceCityBlock } from './GoldPriceCityBlock';
+import { isSupportedCity, isSupportedMetal } from '@/utils/routeConstants';
+import { SITEMAP_INDEXED_CITY_METALS } from '@/utils/sitemapConstants';
 
 interface CityPageProps {
   params: Promise<{
@@ -242,6 +245,42 @@ function mergeFaqListsUniqueByQuestion(
   return out;
 }
 
+function buildTrendNarrative(
+  history: Array<{ date: string; price: number }>,
+  metalName: string,
+  cityName: string
+): string {
+  if (!history || history.length < 2) {
+    return `Historical context for ${metalName.toLowerCase()} in ${cityName} is limited right now, so treat the live benchmark as a reference point and verify the final local quote directly.`;
+  }
+
+  const latest = history[history.length - 1];
+  const weekReference = history[Math.max(0, history.length - 7)];
+  const start = history[0];
+
+  if (!latest || !weekReference || !start) {
+    return `Historical context for ${metalName.toLowerCase()} in ${cityName} is limited right now, so treat the live benchmark as a reference point and verify the final local quote directly.`;
+  }
+
+  const weekDirection = latest.price >= weekReference.price ? 'above' : 'below';
+  const longDirection = latest.price >= start.price ? 'above' : 'below';
+
+  return `The latest recorded ${metalName.toLowerCase()} price in ${cityName} sits ${weekDirection} the recent 7-day reference and ${longDirection} the oldest visible point in this chart. That helps you judge whether today&apos;s move looks like short-term noise or part of a broader shift.`;
+}
+
+function getSourceSummary(metal: MetalType): string {
+  switch (metal) {
+    case 'gold':
+    case 'silver':
+      return 'Angel One city-level benchmark feeds';
+    case 'copper':
+      return 'established financial market data feeds used for commodity tracking';
+    case 'platinum':
+    case 'palladium':
+      return 'aggregated commodity pricing feeds from our metal data providers';
+  }
+}
+
 // Generate static params for top cities and metals
 // Pages will be generated on-demand (ISR) to avoid build-time fetch timeouts
 export async function generateStaticParams() {
@@ -284,7 +323,14 @@ function getMetalPriceForMetadata(data: any, metal: MetalType): { price: number 
 export async function generateMetadata({ params }: CityPageProps): Promise<Metadata> {
   const resolvedParams = await params;
   const { metal, city } = resolvedParams;
-  if (!metal || !city || typeof metal !== 'string' || typeof city !== 'string') {
+  if (
+    !metal ||
+    !city ||
+    typeof metal !== 'string' ||
+    typeof city !== 'string' ||
+    !isSupportedMetal(metal) ||
+    !isSupportedCity(city)
+  ) {
     return {
       title: 'Metal Price | MetalView India',
       description: 'Get live metal prices in India',
@@ -381,7 +427,7 @@ export async function generateMetadata({ params }: CityPageProps): Promise<Metad
     console.error('Error fetching price for metadata:', error);
   }
 
-  return generateMetalMetadata({
+  const metadata = generateMetalMetadata({
     title: `${metalName} Price Today in ${cityName} – Live ${metalName} Rate`,
     description: `Get live ${metal} prices in ${cityName}, India. Check today's ${metal} rate, historical trends, and market insights. Real-time updates from trusted sources.`,
     city: city,
@@ -390,58 +436,41 @@ export async function generateMetadata({ params }: CityPageProps): Promise<Metad
     unit: priceData.unit || undefined,
     priceRange: priceRange,
   });
+
+  if (!SITEMAP_INDEXED_CITY_METALS.includes(metal as (typeof SITEMAP_INDEXED_CITY_METALS)[number])) {
+    return {
+      ...metadata,
+      robots: {
+        index: false,
+        follow: true,
+        googleBot: {
+          index: false,
+          follow: true,
+        },
+      },
+    };
+  }
+
+  return metadata;
 }
 
 export default async function MetalPriceCityPage({ params }: CityPageProps) {
   const resolvedParams = await params;
   const { metal, city } = resolvedParams;
-  
-  // Validate params
-  if (!metal || !city || typeof metal !== 'string' || typeof city !== 'string') {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-4">
-            Invalid Page
-          </h2>
-          <p className="text-slate-600 dark:text-slate-400 mb-6">
-            The requested page could not be found.
-          </p>
-          <Link
-            href="/"
-            className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors inline-block"
-          >
-            Go back home
-          </Link>
-        </div>
-      </div>
-    );
+
+  if (
+    !metal ||
+    !city ||
+    typeof metal !== 'string' ||
+    typeof city !== 'string' ||
+    !isSupportedMetal(metal) ||
+    !isSupportedCity(city)
+  ) {
+    notFound();
   }
-  
+
   const cityName = formatCityName(city);
   const metalType = metal as MetalType;
-  
-  // Validate metal type
-  if (!['gold', 'silver', 'copper', 'platinum', 'palladium'].includes(metalType)) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-4">
-            Invalid Metal Type
-          </h2>
-          <p className="text-slate-600 dark:text-slate-400 mb-6">
-            The metal type "{metal}" is not supported.
-          </p>
-          <Link
-            href="/"
-            className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors inline-block"
-          >
-            Go back home
-          </Link>
-        </div>
-      </div>
-    );
-  }
 
   // Fetch data server-side
   let data = null;
@@ -497,6 +526,11 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
   const peopleAlsoAsk = getPeopleAlsoAskQuestions(metalType);
   const visibleFaqs = mergeFaqListsUniqueByQuestion(cityFAQs, peopleAlsoAsk);
   const schemaFaqs = [...cityFAQs, ...peopleAlsoAsk];
+  const trendNarrative = buildTrendNarrative(
+    priceHistoryData,
+    metal.charAt(0).toUpperCase() + metal.slice(1),
+    cityName
+  );
 
   return (
     <>
@@ -522,7 +556,7 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
               { label: 'Home', href: '/' },
               { 
                 label: `${metal.charAt(0).toUpperCase() + metal.slice(1)} Prices`, 
-                href: `/${metal}/price-in/${city}` 
+                href: `/${metal}` 
               },
               { 
                 label: `${cityName}`, 
@@ -643,6 +677,32 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
 
           <div className="mb-8 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 p-6 sm:p-8 card-shadow">
             <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-4">
+              Today&apos;s {metal.charAt(0).toUpperCase() + metal.slice(1)} Snapshot in {cityName}
+            </h2>
+            <div className="grid gap-4 md:grid-cols-3">
+              <div className="rounded-xl border border-slate-200 dark:border-slate-700 p-4 bg-slate-50 dark:bg-slate-800/40">
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-2">Benchmark use</h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                  Use the live {metal} rate in {cityName} as your negotiation benchmark, not as a guarantee of the exact final amount you will pay.
+                </p>
+              </div>
+              <div className="rounded-xl border border-slate-200 dark:border-slate-700 p-4 bg-slate-50 dark:bg-slate-800/40">
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-2">Trend context</h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                  {trendNarrative}
+                </p>
+              </div>
+              <div className="rounded-xl border border-slate-200 dark:border-slate-700 p-4 bg-slate-50 dark:bg-slate-800/40">
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-2">What to verify</h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                  Before acting on the benchmark, confirm purity, unit size, fabrication or making charges, GST, delivery terms, and stock availability with the actual seller.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="mb-8 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 p-6 sm:p-8 card-shadow">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-4">
               How to Use This {metal.charAt(0).toUpperCase() + metal.slice(1)} Page in {cityName}
             </h2>
             <div className="grid gap-6 lg:grid-cols-2">
@@ -707,6 +767,32 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
             </div>
           </div>
 
+          <div className="mb-8 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 p-6 sm:p-8 card-shadow">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-4">
+              How MetalView Sources {metal.charAt(0).toUpperCase() + metal.slice(1)} Prices for {cityName}
+            </h2>
+            <div className="grid gap-4 md:grid-cols-3">
+              <div>
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Source type</h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                  This page uses {getSourceSummary(metalType)} and formats that benchmark into a city-specific view with history, FAQs, and comparison links.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Refresh logic</h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                  We refresh these benchmark pages regularly and show the visible last-updated timestamp so you can decide whether the live rate is fresh enough for your use.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Reader caution</h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                  MetalView publishes indicative reference prices. For a purchase or supply decision, always compare the benchmark with the full seller quote. See our <Link href="/about" className="text-amber-600 dark:text-amber-400 hover:underline">About</Link> page for methodology.
+                </p>
+              </div>
+            </div>
+          </div>
+
           {/* You May Also Like Section */}
           <YouMayAlsoLike
             currentMetal={metalType}
@@ -766,12 +852,20 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
               ))}
             </div>
             <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700">
-              <Link
-                href={`/${metal}/price-in`}
-                className="text-sm font-medium text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors"
-              >
-                View all cities →
-              </Link>
+              <div className="flex flex-wrap gap-4 text-sm">
+                <Link
+                  href="/cities"
+                  className="font-medium text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors"
+                >
+                  Browse all cities →
+                </Link>
+                <Link
+                  href={`/city/${city}`}
+                  className="font-medium text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors"
+                >
+                  View the {cityName} city overview →
+                </Link>
+              </div>
             </div>
           </section>
 
@@ -814,6 +908,26 @@ export default async function MetalPriceCityPage({ params }: CityPageProps) {
                     </Link>
                   );
                 })}
+            </div>
+          </section>
+
+          <section className="mb-8 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 p-6 sm:p-8 card-shadow">
+            <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-4">
+              Continue Exploring This Topic
+            </h2>
+            <div className="grid gap-3 md:grid-cols-3">
+              <Link href={`/${metal}`} className="rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:border-amber-300 dark:hover:border-amber-700 transition-colors">
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">{metal.charAt(0).toUpperCase() + metal.slice(1)} India hub</h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400">Switch cities quickly and compare the broader India view for this metal.</p>
+              </Link>
+              <Link href="/cities" className="rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:border-amber-300 dark:hover:border-amber-700 transition-colors">
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">City index</h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400">Jump into other city hubs when you want a wider comparison set.</p>
+              </Link>
+              <Link href="/guides" className="rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:border-amber-300 dark:hover:border-amber-700 transition-colors">
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Guides &amp; resources</h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400">Read the editorial explainers that support price interpretation and buying decisions.</p>
+              </Link>
             </div>
           </section>
 

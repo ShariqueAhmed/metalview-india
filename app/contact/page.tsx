@@ -68,6 +68,24 @@ export default function ContactPage() {
             We aim to respond to all inquiries within 24-48 hours during business days. For the fastest response, please ensure your email subject clearly states the nature of your inquiry.
           </p>
         </div>
+
+        <div className="mt-6 p-6 sm:p-8 content-card">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-slate-50 mb-3 text-center">Editorial, Methodology &amp; Corrections</h2>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <a href="/editorial-policy" className="rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:border-amber-300 dark:hover:border-amber-700 transition-colors text-center">
+              <span className="block text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Editorial Policy</span>
+              <span className="text-sm text-slate-600 dark:text-slate-400">How we review and update published content.</span>
+            </a>
+            <a href="/methodology" className="rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:border-amber-300 dark:hover:border-amber-700 transition-colors text-center">
+              <span className="block text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Methodology</span>
+              <span className="text-sm text-slate-600 dark:text-slate-400">How our benchmark rates are sourced and formatted.</span>
+            </a>
+            <a href="/corrections-policy" className="rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:border-amber-300 dark:hover:border-amber-700 transition-colors text-center">
+              <span className="block text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Corrections Policy</span>
+              <span className="text-sm text-slate-600 dark:text-slate-400">How to report an issue or request a review.</span>
+            </a>
+          </div>
+        </div>
       </main>
       <Footer />
     </div>

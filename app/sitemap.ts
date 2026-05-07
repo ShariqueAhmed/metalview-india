@@ -11,7 +11,12 @@
 import { MetadataRoute } from 'next';
 import { BLOG_SITEMAP_ENTRIES } from '@/utils/blogSitemapData';
 import { getSiteUrl } from '@/utils/siteUrl';
-import { SITEMAP_GUIDE_SLUGS, SITEMAP_METALS, SITEMAP_TOP_CITIES } from '@/utils/sitemapConstants';
+import {
+  SITEMAP_GUIDE_SLUGS,
+  SITEMAP_INDEXED_CITY_METALS,
+  SITEMAP_METALS,
+  SITEMAP_TOP_CITIES,
+} from '@/utils/sitemapConstants';
 
 const BASE_URL = getSiteUrl();
 
@@ -78,6 +83,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: now,
     changeFrequency: 'monthly',
     priority: 0.8,
+  });
+
+  entries.push({
+    url: `${BASE_URL}/editorial-policy`,
+    lastModified: now,
+    changeFrequency: 'monthly',
+    priority: 0.72,
+  });
+
+  entries.push({
+    url: `${BASE_URL}/methodology`,
+    lastModified: now,
+    changeFrequency: 'monthly',
+    priority: 0.72,
+  });
+
+  entries.push({
+    url: `${BASE_URL}/corrections-policy`,
+    lastModified: now,
+    changeFrequency: 'monthly',
+    priority: 0.68,
   });
 
   entries.push({
@@ -150,7 +176,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   for (const city of TOP_CITIES) {
     const lastMod = cityDates.get(city) ?? now;
-    for (const metal of METALS) {
+    for (const metal of SITEMAP_INDEXED_CITY_METALS) {
       entries.push({
         url: `${BASE_URL}/${metal}/price-in/${city}`,
         lastModified: lastMod,

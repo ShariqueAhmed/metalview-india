@@ -1,272 +1,206 @@
 /**
- * Smart Internal Linking Algorithm
- * Scores and ranks related pages based on relevance for better link distribution
+ * Data-driven internal linking helpers.
+ * Pulls from real routes/content metadata instead of sample placeholder pages.
  */
 
-import { formatCityName } from './conversions';
+import { formatCityName } from '@/utils/conversions';
+import {
+  BLOG_PAGES,
+  CITY_HUB_PAGES,
+  COMPARISON_PAGES,
+  CONTENT_CATALOG,
+  GUIDE_PAGES,
+  METAL_HUB_PAGES,
+  PRIMARY_LINK_CITY_SLUGS,
+  TREND_PAGES,
+  type CatalogPage,
+} from '@/utils/contentCatalog';
+import { SUPPORTED_METALS, type SupportedMetal } from '@/utils/routeConstants';
 
 export interface RelatedPage {
   title: string;
   href: string;
   description?: string;
   score: number;
-  type: 'metal-city' | 'city' | 'guide' | 'comparison' | 'trend' | 'blog';
+  type: 'metal-hub' | 'metal-city' | 'city' | 'guide' | 'comparison' | 'trend' | 'blog';
 }
 
 export interface CurrentPage {
   metal?: string;
   city?: string;
-  type: 'home' | 'city' | 'metal-city' | 'blog' | 'guide' | 'comparison' | 'trend';
-  slug?: string; // For blog posts
+  type: 'home' | 'metal-hub' | 'city' | 'metal-city' | 'blog' | 'guide' | 'comparison' | 'trend';
+  slug?: string;
 }
 
-// Top cities for recommendations
-const TOP_CITIES = [
-  'mumbai', 'delhi', 'bangalore', 'kolkata', 'chennai',
-  'hyderabad', 'pune', 'ahmedabad', 'jaipur', 'surat',
-  'lucknow', 'kanpur', 'nagpur', 'indore', 'thane',
-];
+function isSupportedMetal(value: string | undefined): value is SupportedMetal {
+  return value != null && SUPPORTED_METALS.includes(value as SupportedMetal);
+}
 
-// All metals
-const METALS = ['gold', 'silver', 'copper', 'platinum', 'palladium'];
+function pushUnique(target: RelatedPage[], page: RelatedPage) {
+  if (target.some((entry) => entry.href === page.href)) {
+    return;
+  }
 
-// Guide pages with metadata
-const GUIDE_PAGES: Array<{ slug: string; title: string; href: string; description: string; metal?: string }> = [
-  { slug: 'gold-price-guide', title: 'Gold Price Guide', href: '/gold-price-guide', description: 'Complete guide to gold prices, purity, and investment', metal: 'gold' },
-  { slug: 'silver-investment-guide', title: 'Silver Investment Guide', href: '/silver-investment-guide', description: 'Complete guide to silver prices and investment strategies', metal: 'silver' },
-  { slug: 'investment-guide', title: 'Investment Guide', href: '/investment-guide', description: 'Complete guide to metal investments and strategies' },
-  { slug: 'best-cities-to-buy-gold', title: 'Best Cities to Buy Gold', href: '/best-cities-to-buy-gold', description: 'Compare prices across major Indian cities', metal: 'gold' },
-  { slug: 'copper-price-india-guide-industrial-demand', title: 'Copper Price in India Guide', href: '/blog/copper-price-india-guide-industrial-demand', description: 'How copper prices work in India and why they matter beyond the headline', metal: 'copper' },
-  { slug: 'platinum-palladium-prices-india-guide', title: 'Platinum and Palladium Guide', href: '/blog/platinum-palladium-prices-india-guide', description: 'How platinum and palladium prices are quoted in India', metal: 'platinum' },
-  { slug: 'platinum-palladium-prices-india-guide', title: 'Palladium and Platinum Guide', href: '/blog/platinum-palladium-prices-india-guide', description: 'How palladium and platinum prices are quoted in India', metal: 'palladium' },
-];
+  target.push(page);
+}
 
-// Comparison pages
-const COMPARISON_PAGES: Array<{ slug: string; title: string; href: string; description: string; metals?: string[] }> = [
-  { slug: 'gold-vs-silver-investment', title: 'Gold vs Silver Investment', href: '/gold-vs-silver-investment', description: 'Compare gold and silver as investment options', metals: ['gold', 'silver'] },
-  { slug: '24k-vs-22k-vs-18k-gold', title: '24K vs 22K vs 18K Gold', href: '/24k-vs-22k-vs-18k-gold', description: 'Compare gold purity levels and find which is best', metals: ['gold'] },
-];
+function addCatalogPages(
+  target: RelatedPage[],
+  pages: CatalogPage[],
+  score: number,
+  opts: { excludeHref?: string; excludeSlug?: string; limit?: number } = {}
+) {
+  const filtered = pages
+    .filter((page) => page.href !== opts.excludeHref)
+    .filter((page) => page.slug !== opts.excludeSlug)
+    .slice(0, opts.limit ?? pages.length);
 
-// Trend pages
-const TREND_PAGES: Array<{ slug: string; title: string; href: string; description: string; metal?: string }> = [
-  { slug: 'gold-price-trends-2025', title: 'Gold Price Trends 2025', href: '/gold-price-trends-2025', description: 'Scenario-based context for understanding gold market trends', metal: 'gold' },
-];
+  filtered.forEach((page) =>
+    pushUnique(target, {
+      title: page.title,
+      href: page.href,
+      description: page.description,
+      score,
+      type: page.type,
+    })
+  );
+}
 
-// Blog posts (sample - can be expanded)
-const BLOG_POSTS: Array<{ slug: string; title: string; href: string; description: string; metal?: string }> = [
-  { slug: 'understanding-gold-purity-24k-vs-22k', title: 'Understanding Gold Purity: 24K vs 22K', href: '/blog/understanding-gold-purity-24k-vs-22k', description: 'Learn about gold purity levels and their differences', metal: 'gold' },
-  { slug: 'gold-investment-strategies', title: 'Gold Investment Strategies', href: '/blog/gold-investment-strategies', description: 'Expert strategies for investing in gold', metal: 'gold' },
-  { slug: 'factors-affecting-gold-prices', title: 'Factors Affecting Gold Prices', href: '/blog/factors-affecting-gold-prices', description: 'Understand what influences gold prices', metal: 'gold' },
-  { slug: 'best-time-to-buy-gold', title: 'Best Time to Buy Gold', href: '/blog/best-time-to-buy-gold', description: 'When is the optimal time to invest in gold?', metal: 'gold' },
-];
+function getSameMetalBlogPages(metal: SupportedMetal, excludeSlug?: string): CatalogPage[] {
+  return BLOG_PAGES.filter((page) => page.metal === metal && page.slug !== excludeSlug);
+}
 
-/**
- * Get related pages with smart scoring algorithm
- */
+function getSameMetalEditorialPages(metal: SupportedMetal): CatalogPage[] {
+  return CONTENT_CATALOG.filter((page) => {
+    if (page.type === 'blog' || page.type === 'city' || page.type === 'metal-hub') {
+      return false;
+    }
+
+    return page.metal === metal || page.metals?.includes(metal);
+  });
+}
+
 export function getRelatedPages(currentPage: CurrentPage): RelatedPage[] {
   const related: RelatedPage[] = [];
-  const { metal, city, type } = currentPage;
+  const normalizedMetal = isSupportedMetal(currentPage.metal)
+    ? currentPage.metal
+    : undefined;
+  const normalizedCity = currentPage.city?.toLowerCase();
 
-  // Score pages based on relevance
-  // - Same metal, different city: score 0.9
-  // - Same city, different metal: score 0.8
-  // - Related guides: score 0.7
-  // - Related comparisons: score 0.7
-  // - Related trends: score 0.7
-  // - Related blog posts: score 0.6
-  // - Other guides: score 0.5
-  // - Other cities (same metal): score 0.4
-
-  if (type === 'metal-city' && metal && city) {
-    // Same metal, different cities (score 0.9)
-    TOP_CITIES.filter((c) => c !== city)
+  if (currentPage.type === 'metal-city' && normalizedMetal && normalizedCity) {
+    PRIMARY_LINK_CITY_SLUGS.filter((city) => city !== normalizedCity)
       .slice(0, 5)
-      .forEach((otherCity) => {
-        related.push({
-          title: `${metal.charAt(0).toUpperCase() + metal.slice(1)} Price in ${formatCityName(otherCity)}`,
-          href: `/${metal}/price-in/${otherCity}`,
-          description: `Check ${metal} prices in ${formatCityName(otherCity)}`,
+      .forEach((city) => {
+        pushUnique(related, {
+          title: `${normalizedMetal.charAt(0).toUpperCase() + normalizedMetal.slice(1)} Price in ${formatCityName(city)}`,
+          href: `/${normalizedMetal}/price-in/${city}`,
+          description: `Compare ${normalizedMetal} prices in ${formatCityName(city)} with ${formatCityName(normalizedCity)}.`,
+          score: 0.95,
+          type: 'metal-city',
+        });
+      });
+
+    SUPPORTED_METALS.filter((metal) => metal !== normalizedMetal)
+      .slice(0, 4)
+      .forEach((metal) => {
+        pushUnique(related, {
+          title: `${metal.charAt(0).toUpperCase() + metal.slice(1)} Price in ${formatCityName(normalizedCity)}`,
+          href: `/${metal}/price-in/${normalizedCity}`,
+          description: `See how ${metal} compares with ${normalizedMetal} in ${formatCityName(normalizedCity)}.`,
           score: 0.9,
           type: 'metal-city',
         });
       });
 
-    // Same city, different metals (score 0.8)
-    METALS.filter((m) => m !== metal)
-      .slice(0, 3)
-      .forEach((otherMetal) => {
-        related.push({
-          title: `${otherMetal.charAt(0).toUpperCase() + otherMetal.slice(1)} Price in ${formatCityName(city)}`,
-          href: `/${otherMetal}/price-in/${city}`,
-          description: `Check ${otherMetal} prices in ${formatCityName(city)}`,
-          score: 0.8,
-          type: 'metal-city',
-        });
-      });
+    addCatalogPages(related, getSameMetalEditorialPages(normalizedMetal), 0.8, { limit: 4 });
+    addCatalogPages(related, getSameMetalBlogPages(normalizedMetal), 0.72, {
+      excludeSlug: currentPage.slug,
+      limit: 3,
+    });
 
-    // Related guides for this metal (score 0.7)
-    GUIDE_PAGES.filter((guide) => guide.metal === metal)
-      .forEach((guide) => {
-        related.push({
-          title: guide.title,
-          href: guide.href,
-          description: guide.description,
-          score: 0.7,
-          type: 'guide',
-        });
-      });
-
-    // Related comparisons (score 0.7)
-    COMPARISON_PAGES.filter((comp) => comp.metals?.includes(metal))
-      .forEach((comp) => {
-        related.push({
-          title: comp.title,
-          href: comp.href,
-          description: comp.description,
-          score: 0.7,
-          type: 'comparison',
-        });
-      });
-
-    // Related trends (score 0.7)
-    TREND_PAGES.filter((trend) => trend.metal === metal)
-      .forEach((trend) => {
-        related.push({
-          title: trend.title,
-          href: trend.href,
-          description: trend.description,
-          score: 0.7,
-          type: 'trend',
-        });
-      });
-
-    // Related blog posts (score 0.6)
-    BLOG_POSTS.filter((post) => post.metal === metal)
-      .slice(0, 2)
-      .forEach((post) => {
-        related.push({
-          title: post.title,
-          href: post.href,
-          description: post.description,
-          score: 0.6,
-          type: 'blog',
-        });
-      });
-  } else if (type === 'city' && city) {
-    // Different metals in same city (score 0.8)
-    METALS.slice(0, 5)
-      .forEach((metalType) => {
-        related.push({
-          title: `${metalType.charAt(0).toUpperCase() + metalType.slice(1)} Price in ${formatCityName(city)}`,
-          href: `/${metalType}/price-in/${city}`,
-          description: `Check ${metalType} prices in ${formatCityName(city)}`,
-          score: 0.8,
-          type: 'metal-city',
-        });
-      });
-
-    // Related guides (score 0.7)
-    GUIDE_PAGES.slice(0, 3)
-      .forEach((guide) => {
-        related.push({
-          title: guide.title,
-          href: guide.href,
-          description: guide.description,
-          score: 0.7,
-          type: 'guide',
-        });
-      });
-  } else if (type === 'guide' || type === 'comparison' || type === 'trend') {
-    // Related guides/comparisons/trends (score 0.7)
-    GUIDE_PAGES.slice(0, 3)
-      .forEach((guide) => {
-        related.push({
-          title: guide.title,
-          href: guide.href,
-          description: guide.description,
-          score: 0.7,
-          type: 'guide',
-        });
-      });
-
-    COMPARISON_PAGES.forEach((comp) => {
-      related.push({
-        title: comp.title,
-        href: comp.href,
-        description: comp.description,
-        score: 0.7,
-        type: 'comparison',
+    pushUnique(related, {
+      title: `Metal Prices in ${formatCityName(normalizedCity)}`,
+      href: `/city/${normalizedCity}`,
+      description: `City-wide overview for all metal prices in ${formatCityName(normalizedCity)}.`,
+      score: 0.82,
+      type: 'city',
+    });
+  } else if (currentPage.type === 'metal-hub' && normalizedMetal) {
+    PRIMARY_LINK_CITY_SLUGS.slice(0, 6).forEach((city) => {
+      pushUnique(related, {
+        title: `${normalizedMetal.charAt(0).toUpperCase() + normalizedMetal.slice(1)} Price in ${formatCityName(city)}`,
+        href: `/${normalizedMetal}/price-in/${city}`,
+        description: `City-specific ${normalizedMetal} price page for ${formatCityName(city)}.`,
+        score: 0.92,
+        type: 'metal-city',
       });
     });
 
-    TREND_PAGES.forEach((trend) => {
-      related.push({
-        title: trend.title,
-        href: trend.href,
-        description: trend.description,
-        score: 0.7,
-        type: 'trend',
+    addCatalogPages(related, getSameMetalEditorialPages(normalizedMetal), 0.82, { limit: 5 });
+    addCatalogPages(related, getSameMetalBlogPages(normalizedMetal), 0.74, { limit: 3 });
+    addCatalogPages(related, CITY_HUB_PAGES.slice(0, 2), 0.66);
+  } else if (currentPage.type === 'city' && normalizedCity) {
+    SUPPORTED_METALS.forEach((metal) => {
+      pushUnique(related, {
+        title: `${metal.charAt(0).toUpperCase() + metal.slice(1)} Price in ${formatCityName(normalizedCity)}`,
+        href: `/${metal}/price-in/${normalizedCity}`,
+        description: `Metal-specific ${metal} rates for ${formatCityName(normalizedCity)}.`,
+        score: 0.9,
+        type: 'metal-city',
+      });
+    });
+
+    addCatalogPages(
+      related,
+      BLOG_PAGES.filter((page) => page.city === normalizedCity),
+      0.78,
+      { excludeSlug: currentPage.slug, limit: 2 }
+    );
+    addCatalogPages(related, GUIDE_PAGES, 0.7, { limit: 3 });
+  } else if (
+    (currentPage.type === 'guide' || currentPage.type === 'comparison' || currentPage.type === 'trend' || currentPage.type === 'blog') &&
+    normalizedMetal
+  ) {
+    addCatalogPages(related, getSameMetalEditorialPages(normalizedMetal), 0.83, {
+      excludeHref: CONTENT_CATALOG.find((page) => page.slug === currentPage.slug)?.href,
+      excludeSlug: currentPage.slug,
+      limit: 5,
+    });
+    addCatalogPages(related, getSameMetalBlogPages(normalizedMetal), 0.72, {
+      excludeSlug: currentPage.slug,
+      limit: 3,
+    });
+    addCatalogPages(related, METAL_HUB_PAGES.filter((page) => page.metal === normalizedMetal), 0.84, {
+      limit: 1,
+    });
+    PRIMARY_LINK_CITY_SLUGS.slice(0, 3).forEach((city) => {
+      pushUnique(related, {
+        title: `${normalizedMetal.charAt(0).toUpperCase() + normalizedMetal.slice(1)} Price in ${formatCityName(city)}`,
+        href: `/${normalizedMetal}/price-in/${city}`,
+        description: `City-specific ${normalizedMetal} benchmark page for ${formatCityName(city)}.`,
+        score: 0.68,
+        type: 'metal-city',
       });
     });
   } else {
-    // Homepage: mix of popular content
-    GUIDE_PAGES.slice(0, 2)
-      .forEach((guide) => {
-        related.push({
-          title: guide.title,
-          href: guide.href,
-          description: guide.description,
-          score: 0.7,
-          type: 'guide',
-        });
-      });
-
-    COMPARISON_PAGES.slice(0, 1)
-      .forEach((comp) => {
-        related.push({
-          title: comp.title,
-          href: comp.href,
-          description: comp.description,
-          score: 0.7,
-          type: 'comparison',
-        });
-      });
-
-    TREND_PAGES.slice(0, 1)
-      .forEach((trend) => {
-        related.push({
-          title: trend.title,
-          href: trend.href,
-          description: trend.description,
-          score: 0.7,
-          type: 'trend',
-        });
-      });
+    addCatalogPages(related, METAL_HUB_PAGES, 0.86, { limit: 3 });
+    addCatalogPages(related, GUIDE_PAGES, 0.8, { limit: 3 });
+    addCatalogPages(related, COMPARISON_PAGES, 0.76, { limit: 2 });
+    addCatalogPages(related, TREND_PAGES, 0.74, { limit: 2 });
+    addCatalogPages(related, CITY_HUB_PAGES, 0.68, { limit: 2 });
   }
 
-  // Remove duplicates based on href
-  const uniqueRelated = related.filter(
-    (page, index, self) => index === self.findIndex((p) => p.href === page.href)
-  );
-
-  // Sort by score (descending) and return top 6
-  return uniqueRelated.sort((a, b) => b.score - a.score).slice(0, 6);
+  return related.sort((a, b) => b.score - a.score).slice(0, 6);
 }
 
-/**
- * Get related pages for a specific metal
- */
 export function getRelatedPagesForMetal(metal: string, excludeCity?: string): RelatedPage[] {
   return getRelatedPages({
     metal,
     city: excludeCity,
-    type: 'metal-city',
+    type: excludeCity ? 'metal-city' : 'metal-hub',
   });
 }
 
-/**
- * Get related pages for a specific city
- */
 export function getRelatedPagesForCity(city: string): RelatedPage[] {
   return getRelatedPages({
     city,

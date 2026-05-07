@@ -270,6 +270,57 @@ export default function InvestmentGuidePage() {
                 Complete guide to silver prices and investment
               </p>
             </Link>
+
+            <Link
+              href="/platinum-price-guide"
+              className="p-6 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-800 transition-all duration-200 card-shadow hover:card-shadow-hover group"
+            >
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center group-hover:bg-blue-200 dark:group-hover:bg-blue-900/50 transition-colors">
+                  <Shield className="w-5 h-5 text-blue-600 dark:text-blue-400" aria-hidden="true" />
+                </div>
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-50 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                  Platinum Price Guide
+                </h3>
+              </div>
+              <p className="text-sm text-slate-600 dark:text-slate-400">
+                Learn where platinum fits relative to gold and why niche jewellery and liquidity context matter.
+              </p>
+            </Link>
+
+            <Link
+              href="/palladium-price-guide"
+              className="p-6 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 hover:border-violet-300 dark:hover:border-violet-800 transition-all duration-200 card-shadow hover:card-shadow-hover group"
+            >
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 rounded-lg bg-violet-100 dark:bg-violet-900/30 flex items-center justify-center group-hover:bg-violet-200 dark:group-hover:bg-violet-900/50 transition-colors">
+                  <TrendingUp className="w-5 h-5 text-violet-600 dark:text-violet-400" aria-hidden="true" />
+                </div>
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-50 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
+                  Palladium Price Guide
+                </h3>
+              </div>
+              <p className="text-sm text-slate-600 dark:text-slate-400">
+                Understand why palladium is mostly a specialist context metal for Indian readers.
+              </p>
+            </Link>
+
+            <Link
+              href="/copper-price-guide"
+              className="p-6 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 hover:border-orange-300 dark:hover:border-orange-800 transition-all duration-200 card-shadow hover:card-shadow-hover group"
+            >
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 rounded-lg bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center group-hover:bg-orange-200 dark:group-hover:bg-orange-900/50 transition-colors">
+                  <DollarSign className="w-5 h-5 text-orange-600 dark:text-orange-400" aria-hidden="true" />
+                </div>
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-50 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
+                  Copper Price Guide
+                </h3>
+              </div>
+              <p className="text-sm text-slate-600 dark:text-slate-400">
+                Read how copper benchmarks behave more like industrial market signals than standard retail metal quotes.
+              </p>
+            </Link>
           </div>
 
           {/* Topic Cluster Navigation */}

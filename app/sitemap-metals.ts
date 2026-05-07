@@ -5,9 +5,9 @@
 
 import { MetadataRoute } from 'next';
 import { getSiteUrl } from '@/utils/siteUrl';
-import { SITEMAP_METALS, SITEMAP_TOP_CITIES } from '@/utils/sitemapConstants';
+import { SITEMAP_INDEXED_CITY_METALS, SITEMAP_TOP_CITIES } from '@/utils/sitemapConstants';
 
-const METALS = [...SITEMAP_METALS];
+const METALS = [...SITEMAP_INDEXED_CITY_METALS];
 
 /**
  * Fetch last updated date for a city from API

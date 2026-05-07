@@ -51,13 +51,6 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   alternates: {
     canonical: '/',
-    languages: {
-      'en-IN': SITE_URL,
-      'en': SITE_URL,
-      'x-default': SITE_URL,
-      // Add Hindi language support when available
-      // 'hi-IN': 'https://metalview.in/hi',
-    },
   },
   openGraph: {
     type: 'website',
@@ -92,10 +85,13 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  verification: {
-    google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION || 'your-google-verification-code',
-    // yandex: 'your-yandex-verification-code',
-  },
+  ...(process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION
+    ? {
+        verification: {
+          google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION,
+        },
+      }
+    : {}),
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
@@ -115,36 +111,19 @@ export default function RootLayout({
   return (
     <html lang="en-IN" suppressHydrationWarning>
       <head>
-        {/* Canonical is set per-page via metadata alternates.canonical; do not add a static canonical here. */}
-        {/* Hreflang tags for regional targeting */}
-        <link rel="alternate" hrefLang="en-IN" href={SITE_URL} />
-        <link rel="alternate" hrefLang="en" href={SITE_URL} />
-        <link rel="alternate" hrefLang="x-default" href={SITE_URL} />
-        {/* Add Hindi language support when available */}
-        {/* <link rel="alternate" hrefLang="hi-IN" href="https://metalview.in/hi" /> */}
-        
         {/* Resource Hints for Critical Resources - Optimized for Core Web Vitals */}
-        
+
         {/* DNS Prefetch for external resources - Resolve DNS early */}
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-        <link rel="dns-prefetch" href={SITE_URL} />
-        
+
         {/* Preconnect to external domains - Establish connections early */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        
-        {/* Prefetch critical API endpoints - Load in background for faster subsequent requests */}
-        <link rel="prefetch" href="/api/metals" as="fetch" crossOrigin="anonymous" />
-        <link rel="prefetch" href="/api/metals?city=mumbai" as="fetch" crossOrigin="anonymous" />
-        <link rel="prefetch" href="/api/metals?city=delhi" as="fetch" crossOrigin="anonymous" />
-        
+
         {/* Preload critical images - Load immediately for faster LCP */}
         <link rel="preload" href="/og-image.svg" as="image" type="image/svg+xml" />
-        
-        {/* Preload critical CSS - Already handled by Next.js, but explicit for clarity */}
-        {/* Next.js automatically preloads CSS, but we can add explicit hints if needed */}
-        
+
         {/* Mobile & PWA Meta Tags - Enhanced mobile optimization */}
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes" />
         <meta name="theme-color" content="#f59e0b" />
@@ -155,10 +134,7 @@ export default function RootLayout({
         <meta name="format-detection" content="telephone=no" />
         <meta name="msapplication-TileColor" content="#f59e0b" />
         <meta name="msapplication-config" content="/browserconfig.xml" />
-        
-        {/* PWA Manifest */}
-        <link rel="manifest" href="/manifest.json" />
-        
+
         {/* Geo & Location Meta Tags */}
         <meta name="geo.region" content="IN" />
         <meta name="geo.placename" content="India" />

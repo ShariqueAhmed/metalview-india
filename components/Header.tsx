@@ -96,7 +96,7 @@ export default function Header() {
                 </div>
                 <span className="hidden sm:inline-flex items-center gap-1 px-1.5 py-0.5 bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-950/40 dark:to-yellow-950/40 border border-amber-200 dark:border-amber-800/50 rounded-full flex-shrink-0">
                   <Shield className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-amber-600 dark:text-amber-400" strokeWidth={2.5} aria-hidden="true" />
-                  <span className="text-[9px] sm:text-[10px] font-semibold text-amber-700 dark:text-amber-300">Trusted</span>
+                  <span className="text-[9px] sm:text-[10px] font-semibold text-amber-700 dark:text-amber-300">Live</span>
                 </span>
               </div>
               <p className="text-[11px] sm:text-xs lg:text-sm font-medium text-slate-600 dark:text-slate-400 mt-0.5 leading-snug max-w-[180px] sm:max-w-md truncate sm:truncate-none">

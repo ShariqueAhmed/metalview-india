@@ -6,6 +6,16 @@
 import type { Metadata } from 'next';
 import HomeClient from './page-client';
 import { getSiteUrl } from '@/utils/siteUrl';
+import type { MetalsApiResponse } from '@/app/api/metals/route';
+
+export interface HomeMetalPrices {
+  gold: number | null;
+  silver: number | null;
+  copper: number | null;
+  platinum: number | null;
+  palladium: number | null;
+  updatedAt: string | null;
+}
 
   const baseUrl = getSiteUrl();
   
@@ -40,6 +50,32 @@ export const metadata: Metadata = {
   alternates: { canonical: '/' },
   };
 
-export default function Home() {
-  return <HomeClient />;
+async function getHomeMetalPrices(): Promise<HomeMetalPrices | null> {
+  try {
+    const response = await fetch(`${baseUrl}/api/metals?city=mumbai`, {
+      next: { revalidate: 120 },
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const data = (await response.json()) as MetalsApiResponse;
+    return {
+      gold: data.gold_10g ?? null,
+      silver: data.silver_1kg ?? null,
+      copper: data.copper_1kg ?? data.copper ?? null,
+      platinum: data.platinum_10g ?? data.platinum ?? null,
+      palladium: data.palladium_10g ?? data.palladium ?? null,
+      updatedAt: data.updated_at ?? null,
+    };
+  } catch {
+    return null;
+  }
+}
+
+export default async function Home() {
+  const prices = await getHomeMetalPrices();
+  return <HomeClient prices={prices} />;
 }

@@ -163,6 +163,24 @@ export default function AboutPage() {
           })}
         </div>
 
+        <section className="mt-10 content-card p-6 sm:p-8">
+          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50 mb-4">Trust &amp; Standards</h2>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <Link href="/editorial-policy" className="rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:border-amber-300 dark:hover:border-amber-700 transition-colors">
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Editorial Policy</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400">How our content is reviewed, updated, and framed for readers.</p>
+            </Link>
+            <Link href="/methodology" className="rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:border-amber-300 dark:hover:border-amber-700 transition-colors">
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Methodology</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400">How MetalView sources and formats benchmark prices.</p>
+            </Link>
+            <Link href="/corrections-policy" className="rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:border-amber-300 dark:hover:border-amber-700 transition-colors">
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Corrections Policy</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400">How readers can flag issues and how we update pages.</p>
+            </Link>
+          </div>
+        </section>
+
         <div className="mt-10 pt-8 border-t border-slate-200/80 dark:border-slate-700/80">
           <Link
             href="/"

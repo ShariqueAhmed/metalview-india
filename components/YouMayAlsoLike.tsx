@@ -14,14 +14,14 @@ interface Recommendation {
   title: string;
   href: string;
   description: string;
-  type: 'metal' | 'city' | 'guide' | 'comparison' | 'trend';
+  type: 'metal' | 'city' | 'guide' | 'comparison' | 'trend' | 'blog';
   icon?: React.ComponentType<any>;
 }
 
 interface YouMayAlsoLikeProps {
   currentMetal?: string;
   currentCity?: string;
-  pageType?: 'home' | 'metal-city' | 'city' | 'guide' | 'comparison' | 'trend';
+  pageType?: 'home' | 'metal-hub' | 'metal-city' | 'city' | 'guide' | 'comparison' | 'trend' | 'blog';
   className?: string;
 }
 
@@ -34,6 +34,8 @@ const getIconForType = (type: string) => {
       return BarChart3;
     case 'trend':
       return TrendingUp;
+    case 'metal-hub':
+      return Award;
     case 'city':
     case 'metal-city':
       return MapPin;
@@ -64,12 +66,14 @@ export default function YouMayAlsoLike({
     .slice(0, 3)
     .map((page) => {
       // Map page types to Recommendation types
-      let recType: 'metal' | 'city' | 'guide' | 'comparison' | 'trend' = 'guide';
+      let recType: 'metal' | 'city' | 'guide' | 'comparison' | 'trend' | 'blog' = 'guide';
       if (page.type === 'metal-city') {
+        recType = 'metal';
+      } else if (page.type === 'metal-hub') {
         recType = 'metal';
       } else if (page.type === 'city') {
         recType = 'city';
-      } else if (page.type === 'guide' || page.type === 'comparison' || page.type === 'trend') {
+      } else if (page.type === 'guide' || page.type === 'comparison' || page.type === 'trend' || page.type === 'blog') {
         recType = page.type;
       }
       

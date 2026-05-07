@@ -10,6 +10,7 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import CitySelector from '@/components/CitySelector';
+import type { MetalsApiResponse } from '@/app/api/metals/route';
 import { getAvailableSilverCities } from '@/utils/silverFetcher';
 import { formatCityName } from '@/utils/conversions';
 import type { MetalType } from '@/components/MetalTabs';
@@ -33,6 +34,7 @@ import TrendingKeywords from '@/components/TrendingKeywords';
 import YouMayAlsoLike from '@/components/YouMayAlsoLike';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { AlertCircle } from 'lucide-react';
+import { GUIDE_PAGES } from '@/utils/contentCatalog';
 
 const ChartSection = dynamic(() => import('@/components/ChartSection'), {
   loading: () => (
@@ -50,59 +52,96 @@ interface GoldTrendPoint {
   price: number;
 }
 
-interface MetalsData {
-  city: string;
-  gold_10g: number | null;
-  gold_22k_10g: number | null;
-  gold_18k_10g?: number | null;
-  gold_1g: number | null;
-  gold_22k_1g: number | null;
-  gold_18k_1g?: number | null;
-  gold_24k_difference?: string | null;
-  gold_22k_difference?: string | null;
-  gold_18k_difference?: string | null;
-  gold_24k_percentage?: string | null;
-  gold_22k_percentage?: string | null;
-  gold_18k_percentage?: string | null;
+interface MetalsData extends MetalsApiResponse {
   goldTrend18k?: GoldTrendPoint[];
   goldTrend22k?: GoldTrendPoint[];
   goldTrend24k?: GoldTrendPoint[];
-  silver_1kg: number | null;
-  silver_10g?: number | null;
-  silver_1g?: number | null;
-  silverTrend?: GoldTrendPoint[];
-  silverPercentageChange?: number | null;
-  copper_1kg?: number | null;
-  copper_100g?: number | null;
-  copperPercentageChange?: number | null;
-  copperTrend?: GoldTrendPoint[];
-  platinum: number | null;
-  platinum_1g?: number | null;
-  platinum_10g?: number | null;
-  platinumPercentageChange?: number | null;
-  platinumVariationType?: 'up' | 'down';
-  platinumVariation?: string;
-  palladium: number | null;
-  palladium_1g?: number | null;
-  palladium_10g?: number | null;
-  palladiumPercentageChange?: number | null;
-  palladiumVariationType?: 'up' | 'down';
-  palladiumVariation?: string;
-  updated_at: string;
-  cached: boolean;
-  trendingCities?: string[];
+}
+
+function formatPriceLabel(value: number | null | undefined): string | null {
+  if (value == null || Number.isNaN(value)) {
+    return null;
+  }
+
+  return `₹${value.toLocaleString('en-IN')}`;
+}
+
+function getPrimaryPrice(data: MetalsData | null, metal: MetalType): number | null {
+  if (!data) return null;
+
+  switch (metal) {
+    case 'gold':
+      return data.gold_10g ?? null;
+    case 'silver':
+      return data.silver_1kg ?? null;
+    case 'copper':
+      return data.copper_1kg ?? null;
+    case 'platinum':
+      return data.platinum_10g ?? data.platinum ?? null;
+    case 'palladium':
+      return data.palladium_10g ?? data.palladium ?? null;
+  }
+}
+
+function getPrimaryTrendData(data: MetalsData | null, metal: MetalType): GoldTrendPoint[] {
+  if (!data) return [];
+
+  switch (metal) {
+    case 'gold':
+      return data.goldTrend24k ?? data.goldTrend ?? [];
+    case 'silver':
+      return data.silverTrend ?? [];
+    case 'copper':
+      return data.copperTrend ?? [];
+    case 'platinum':
+    case 'palladium':
+      return [];
+  }
+}
+
+function getTrendSummary(points: GoldTrendPoint[]): string | null {
+  if (!points || points.length < 2) {
+    return null;
+  }
+
+  const latest = points[points.length - 1];
+  const weekReference = points[Math.max(0, points.length - 7)];
+  const monthReference = points[0];
+
+  if (!latest || !weekReference || !monthReference) {
+    return null;
+  }
+
+  const weekDirection = latest.price >= weekReference.price ? 'above' : 'below';
+  const monthDirection = latest.price >= monthReference.price ? 'above' : 'below';
+
+  return `The latest recorded rate is ${weekDirection} the recent 7-day reference and ${monthDirection} the oldest visible point in this history set, which helps separate a short-term move from a broader trend.`;
+}
+
+function getSourceLabel(metal: MetalType): string {
+  switch (metal) {
+    case 'gold':
+    case 'silver':
+      return 'Angel One city-level feeds';
+    case 'copper':
+      return 'established financial market data feeds';
+    case 'platinum':
+    case 'palladium':
+      return 'commodity pricing feeds aggregated through our metal data providers';
+  }
 }
 
 interface MetalPageClientProps {
   metal: MetalType;
   initialCity?: string;
+  initialData?: MetalsData | null;
 }
 
-export default function MetalPageClient({ metal, initialCity }: MetalPageClientProps) {
+export default function MetalPageClient({ metal, initialCity, initialData }: MetalPageClientProps) {
   const [selectedCity, setSelectedCity] = useState<string>(initialCity?.toLowerCase() || 'mumbai');
-  const [data, setData] = useState<MetalsData | null>(null);
+  const [data, setData] = useState<MetalsData | null>(initialData ?? null);
   const [previousData, setPreviousData] = useState<MetalsData | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(initialData == null);
   const [error, setError] = useState<string | null>(null);
   const [availableCities, setAvailableCities] = useState<string[]>(FALLBACK_CITIES);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -133,12 +172,24 @@ export default function MetalPageClient({ metal, initialCity }: MetalPageClientP
   }, []);
 
   useEffect(() => {
+    if (data?.city?.toLowerCase() === selectedCity) {
+      return;
+    }
+
     fetchData(selectedCity);
-  }, [selectedCity, fetchData]);
+  }, [data?.city, selectedCity, fetchData]);
 
   useEffect(() => {
     if (initialCity) setSelectedCity(initialCity.toLowerCase());
   }, [initialCity]);
+
+  useEffect(() => {
+    if (initialData) {
+      setData(initialData);
+      setIsLoading(false);
+      setError(null);
+    }
+  }, [initialData]);
 
   useEffect(() => {
     getAvailableSilverCities().then((cities) => {
@@ -194,10 +245,15 @@ export default function MetalPageClient({ metal, initialCity }: MetalPageClientP
   }, [data, metal]);
 
   const metalName = metal.charAt(0).toUpperCase() + metal.slice(1);
+  const currentCityName = formatCityName(data?.city || selectedCity);
+  const primaryPrice = getPrimaryPrice(data, metal);
+  const primaryPriceLabel = formatPriceLabel(primaryPrice);
+  const primaryUnit =
+    metal === 'gold' || metal === 'platinum' || metal === 'palladium' ? '10 grams' : 'kilogram';
+  const trendSummary = getTrendSummary(getPrimaryTrendData(data, metal));
   const breadcrumbItems = [
     { label: 'Home', href: '/' },
     { label: `${metalName} Prices`, href: `/${metal}` },
-    ...(data?.city && data.city !== 'mumbai' ? [{ label: formatCityName(data.city), href: `/${metal}?city=${data.city}` }] : []),
   ];
 
   return (
@@ -244,6 +300,32 @@ export default function MetalPageClient({ metal, initialCity }: MetalPageClientP
               {(metal === 'copper' || metal === 'platinum' || metal === 'palladium') && (
                 <p>For more on metal prices and investment, see our <Link href="/guides" className="text-amber-600 dark:text-amber-400 hover:underline font-medium">Guides &amp; Resources</Link>.</p>
               )}
+            </div>
+          </div>
+        </section>
+
+        <section className="mb-8 content-card p-6 sm:p-8">
+          <h2 className="section-title mb-4">What Today&apos;s {metalName} Rate Means in {currentCityName}</h2>
+          <div className="grid gap-4 md:grid-cols-3">
+            <div className="rounded-xl border border-slate-200/80 dark:border-slate-700/80 bg-slate-50/70 dark:bg-slate-800/40 p-4">
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-2">Current benchmark</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                {primaryPriceLabel
+                  ? `${metalName} is currently quoted around ${primaryPriceLabel} per ${primaryUnit} for ${currentCityName}. Use that as a benchmark before comparing any dealer or platform quote.`
+                  : `Use the live rate shown on this page as your benchmark before comparing quotes in ${currentCityName}.`}
+              </p>
+            </div>
+            <div className="rounded-xl border border-slate-200/80 dark:border-slate-700/80 bg-slate-50/70 dark:bg-slate-800/40 p-4">
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-2">Trend context</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                {trendSummary ?? `The history table and chart help you judge whether today&apos;s ${metalName.toLowerCase()} move looks routine or unusually sharp before you act on the headline number.`}
+              </p>
+            </div>
+            <div className="rounded-xl border border-slate-200/80 dark:border-slate-700/80 bg-slate-50/70 dark:bg-slate-800/40 p-4">
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-2">Decision use</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                Use this hub page when you want a national benchmark plus city-switching convenience. For final decision support, compare the matching city route, purity or unit, and the full billed quote.
+              </p>
             </div>
           </div>
         </section>
@@ -409,6 +491,53 @@ export default function MetalPageClient({ metal, initialCity }: MetalPageClientP
               </div>
             </section>
 
+            <section className="mb-8 content-card p-6 sm:p-8">
+              <h2 className="section-title mb-4">Explore {metalName} by Intent</h2>
+              <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
+                Move between live rates, city pages, and editorial explainers depending on whether you are comparing a quote, researching a purchase, or tracking the broader market.
+              </p>
+              <div className="grid gap-3 md:grid-cols-2">
+                <Link href="/cities" className="rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:border-amber-300 dark:hover:border-amber-700 transition-colors">
+                  <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Browse all city pages</h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">Use the city index when you want to compare local benchmarks before opening a metal-specific page.</p>
+                </Link>
+                <Link href="/guides" className="rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:border-amber-300 dark:hover:border-amber-700 transition-colors">
+                  <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Open the guides hub</h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">Jump into deeper explainers on purity, taxes, investment use cases, and city differences.</p>
+                </Link>
+                {GUIDE_PAGES.filter((page) => page.metal === metal || page.metals?.includes(metal)).slice(0, 2).map((page) => (
+                  <Link key={page.href} href={page.href} className="rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:border-amber-300 dark:hover:border-amber-700 transition-colors">
+                    <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">{page.title}</h3>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">{page.description}</p>
+                  </Link>
+                ))}
+              </div>
+            </section>
+
+            <section className="mb-8 content-card p-6 sm:p-8">
+              <h2 className="section-title mb-4">Why This Page Exists</h2>
+              <div className="grid gap-4 md:grid-cols-3">
+                <div className="rounded-xl border border-slate-200/80 dark:border-slate-700/80 bg-slate-50/70 dark:bg-slate-800/40 p-4">
+                  <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-2">Publisher purpose</h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                    This is a benchmark page meant to help readers interpret {metalName.toLowerCase()} rates in India with city context, trend history, and supporting explainers.
+                  </p>
+                </div>
+                <div className="rounded-xl border border-slate-200/80 dark:border-slate-700/80 bg-slate-50/70 dark:bg-slate-800/40 p-4">
+                  <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-2">Human review signals</h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                    We pair live price data with guides, FAQs, methodology notes, and a visible contact route so readers can understand how the benchmark should be used.
+                  </p>
+                </div>
+                <div className="rounded-xl border border-slate-200/80 dark:border-slate-700/80 bg-slate-50/70 dark:bg-slate-800/40 p-4">
+                  <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-2">Trust pages</h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                    Review our <Link href="/editorial-policy" className="text-amber-600 dark:text-amber-400 hover:underline font-medium">Editorial Policy</Link>, <Link href="/methodology" className="text-amber-600 dark:text-amber-400 hover:underline font-medium">Methodology</Link>, and <Link href="/contact" className="text-amber-600 dark:text-amber-400 hover:underline font-medium">Contact</Link> page for more detail.
+                  </p>
+                </div>
+              </div>
+            </section>
+
             <RelatedSearches metal={metal} city={data?.city || selectedCity} />
             <section className="mb-8">
               <FAQSection
@@ -416,12 +545,31 @@ export default function MetalPageClient({ metal, initialCity }: MetalPageClientP
                 faqs={generateFAQs()}
               />
             </section>
-            <YouMayAlsoLike currentMetal={metal} currentCity={data?.city || selectedCity} pageType="home" />
+            <YouMayAlsoLike currentMetal={metal} currentCity={data?.city || selectedCity} pageType="metal-hub" />
 
             <section className="mb-8 content-card p-6 sm:p-8">
-              <h2 className="section-title mb-4">About MetalView &amp; How We Get Our Prices</h2>
-              <p className="text-slate-600 dark:text-slate-400 mb-3">MetalView is a free resource for live metal prices in India. Data is sourced from trusted platforms and updated regularly. See our <Link href="/about" className="text-amber-600 dark:text-amber-400 hover:underline">About</Link> page for details.</p>
-              <p className="text-slate-600 dark:text-slate-400">For guides on purity, investment, and city-wise buying, visit our <Link href="/guides" className="text-amber-600 dark:text-amber-400 hover:underline font-medium">Guides &amp; Resources</Link>.</p>
+              <h2 className="section-title mb-4">How MetalView Sources {metalName} Prices</h2>
+              <div className="grid gap-4 md:grid-cols-3">
+                <div>
+                  <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Primary source</h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                    {metalName} prices on this page are pulled from {getSourceLabel(metal)} and normalized for MetalView&apos;s city and history views.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Update cadence</h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                    We refresh benchmark data regularly and show a visible last-updated timestamp so readers can judge freshness before relying on a quoted rate.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">What to verify</h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                    Always confirm purity, unit size, taxes, fabrication or making charges, and availability with the seller. See our <Link href="/about" className="text-amber-600 dark:text-amber-400 hover:underline">About</Link> page for methodology.
+                  </p>
+                </div>
+              </div>
+              <p className="mt-4 text-slate-600 dark:text-slate-400">For deeper explainers on purity, investment use cases, and city-wise comparisons, browse <Link href="/guides" className="text-amber-600 dark:text-amber-400 hover:underline font-medium">Guides &amp; Resources</Link>.</p>
             </section>
           </div>
         ) : null}
@@ -438,6 +586,7 @@ export default function MetalPageClient({ metal, initialCity }: MetalPageClientP
         location={data?.city || selectedCity}
         lastUpdated={data?.updated_at}
         metalType={metal}
+        pageType="metal-hub"
       />
       <FAQSchema faqs={[...generateFAQs(), ...getPeopleAlsoAskQuestions(metal)]} metal={metal} city={data?.city || selectedCity} />
       {multiCityPrices.length > 1 && (() => {

@@ -10,6 +10,7 @@ interface StructuredDataProps {
   location?: string;
   lastUpdated?: string;
   metalType?: 'gold' | 'silver' | 'copper' | 'platinum' | 'palladium';
+  pageType?: 'metal-hub' | 'metal-city';
 }
 
 const FALLBACK_SITE_URL = (process.env.NEXT_PUBLIC_BASE_URL || 'https://metalview.in').replace(/\/$/, '');
@@ -24,6 +25,7 @@ export default function StructuredData({
   location,
   lastUpdated,
   metalType = 'gold',
+  pageType = 'metal-hub',
 }: StructuredDataProps) {
   const formatDate = (timestamp?: string) => {
     if (!timestamp) return new Date().toISOString();
@@ -74,13 +76,13 @@ export default function StructuredData({
         name: `${metalType.charAt(0).toUpperCase() + metalType.slice(1)} Prices`,
         item: `${baseUrl}/${metalType}`,
       },
-      ...(location
+      ...(pageType === 'metal-city' && location
         ? [
             {
               '@type': 'ListItem',
               position: 3,
               name: cityName,
-              item: `${baseUrl}/${metalType}?city=${location}`,
+              item: `${baseUrl}/${metalType}/price-in/${location}`,
             },
           ]
         : []),

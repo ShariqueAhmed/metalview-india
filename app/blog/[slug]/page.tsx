@@ -18,6 +18,9 @@ interface BlogPost {
   excerpt: string;
 }
 
+const EDITORIAL_AUTHOR = 'MetalView Editorial Desk';
+const REVIEW_TEAM = 'MetalView Research Desk';
+
 const blogPosts: Record<string, BlogPost> = {
   'understanding-gold-purity-24k-vs-22k': {
     slug: 'understanding-gold-purity-24k-vs-22k',
@@ -1453,7 +1456,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       url: `${baseUrl}${postUrl}`,
       siteName: 'MetalView',
       publishedTime,
-      authors: ['MetalView'],
+      authors: [EDITORIAL_AUTHOR],
       section: post.category,
       images: [
         {
@@ -1652,7 +1655,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     ],
     author: {
       '@type': 'Organization',
-      name: 'MetalView India',
+      name: EDITORIAL_AUTHOR,
       url: baseUrl,
     },
     publisher: {
@@ -1734,9 +1737,32 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               <Clock className="w-4 h-4" />
               <span>{post.readTime}</span>
             </div>
-            <div className="text-xs font-medium text-gray-500 dark:text-gray-400">
-              Reviewed by MetalView editorial team
+          </div>
+
+          <div className="mb-8 grid gap-4 md:grid-cols-3">
+            <div className="rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-950/30 p-4">
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-1">Written By</p>
+              <p className="text-sm font-medium text-slate-900 dark:text-white">{EDITORIAL_AUTHOR}</p>
             </div>
+            <div className="rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-950/30 p-4">
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-1">Reviewed By</p>
+              <p className="text-sm font-medium text-slate-900 dark:text-white">{REVIEW_TEAM}</p>
+            </div>
+            <div className="rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-950/30 p-4">
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-1">Last Reviewed</p>
+              <p className="text-sm font-medium text-slate-900 dark:text-white">{new Date(REVIEW_DATE).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+            </div>
+          </div>
+
+          <div className="mb-8 rounded-lg border border-emerald-200/70 dark:border-emerald-900/60 bg-emerald-50/70 dark:bg-emerald-950/20 p-5">
+            <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-2">Why readers can verify this page</h2>
+            <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+              MetalView articles are written for educational use alongside our live benchmark pages. See our{' '}
+              <Link href="/editorial-policy" className="text-amber-600 dark:text-amber-400 hover:underline font-medium">Editorial Policy</Link>,{' '}
+              <Link href="/methodology" className="text-amber-600 dark:text-amber-400 hover:underline font-medium">Methodology</Link>, and{' '}
+              <Link href="/corrections-policy" className="text-amber-600 dark:text-amber-400 hover:underline font-medium">Corrections Policy</Link>{' '}
+              for how we review, source, and update content.
+            </p>
           </div>
 
           <div className="mb-8 grid gap-4 lg:grid-cols-[1.5fr_1fr]">

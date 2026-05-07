@@ -38,10 +38,20 @@ export const SITEMAP_TOP_CITIES = [
 
 export const SITEMAP_METALS = ['gold', 'silver', 'copper', 'platinum', 'palladium'] as const;
 
+/**
+ * City-detail pages with the strongest consumer intent and original local context.
+ * Keep niche metal city pages accessible, but avoid promoting them as primary
+ * index targets while AdSense approval is still being reviewed.
+ */
+export const SITEMAP_INDEXED_CITY_METALS = ['gold', 'silver'] as const;
+
 /** Guide routes that exist under app/ (see /guides for the index). */
 export const SITEMAP_GUIDE_SLUGS = [
   'gold-price-guide',
   'silver-investment-guide',
+  'copper-price-guide',
+  'platinum-price-guide',
+  'palladium-price-guide',
   'investment-guide',
   'gold-vs-silver-investment',
   '24k-vs-22k-vs-18k-gold',

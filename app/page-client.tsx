@@ -9,6 +9,11 @@ import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Award, DollarSign, Zap, Gem, ArrowRight, Sparkles } from 'lucide-react';
+import { GUIDE_PAGES } from '@/utils/contentCatalog';
+import { formatIndianCurrency } from '@/utils/conversions';
+import type { HomeMetalPrices } from './page';
+
+const HOMEPAGE_EDITORIAL_PICKS = GUIDE_PAGES.slice(0, 3);
 
 const METALS = [
   {
@@ -24,6 +29,7 @@ const METALS = [
     hoverBorder: 'hover:border-amber-400 dark:hover:border-amber-400/60',
     iconGradient: 'from-amber-500 to-yellow-600 dark:from-amber-400 dark:to-amber-600',
     cta: 'text-amber-600 dark:text-amber-400',
+    priceUnit: 'per 10g',
   },
   {
     id: 'silver',
@@ -38,6 +44,7 @@ const METALS = [
     hoverBorder: 'hover:border-slate-400 dark:hover:border-slate-400/60',
     iconGradient: 'from-slate-500 to-slate-700 dark:from-slate-400 dark:to-slate-300',
     cta: 'text-slate-600 dark:text-slate-300',
+    priceUnit: 'per 1kg',
   },
   {
     id: 'copper',
@@ -52,6 +59,7 @@ const METALS = [
     hoverBorder: 'hover:border-orange-400 dark:hover:border-orange-400/60',
     iconGradient: 'from-orange-500 to-amber-700 dark:from-orange-400 dark:to-orange-600',
     cta: 'text-orange-600 dark:text-orange-400',
+    priceUnit: 'per 1kg',
   },
   {
     id: 'platinum',
@@ -66,6 +74,7 @@ const METALS = [
     hoverBorder: 'hover:border-sky-400 dark:hover:border-sky-400/60',
     iconGradient: 'from-sky-500 to-blue-600 dark:from-sky-400 dark:to-blue-500',
     cta: 'text-sky-600 dark:text-sky-400',
+    priceUnit: 'per 10g',
   },
   {
     id: 'palladium',
@@ -80,10 +89,28 @@ const METALS = [
     hoverBorder: 'hover:border-violet-400 dark:hover:border-violet-400/60',
     iconGradient: 'from-violet-500 to-purple-600 dark:from-violet-400 dark:to-purple-500',
     cta: 'text-violet-600 dark:text-violet-400',
+    priceUnit: 'per 10g',
   },
 ] as const;
 
-export default function HomeClient() {
+interface HomeClientProps {
+  prices: HomeMetalPrices | null;
+}
+
+export default function HomeClient({ prices }: HomeClientProps) {
+  const lastUpdatedText = (() => {
+    if (!prices?.updatedAt) return 'Last updated: unavailable';
+    const parsedDate = new Date(prices.updatedAt);
+    if (Number.isNaN(parsedDate.getTime())) return 'Last updated: unavailable';
+    return `Last updated: ${new Intl.DateTimeFormat('en-IN', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    }).format(parsedDate)}`;
+  })();
+
   return (
     <div className="page-bg">
       <div className="page-bg-ambient" aria-hidden />
@@ -106,6 +133,9 @@ export default function HomeClient() {
           </h1>
           <p className="text-base text-slate-600 dark:text-slate-400 max-w-xl sm:text-lg leading-relaxed animate-slide-up-fade opacity-0 [animation-fill-mode:forwards] [animation-delay:150ms]">
             Real-time gold, silver, copper, platinum, and palladium rates. Choose a metal to see today&apos;s price, historical trends, and city-wise rates.
+          </p>
+          <p className="mt-3 text-xs sm:text-sm text-slate-500 dark:text-slate-400 animate-slide-up-fade opacity-0 [animation-fill-mode:forwards] [animation-delay:225ms]">
+            {lastUpdatedText}
           </p>
         </header>
 
@@ -137,6 +167,12 @@ export default function HomeClient() {
                 <h3 className="text-lg font-bold text-slate-900 dark:text-slate-50 mb-1.5 sm:mb-2 group-hover:opacity-90 transition-opacity sm:text-xl">
                   {metal.name}
                 </h3>
+                <p className="text-sm font-semibold text-slate-800 dark:text-slate-200 mb-2">
+                  {formatIndianCurrency(prices?.[metal.id] ?? null)}{' '}
+                  <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
+                    {metal.priceUnit}
+                  </span>
+                </p>
                 <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed flex-1 line-clamp-3 sm:line-clamp-none">
                   {metal.description}
                 </p>
@@ -172,6 +208,82 @@ export default function HomeClient() {
                 Readers can reach us at <a href="mailto:metalviewofficial@gmail.com" className="text-amber-600 dark:text-amber-400 hover:underline">metalviewofficial@gmail.com</a> for corrections, support, and business queries.
               </p>
             </div>
+          </div>
+        </section>
+
+        <section className="mb-10 sm:mb-12 content-card p-5 sm:p-6 lg:p-7">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between mb-5">
+            <div>
+              <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-50">
+                Start With the Editorial Guides
+              </h2>
+              <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 mt-2 max-w-2xl leading-relaxed">
+                These guides explain how to use metal prices, compare quotes, and avoid common buying mistakes, so readers get context instead of only a live number.
+              </p>
+            </div>
+            <Link
+              href="/guides"
+              className="text-sm font-semibold text-amber-600 dark:text-amber-400 hover:underline"
+            >
+              View all guides
+            </Link>
+          </div>
+          <div className="grid gap-4 md:grid-cols-3">
+            {HOMEPAGE_EDITORIAL_PICKS.map((page) => (
+              <Link
+                key={page.href}
+                href={page.href}
+                className="rounded-2xl border border-slate-200/80 dark:border-slate-700/80 bg-slate-50/80 dark:bg-slate-900/60 p-5 hover:border-amber-300 dark:hover:border-amber-700 transition-colors"
+              >
+                <p className="text-xs font-semibold uppercase tracking-wide text-amber-700 dark:text-amber-300 mb-2">
+                  Editorial guide
+                </p>
+                <h3 className="text-base font-bold text-slate-900 dark:text-slate-50 mb-2">
+                  {page.title}
+                </h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                  {page.description}
+                </p>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        <section className="mb-10 sm:mb-12 content-card p-5 sm:p-6 lg:p-7">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-50 mb-3">
+            How This Site Is Reviewed
+          </h2>
+          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 max-w-3xl leading-relaxed mb-5">
+            MetalView is designed as a publisher-style resource for Indian metal buyers and price trackers. Our live pages are supported by editorial explainers, visible methodology, and a public corrections path so readers can understand both the benchmark and its limits.
+          </p>
+          <div className="grid gap-4 md:grid-cols-3">
+            <Link
+              href="/about"
+              className="rounded-2xl border border-slate-200/80 dark:border-slate-700/80 p-5 hover:border-amber-300 dark:hover:border-amber-700 transition-colors"
+            >
+              <h3 className="text-base font-semibold text-slate-900 dark:text-slate-50 mb-2">About MetalView</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                Learn who the site is for, how pricing data is used, and what readers should verify independently.
+              </p>
+            </Link>
+            <Link
+              href="/methodology"
+              className="rounded-2xl border border-slate-200/80 dark:border-slate-700/80 p-5 hover:border-amber-300 dark:hover:border-amber-700 transition-colors"
+            >
+              <h3 className="text-base font-semibold text-slate-900 dark:text-slate-50 mb-2">Methodology</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                See how benchmark rates are sourced, refreshed, and turned into comparable city and metal pages.
+              </p>
+            </Link>
+            <Link
+              href="/corrections-policy"
+              className="rounded-2xl border border-slate-200/80 dark:border-slate-700/80 p-5 hover:border-amber-300 dark:hover:border-amber-700 transition-colors"
+            >
+              <h3 className="text-base font-semibold text-slate-900 dark:text-slate-50 mb-2">Corrections Policy</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                Readers can flag unclear or outdated pages and contact the editorial team directly for review.
+              </p>
+            </Link>
           </div>
         </section>
 
