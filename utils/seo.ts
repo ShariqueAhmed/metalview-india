@@ -354,7 +354,7 @@ export function generateDatasetSchema(data: {
       ? `${datePublished}/${dateModified}`
       : undefined,
     spatialCoverage: {
-      '@type': 'City',
+      '@type': 'Place',
       name: cityName,
       containedIn: {
         '@type': 'Country',

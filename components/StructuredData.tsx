@@ -296,7 +296,8 @@ export default function StructuredData({
   validThroughDate.setHours(validThroughDate.getHours() + 24);
   const validThrough = validThroughDate.toISOString();
 
-  // FinancialProduct Schema (for metal prices)
+  // FinancialProduct schema for benchmark prices. Avoid nested Product markup:
+  // these are reference rates, not merchant product pages eligible for snippets.
   const offers: Array<{
     '@type': string;
     itemOffered: {
@@ -323,7 +324,7 @@ export default function StructuredData({
     offers.push({
       '@type': 'Offer',
       itemOffered: {
-        '@type': 'Product',
+        '@type': 'Thing',
         name: '24 Karat Gold (10 grams)',
         description: '24K pure gold price per 10 grams',
         category: 'Precious Metal',
@@ -339,7 +340,7 @@ export default function StructuredData({
     offers.push({
       '@type': 'Offer',
       itemOffered: {
-        '@type': 'Product',
+        '@type': 'Thing',
         name: '22 Karat Gold (10 grams)',
         description: '22K gold price per 10 grams',
         category: 'Precious Metal',
@@ -355,7 +356,7 @@ export default function StructuredData({
     offers.push({
       '@type': 'Offer',
       itemOffered: {
-        '@type': 'Product',
+        '@type': 'Thing',
         name: 'Silver (1 kilogram)',
         description: 'Silver price per kilogram',
         category: 'Precious Metal',
@@ -371,7 +372,7 @@ export default function StructuredData({
     offers.push({
       '@type': 'Offer',
       itemOffered: {
-        '@type': 'Product',
+        '@type': 'Thing',
         name: 'Copper (1 kilogram)',
         description: 'Copper price per kilogram',
         category: 'Industrial Metal',
@@ -387,7 +388,7 @@ export default function StructuredData({
     offers.push({
       '@type': 'Offer',
       itemOffered: {
-        '@type': 'Product',
+        '@type': 'Thing',
         name: 'Platinum (10 grams)',
         description: 'Platinum price per 10 grams',
         category: 'Precious Metal',
@@ -403,7 +404,7 @@ export default function StructuredData({
     offers.push({
       '@type': 'Offer',
       itemOffered: {
-        '@type': 'Product',
+        '@type': 'Thing',
         name: 'Palladium (10 grams)',
         description: 'Palladium price per 10 grams',
         category: 'Precious Metal',
