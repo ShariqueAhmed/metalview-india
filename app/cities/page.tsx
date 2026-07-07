@@ -14,6 +14,14 @@ export const metadata: Metadata = {
   title: 'Metal Prices by City in India | MetalView',
   description:
     'Browse live gold, silver, copper, platinum, and palladium price pages for major Indian cities. Compare indicative local rates and verify final quotes before buying.',
+  robots: {
+    index: false,
+    follow: true,
+    googleBot: {
+      index: false,
+      follow: true,
+    },
+  },
   openGraph: {
     title: 'Metal Prices by City in India | MetalView',
     description:

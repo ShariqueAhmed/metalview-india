@@ -212,6 +212,23 @@ export default function HomeClient({ prices }: HomeClientProps) {
         </section>
 
         <section className="mb-10 sm:mb-12 content-card p-5 sm:p-6 lg:p-7">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-50 mb-3">
+            What MetalView Helps You Understand
+          </h2>
+          <div className="space-y-4 text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed">
+            <p>
+              MetalView is built for readers who want to interpret Indian metal prices before comparing a quote, planning a purchase, or reading a market move. The live rate is only the starting point: purity, city-level demand, making charges, GST, product type, and supplier margin can all change the final amount a buyer actually pays.
+            </p>
+            <p>
+              We combine benchmark rates with plain-English guides so readers can separate the daily market signal from the retail bill. A gold jewellery buyer, a silver investor, and a business tracking copper do not need the same context, so our metal pages and editorial guides explain how each benchmark should be used.
+            </p>
+            <p>
+              The figures on this site are indicative references, not financial advice or guaranteed dealer quotes. For important decisions, verify the latest rate, purity, charges, tax treatment, and availability directly with the seller or provider.
+            </p>
+          </div>
+        </section>
+
+        <section className="mb-10 sm:mb-12 content-card p-5 sm:p-6 lg:p-7">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between mb-5">
             <div>
               <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-50">

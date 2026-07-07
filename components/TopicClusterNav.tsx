@@ -7,8 +7,7 @@
 
 import Link from 'next/link';
 import { Network, BookOpen, TrendingUp, DollarSign } from 'lucide-react';
-import { BLOG_PAGES, COMPARISON_PAGES, GUIDE_PAGES, PRIMARY_LINK_CITY_SLUGS, TREND_PAGES } from '@/utils/contentCatalog';
-import { formatCityName } from '@/utils/conversions';
+import { BLOG_PAGES, COMPARISON_PAGES, GUIDE_PAGES, TREND_PAGES } from '@/utils/contentCatalog';
 
 interface TopicCluster {
   hub: {
@@ -56,11 +55,6 @@ function buildTopicClusters(): Record<string, TopicCluster> {
           href: page.href,
           type: 'guide' as const,
         })),
-        ...PRIMARY_LINK_CITY_SLUGS.slice(0, 3).map((city) => ({
-          title: `Gold Price in ${formatCityName(city)}`,
-          href: `/gold/price-in/${city}`,
-          type: 'city' as const,
-        })),
       ],
     },
     silver: {
@@ -79,11 +73,6 @@ function buildTopicClusters(): Record<string, TopicCluster> {
           title: page.title,
           href: page.href,
           type: 'blog' as const,
-        })),
-        ...PRIMARY_LINK_CITY_SLUGS.slice(0, 3).map((city) => ({
-          title: `Silver Price in ${formatCityName(city)}`,
-          href: `/silver/price-in/${city}`,
-          type: 'city' as const,
         })),
       ],
     },

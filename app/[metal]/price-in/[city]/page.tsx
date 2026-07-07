@@ -28,7 +28,6 @@ import LastUpdated from '@/components/LastUpdated';
 import YouMayAlsoLike from '@/components/YouMayAlsoLike';
 import { GoldPriceCityBlock } from './GoldPriceCityBlock';
 import { isSupportedCity, isSupportedMetal } from '@/utils/routeConstants';
-import { SITEMAP_INDEXED_CITY_METALS } from '@/utils/sitemapConstants';
 
 interface CityPageProps {
   params: Promise<{
@@ -437,21 +436,17 @@ export async function generateMetadata({ params }: CityPageProps): Promise<Metad
     priceRange: priceRange,
   });
 
-  if (!SITEMAP_INDEXED_CITY_METALS.includes(metal as (typeof SITEMAP_INDEXED_CITY_METALS)[number])) {
-    return {
-      ...metadata,
-      robots: {
+  return {
+    ...metadata,
+    robots: {
+      index: false,
+      follow: true,
+      googleBot: {
         index: false,
         follow: true,
-        googleBot: {
-          index: false,
-          follow: true,
-        },
       },
-    };
-  }
-
-  return metadata;
+    },
+  };
 }
 
 export default async function MetalPriceCityPage({ params }: CityPageProps) {

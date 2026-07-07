@@ -140,20 +140,11 @@ export default function BestCitiesToBuyGoldPage() {
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
                       <MapPin className="w-5 h-5 text-amber-600 dark:text-amber-400" aria-hidden="true" />
-                      <Link
-                        href={`/city/${item.city}`}
-                        className="text-xl font-semibold text-slate-900 dark:text-slate-50 hover:text-amber-700 dark:hover:text-amber-400 transition-colors"
-                      >
+                      <span className="text-xl font-semibold text-slate-900 dark:text-slate-50">
                         {formatCityName(item.city)}
-                      </Link>
+                      </span>
                     </div>
                     <p className="text-slate-600 dark:text-slate-400">{item.reason}</p>
-                    <Link
-                      href={`/gold/price-in/${item.city}`}
-                      className="inline-block mt-2 text-sm text-amber-700 dark:text-amber-400 hover:text-amber-800 dark:hover:text-amber-300 font-medium"
-                    >
-                      View Gold Prices →
-                    </Link>
                   </div>
                 </div>
               ))}
@@ -251,20 +242,24 @@ export default function BestCitiesToBuyGoldPage() {
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
               {TOP_CITIES.map((city) => (
-                <Link
+                <div
                   key={city}
-                  href={`/city/${city}`}
-                  className="p-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-amber-50 dark:hover:bg-amber-950/20 hover:border-amber-300 dark:hover:border-amber-800 transition-all text-center"
+                  className="p-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-center"
                 >
                   <MapPin className="w-5 h-5 text-amber-600 dark:text-amber-400 mx-auto mb-2" aria-hidden="true" />
                   <p className="text-sm font-medium text-slate-900 dark:text-slate-50">
                     {formatCityName(city)}
                   </p>
-                  <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
-                    View Prices
-                  </p>
-                </Link>
+                </div>
               ))}
+            </div>
+            <div className="mt-6">
+              <Link
+                href="/gold"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-sm font-medium transition-colors"
+              >
+                Check today&apos;s live gold benchmark →
+              </Link>
             </div>
           </section>
 

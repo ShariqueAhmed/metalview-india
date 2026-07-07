@@ -242,7 +242,7 @@ export default function GoldPriceGuidePage() {
             </Link>
 
             <Link
-              href="/gold/price-in/mumbai"
+              href="/blog/how-to-calculate-gold-price"
               className="p-6 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 hover:border-amber-300 dark:hover:border-amber-800 transition-all duration-200 card-shadow hover:card-shadow-hover group"
             >
               <div className="flex items-center gap-3 mb-3">
@@ -250,16 +250,16 @@ export default function GoldPriceGuidePage() {
                   <Shield className="w-5 h-5 text-indigo-600 dark:text-indigo-400" aria-hidden="true" />
                 </div>
                 <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-50 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                  Gold Price in Mumbai
+                  How to Calculate Gold Price
                 </h3>
               </div>
               <p className="text-sm text-slate-600 dark:text-slate-400">
-                Live gold prices in Mumbai, India's largest trading hub
+                Turn a headline rate into the final bill: purity, making charges, and GST
               </p>
             </Link>
 
             <Link
-              href="/gold/price-in/delhi"
+              href="/blog/gold-hallmark-explained"
               className="p-6 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 hover:border-amber-300 dark:hover:border-amber-800 transition-all duration-200 card-shadow hover:card-shadow-hover group"
             >
               <div className="flex items-center gap-3 mb-3">
@@ -267,11 +267,11 @@ export default function GoldPriceGuidePage() {
                   <BookOpen className="w-5 h-5 text-rose-600 dark:text-rose-400" aria-hidden="true" />
                 </div>
                 <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-50 group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors">
-                  Gold Price in Delhi
+                  Gold Hallmark Explained
                 </h3>
               </div>
               <p className="text-sm text-slate-600 dark:text-slate-400">
-                Live gold prices in Delhi, India's capital
+                What BIS hallmarking really guarantees before you pay
               </p>
             </Link>
           </div>

@@ -209,6 +209,14 @@ export async function generateMetadata({ params }: CityPageProps): Promise<Metad
   return {
     title: `Live Metal Prices in ${city} - Gold, Silver, Copper, Platinum | MetalView India`,
     description: `Get live metal prices in ${city}, India. Check today's gold, silver, copper, platinum, and palladium rates. Real-time updates with historical trends and market insights.`,
+    robots: {
+      index: false,
+      follow: true,
+      googleBot: {
+        index: false,
+        follow: true,
+      },
+    },
     keywords: [
       `metal prices in ${city.toLowerCase()}`,
       `gold price in ${city.toLowerCase()}`,

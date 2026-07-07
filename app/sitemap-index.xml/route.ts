@@ -21,10 +21,6 @@ export async function GET() {
     <lastmod>${now}</lastmod>
   </sitemap>
   <sitemap>
-    <loc>${baseUrl}/sitemap-cities.xml</loc>
-    <lastmod>${now}</lastmod>
-  </sitemap>
-  <sitemap>
     <loc>${baseUrl}/sitemap-blog.xml</loc>
     <lastmod>${now}</lastmod>
   </sitemap>

@@ -18,37 +18,34 @@ interface TrendingKeyword {
 // Trending keywords based on popular searches for metal prices in India
 const trendingKeywords: TrendingKeyword[] = [
   // Gold keywords
-  { label: 'gold price today', href: '/', category: 'trend' },
-  { label: '24k gold price', href: '/gold/price-in/mumbai', category: 'metal' },
-  { label: '22k gold price', href: '/gold/price-in/mumbai', category: 'metal' },
-  { label: 'gold rate mumbai', href: '/gold/price-in/mumbai', category: 'city' },
-  { label: 'gold rate delhi', href: '/gold/price-in/delhi', category: 'city' },
-  { label: 'gold price bangalore', href: '/gold/price-in/bangalore', category: 'city' },
+  { label: 'gold price today', href: '/gold', category: 'trend' },
+  { label: '24k vs 22k gold', href: '/24k-vs-22k-vs-18k-gold', category: 'comparison' },
+  { label: 'how to calculate gold price', href: '/blog/how-to-calculate-gold-price', category: 'guide' },
+  { label: 'gold hallmark explained', href: '/blog/gold-hallmark-explained', category: 'guide' },
+  { label: 'best time to buy gold', href: '/blog/best-time-to-buy-gold', category: 'guide' },
   { label: 'gold investment guide', href: '/gold-price-guide', category: 'guide' },
   { label: 'gold vs silver', href: '/gold-vs-silver-investment', category: 'comparison' },
-  
+
   // Silver keywords
-  { label: 'silver price today', href: '/', category: 'trend' },
-  { label: 'silver rate mumbai', href: '/silver/price-in/mumbai', category: 'city' },
-  { label: 'silver price per kg', href: '/silver/price-in/mumbai', category: 'metal' },
+  { label: 'silver price today', href: '/silver', category: 'trend' },
+  { label: 'silver price trends 2026', href: '/blog/silver-price-trends-india-2026', category: 'trend' },
   { label: 'silver investment', href: '/silver-investment-guide', category: 'guide' },
-  
+
   // Copper keywords
-  { label: 'copper price india', href: '/copper/price-in/mumbai', category: 'trend' },
-  { label: 'copper rate today', href: '/copper/price-in/mumbai', category: 'trend' },
-  { label: 'copper price per kg', href: '/copper/price-in/mumbai', category: 'metal' },
-  
-  // Platinum keywords
-  { label: 'platinum price today', href: '/platinum/price-in/mumbai', category: 'trend' },
-  { label: 'platinum rate mumbai', href: '/platinum/price-in/mumbai', category: 'city' },
-  
+  { label: 'copper price india', href: '/copper', category: 'trend' },
+  { label: 'copper price guide', href: '/copper-price-guide', category: 'guide' },
+  { label: 'copper industrial demand', href: '/blog/copper-price-india-guide-industrial-demand', category: 'metal' },
+
+  // Platinum / palladium keywords
+  { label: 'platinum price today', href: '/platinum', category: 'trend' },
+  { label: 'platinum & palladium prices', href: '/blog/platinum-palladium-prices-india-guide', category: 'guide' },
+  { label: 'palladium price today', href: '/palladium', category: 'trend' },
+
   // Guide and comparison keywords
   { label: 'best cities to buy gold', href: '/best-cities-to-buy-gold', category: 'guide' },
-  { label: '24k vs 22k gold', href: '/24k-vs-22k-vs-18k-gold', category: 'comparison' },
   { label: 'gold price trends 2025', href: '/gold-price-trends-2025', category: 'trend' },
-  { label: 'gold rate kolkata', href: '/gold/price-in/kolkata', category: 'city' },
-  { label: 'gold rate chennai', href: '/gold/price-in/chennai', category: 'city' },
-  { label: 'gold rate hyderabad', href: '/gold/price-in/hyderabad', category: 'city' },
+  { label: 'sovereign gold bonds vs physical', href: '/blog/sovereign-gold-bonds-vs-physical-gold-india', category: 'comparison' },
+  { label: 'gst on gold jewellery', href: '/blog/gst-on-gold-jewelry-india-explained', category: 'guide' },
 ];
 
 interface TrendingKeywordsProps {

@@ -468,18 +468,6 @@ export default function MetalPageClient({ metal, initialCity, initialData }: Met
             ) : null}
 
             <section className="mb-8 content-card p-6 sm:p-8">
-              <h2 className="section-title mb-4">{metalName} Prices in Other Cities</h2>
-              <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">Compare across major Indian cities.</p>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-                {FALLBACK_CITIES.filter((c) => c !== selectedCity).slice(0, 12).map((otherCity) => (
-                  <Link key={otherCity} href={`/${metal}/price-in/${otherCity}`} className="px-4 py-2.5 bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-amber-50 dark:hover:bg-amber-950/20 hover:border-amber-300 dark:hover:border-amber-700/50 text-center transition-colors">
-                    {formatCityName(otherCity)}
-                  </Link>
-                ))}
-              </div>
-            </section>
-
-            <section className="mb-8 content-card p-6 sm:p-8">
               <h2 className="section-title mb-4">Other Metal Prices</h2>
               <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">View live prices for other metals.</p>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
@@ -494,16 +482,16 @@ export default function MetalPageClient({ metal, initialCity, initialData }: Met
             <section className="mb-8 content-card p-6 sm:p-8">
               <h2 className="section-title mb-4">Explore {metalName} by Intent</h2>
               <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
-                Move between live rates, city pages, and editorial explainers depending on whether you are comparing a quote, researching a purchase, or tracking the broader market.
+                Move between live rates, in-depth guides, and editorial explainers depending on whether you are comparing a quote, researching a purchase, or tracking the broader market.
               </p>
               <div className="grid gap-3 md:grid-cols-2">
-                <Link href="/cities" className="rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:border-amber-300 dark:hover:border-amber-700 transition-colors">
-                  <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Browse all city pages</h3>
-                  <p className="text-sm text-slate-600 dark:text-slate-400">Use the city index when you want to compare local benchmarks before opening a metal-specific page.</p>
-                </Link>
                 <Link href="/guides" className="rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:border-amber-300 dark:hover:border-amber-700 transition-colors">
                   <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Open the guides hub</h3>
                   <p className="text-sm text-slate-600 dark:text-slate-400">Jump into deeper explainers on purity, taxes, investment use cases, and city differences.</p>
+                </Link>
+                <Link href="/blog" className="rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:border-amber-300 dark:hover:border-amber-700 transition-colors">
+                  <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Read the blog</h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">Long-form articles on price trends, buying decisions, taxes, and market context.</p>
                 </Link>
                 {GUIDE_PAGES.filter((page) => page.metal === metal || page.metals?.includes(metal)).slice(0, 2).map((page) => (
                   <Link key={page.href} href={page.href} className="rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:border-amber-300 dark:hover:border-amber-700 transition-colors">

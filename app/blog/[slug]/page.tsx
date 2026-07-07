@@ -317,7 +317,7 @@ That formula is a good starting point, but in practice you should also ask wheth
 ## Step-by-Step Guide
 
 ### Step 1: Check Current Gold Rate
-Visit MetalView to check current gold prices in your city. Gold rates vary by purity (24K, 22K, 18K) and update daily based on market conditions. Check the latest rates at /gold/price-in/mumbai or your city.
+Visit MetalView to check the current gold benchmark. Gold rates vary by purity (24K, 22K, 18K) and update daily based on market conditions. Check the latest live rate on our gold price page before comparing a local quote.
 
 ### Step 2: Determine the Weight
 Measure the gold weight in grams. Common weights include 1gm, 8gm, 10gm, 12gm (Tola), 25gm, 50gm, and 100gm. Ensure accurate weighing using certified scales.
@@ -1795,7 +1795,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 Get the live gold benchmark for this city with updated rates, history, and buying context.
               </p>
               <Link
-                href={`/gold/price-in/${post.slug.replace('gold-price-in-', '')}`}
+                href="/gold"
                 className="inline-flex items-center gap-2 px-4 py-2 bg-amber-600 dark:bg-amber-700 text-white rounded-lg hover:bg-amber-700 dark:hover:bg-amber-800 transition-colors text-sm font-medium"
               >
                 View Live Gold Rate

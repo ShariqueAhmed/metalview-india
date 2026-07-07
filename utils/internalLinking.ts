@@ -3,15 +3,12 @@
  * Pulls from real routes/content metadata instead of sample placeholder pages.
  */
 
-import { formatCityName } from '@/utils/conversions';
 import {
   BLOG_PAGES,
-  CITY_HUB_PAGES,
   COMPARISON_PAGES,
   CONTENT_CATALOG,
   GUIDE_PAGES,
   METAL_HUB_PAGES,
-  PRIMARY_LINK_CITY_SLUGS,
   TREND_PAGES,
   type CatalogPage,
 } from '@/utils/contentCatalog';
@@ -85,112 +82,41 @@ export function getRelatedPages(currentPage: CurrentPage): RelatedPage[] {
   const normalizedMetal = isSupportedMetal(currentPage.metal)
     ? currentPage.metal
     : undefined;
-  const normalizedCity = currentPage.city?.toLowerCase();
 
-  if (currentPage.type === 'metal-city' && normalizedMetal && normalizedCity) {
-    PRIMARY_LINK_CITY_SLUGS.filter((city) => city !== normalizedCity)
-      .slice(0, 5)
-      .forEach((city) => {
-        pushUnique(related, {
-          title: `${normalizedMetal.charAt(0).toUpperCase() + normalizedMetal.slice(1)} Price in ${formatCityName(city)}`,
-          href: `/${normalizedMetal}/price-in/${city}`,
-          description: `Compare ${normalizedMetal} prices in ${formatCityName(city)} with ${formatCityName(normalizedCity)}.`,
-          score: 0.95,
-          type: 'metal-city',
-        });
-      });
-
-    SUPPORTED_METALS.filter((metal) => metal !== normalizedMetal)
-      .slice(0, 4)
-      .forEach((metal) => {
-        pushUnique(related, {
-          title: `${metal.charAt(0).toUpperCase() + metal.slice(1)} Price in ${formatCityName(normalizedCity)}`,
-          href: `/${metal}/price-in/${normalizedCity}`,
-          description: `See how ${metal} compares with ${normalizedMetal} in ${formatCityName(normalizedCity)}.`,
-          score: 0.9,
-          type: 'metal-city',
-        });
-      });
-
-    addCatalogPages(related, getSameMetalEditorialPages(normalizedMetal), 0.8, { limit: 4 });
-    addCatalogPages(related, getSameMetalBlogPages(normalizedMetal), 0.72, {
-      excludeSlug: currentPage.slug,
-      limit: 3,
-    });
-
-    pushUnique(related, {
-      title: `Metal Prices in ${formatCityName(normalizedCity)}`,
-      href: `/city/${normalizedCity}`,
-      description: `City-wide overview for all metal prices in ${formatCityName(normalizedCity)}.`,
-      score: 0.82,
-      type: 'city',
-    });
-  } else if (currentPage.type === 'metal-hub' && normalizedMetal) {
-    PRIMARY_LINK_CITY_SLUGS.slice(0, 6).forEach((city) => {
-      pushUnique(related, {
-        title: `${normalizedMetal.charAt(0).toUpperCase() + normalizedMetal.slice(1)} Price in ${formatCityName(city)}`,
-        href: `/${normalizedMetal}/price-in/${city}`,
-        description: `City-specific ${normalizedMetal} price page for ${formatCityName(city)}.`,
-        score: 0.92,
-        type: 'metal-city',
-      });
-    });
-
-    addCatalogPages(related, getSameMetalEditorialPages(normalizedMetal), 0.82, { limit: 5 });
-    addCatalogPages(related, getSameMetalBlogPages(normalizedMetal), 0.74, { limit: 3 });
-    addCatalogPages(related, CITY_HUB_PAGES.slice(0, 2), 0.66);
-  } else if (currentPage.type === 'city' && normalizedCity) {
-    SUPPORTED_METALS.forEach((metal) => {
-      pushUnique(related, {
-        title: `${metal.charAt(0).toUpperCase() + metal.slice(1)} Price in ${formatCityName(normalizedCity)}`,
-        href: `/${metal}/price-in/${normalizedCity}`,
-        description: `Metal-specific ${metal} rates for ${formatCityName(normalizedCity)}.`,
-        score: 0.9,
-        type: 'metal-city',
-      });
-    });
-
+  // AdSense hardening: recommendations only point to substantive, indexable
+  // editorial pages (metal hubs, guides, comparisons, trends, blog). Thin
+  // programmatic city / metal-city pages are intentionally NOT recommended so
+  // that reviewers and crawlers stay on high-value content. A final filter
+  // below guarantees no city / metal-city link can slip through.
+  if (normalizedMetal) {
     addCatalogPages(
       related,
-      BLOG_PAGES.filter((page) => page.city === normalizedCity),
-      0.78,
-      { excludeSlug: currentPage.slug, limit: 2 }
+      METAL_HUB_PAGES.filter((page) => page.metal === normalizedMetal),
+      0.9,
+      { limit: 1 }
     );
-    addCatalogPages(related, GUIDE_PAGES, 0.7, { limit: 3 });
-  } else if (
-    (currentPage.type === 'guide' || currentPage.type === 'comparison' || currentPage.type === 'trend' || currentPage.type === 'blog') &&
-    normalizedMetal
-  ) {
-    addCatalogPages(related, getSameMetalEditorialPages(normalizedMetal), 0.83, {
+    addCatalogPages(related, getSameMetalEditorialPages(normalizedMetal), 0.82, {
       excludeHref: CONTENT_CATALOG.find((page) => page.slug === currentPage.slug)?.href,
       excludeSlug: currentPage.slug,
       limit: 5,
     });
-    addCatalogPages(related, getSameMetalBlogPages(normalizedMetal), 0.72, {
-      excludeSlug: currentPage.slug,
+    addCatalogPages(related, getSameMetalBlogPages(normalizedMetal, currentPage.slug), 0.74, {
       limit: 3,
     });
-    addCatalogPages(related, METAL_HUB_PAGES.filter((page) => page.metal === normalizedMetal), 0.84, {
-      limit: 1,
-    });
-    PRIMARY_LINK_CITY_SLUGS.slice(0, 3).forEach((city) => {
-      pushUnique(related, {
-        title: `${normalizedMetal.charAt(0).toUpperCase() + normalizedMetal.slice(1)} Price in ${formatCityName(city)}`,
-        href: `/${normalizedMetal}/price-in/${city}`,
-        description: `City-specific ${normalizedMetal} benchmark page for ${formatCityName(city)}.`,
-        score: 0.68,
-        type: 'metal-city',
-      });
-    });
-  } else {
-    addCatalogPages(related, METAL_HUB_PAGES, 0.86, { limit: 3 });
-    addCatalogPages(related, GUIDE_PAGES, 0.8, { limit: 3 });
-    addCatalogPages(related, COMPARISON_PAGES, 0.76, { limit: 2 });
-    addCatalogPages(related, TREND_PAGES, 0.74, { limit: 2 });
-    addCatalogPages(related, CITY_HUB_PAGES, 0.68, { limit: 2 });
   }
 
-  return related.sort((a, b) => b.score - a.score).slice(0, 6);
+  // Always top up with evergreen, cross-topic editorial pages so the block
+  // stays full even when there is no metal context.
+  addCatalogPages(related, METAL_HUB_PAGES, 0.7, { limit: 3 });
+  addCatalogPages(related, GUIDE_PAGES, 0.68, { excludeSlug: currentPage.slug, limit: 3 });
+  addCatalogPages(related, COMPARISON_PAGES, 0.64, { excludeSlug: currentPage.slug, limit: 2 });
+  addCatalogPages(related, TREND_PAGES, 0.62, { excludeSlug: currentPage.slug, limit: 2 });
+  addCatalogPages(related, BLOG_PAGES, 0.58, { excludeSlug: currentPage.slug, limit: 3 });
+
+  return related
+    .filter((page) => page.type !== 'metal-city' && page.type !== 'city')
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 6);
 }
 
 export function getRelatedPagesForMetal(metal: string, excludeCity?: string): RelatedPage[] {

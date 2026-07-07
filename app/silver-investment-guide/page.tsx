@@ -164,7 +164,7 @@ export default function SilverInvestmentGuidePage() {
           {/* Quick Links Grid */}
           <div className="mb-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <Link
-              href="/silver/price-in/mumbai"
+              href="/silver"
               className="p-6 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200 card-shadow hover:card-shadow-hover group"
             >
               <div className="flex items-center gap-3 mb-3">
@@ -172,16 +172,16 @@ export default function SilverInvestmentGuidePage() {
                   <DollarSign className="w-5 h-5 text-slate-600 dark:text-slate-400" aria-hidden="true" />
                 </div>
                 <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-50 group-hover:text-slate-600 dark:group-hover:text-slate-400 transition-colors">
-                  Silver Price in Mumbai
+                  Live Silver Prices
                 </h3>
               </div>
               <p className="text-sm text-slate-600 dark:text-slate-400">
-                Live silver prices in Mumbai, India's largest trading hub
+                Today's benchmark silver rate with history and trend charts
               </p>
             </Link>
 
             <Link
-              href="/silver/price-in/delhi"
+              href="/blog/silver-price-trends-india-2026"
               className="p-6 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200 card-shadow hover:card-shadow-hover group"
             >
               <div className="flex items-center gap-3 mb-3">
@@ -189,16 +189,16 @@ export default function SilverInvestmentGuidePage() {
                   <Shield className="w-5 h-5 text-slate-600 dark:text-slate-400" aria-hidden="true" />
                 </div>
                 <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-50 group-hover:text-slate-600 dark:group-hover:text-slate-400 transition-colors">
-                  Silver Price in Delhi
+                  Silver Price Trends 2026
                 </h3>
               </div>
               <p className="text-sm text-slate-600 dark:text-slate-400">
-                Live silver prices in Delhi, India's capital
+                What is driving silver's moves and how to read them
               </p>
             </Link>
 
             <Link
-              href="/silver/price-in/bangalore"
+              href="/investment-guide"
               className="p-6 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200 card-shadow hover:card-shadow-hover group"
             >
               <div className="flex items-center gap-3 mb-3">
@@ -206,11 +206,11 @@ export default function SilverInvestmentGuidePage() {
                   <BookOpen className="w-5 h-5 text-slate-600 dark:text-slate-400" aria-hidden="true" />
                 </div>
                 <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-50 group-hover:text-slate-600 dark:group-hover:text-slate-400 transition-colors">
-                  Silver Price in Bangalore
+                  Metal Investment Guide
                 </h3>
               </div>
               <p className="text-sm text-slate-600 dark:text-slate-400">
-                Live silver prices in Bangalore
+                How silver fits alongside gold in a diversified plan
               </p>
             </Link>
 

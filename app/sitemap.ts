@@ -13,9 +13,7 @@ import { BLOG_SITEMAP_ENTRIES } from '@/utils/blogSitemapData';
 import { getSiteUrl } from '@/utils/siteUrl';
 import {
   SITEMAP_GUIDE_SLUGS,
-  SITEMAP_INDEXED_CITY_METALS,
   SITEMAP_METALS,
-  SITEMAP_TOP_CITIES,
 } from '@/utils/sitemapConstants';
 
 const BASE_URL = getSiteUrl();
@@ -23,23 +21,6 @@ const BASE_URL = getSiteUrl();
 const METALS = [...SITEMAP_METALS];
 
 const GUIDE_PAGES = SITEMAP_GUIDE_SLUGS.map((path) => ({ path, priority: 0.85 as const }));
-
-/** Fetch last updated for a city from API (cached). */
-async function getCityLastMod(city: string): Promise<Date> {
-  try {
-    const res = await fetch(`${BASE_URL}/api/metals?city=${encodeURIComponent(city)}`, {
-      next: { revalidate: 600 },
-      headers: { 'Content-Type': 'application/json' },
-    });
-    if (res.ok) {
-      const data = await res.json();
-      if (data.updated_at) return new Date(data.updated_at);
-    }
-  } catch {
-    // ignore
-  }
-  return new Date();
-}
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
@@ -69,13 +50,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: now,
     changeFrequency: 'weekly',
     priority: 0.9,
-  });
-
-  entries.push({
-    url: `${BASE_URL}/cities`,
-    lastModified: now,
-    changeFrequency: 'weekly',
-    priority: 0.86,
   });
 
   entries.push({
@@ -156,34 +130,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly',
       priority: 0.75,
     });
-  }
-
-  // —— Tier 5: City & metal–city URLs (with lastmod from API where possible) ——
-  const TOP_CITIES = [...SITEMAP_TOP_CITIES];
-  const cityDates = await Promise.all(
-    TOP_CITIES.map(async (city) => ({ city, date: await getCityLastMod(city) }))
-  ).then((list) => new Map(list.map(({ city, date }) => [city, date])));
-
-  for (const city of TOP_CITIES) {
-    const lastMod = cityDates.get(city) ?? now;
-    entries.push({
-      url: `${BASE_URL}/city/${city}`,
-      lastModified: lastMod,
-      changeFrequency: 'hourly',
-      priority: 0.88,
-    });
-  }
-
-  for (const city of TOP_CITIES) {
-    const lastMod = cityDates.get(city) ?? now;
-    for (const metal of SITEMAP_INDEXED_CITY_METALS) {
-      entries.push({
-        url: `${BASE_URL}/${metal}/price-in/${city}`,
-        lastModified: lastMod,
-        changeFrequency: 'hourly',
-        priority: 0.85,
-      });
-    }
   }
 
   return entries;

@@ -188,9 +188,9 @@ export default function CopperPriceGuidePage() {
               Where to Go Next
             </h2>
             <div className="grid gap-3 md:grid-cols-3">
-              <Link href="/cities" className="rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:border-orange-300 dark:hover:border-orange-700 transition-colors">
-                <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">City index</h3>
-                <p className="text-sm text-slate-600 dark:text-slate-400">Compare copper with other metals on city overview pages.</p>
+              <Link href="/copper" className="rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:border-orange-300 dark:hover:border-orange-700 transition-colors">
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Live copper prices</h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400">See the current benchmark copper rate with history and trend context.</p>
               </Link>
               <Link href="/guides" className="rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:border-orange-300 dark:hover:border-orange-700 transition-colors">
                 <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Guides hub</h3>

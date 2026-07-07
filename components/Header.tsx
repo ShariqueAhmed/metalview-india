@@ -20,7 +20,6 @@ const METAL_LINKS = [
 
 const SECONDARY_LINKS = [
   { href: '/guides', label: 'Guides' },
-  { href: '/cities', label: 'Cities' },
   { href: '/blog', label: 'Blog' },
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
