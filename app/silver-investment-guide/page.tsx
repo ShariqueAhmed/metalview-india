@@ -143,6 +143,20 @@ export default function SilverInvestmentGuidePage() {
               </ul>
 
               <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-3 mt-6">
+                Jewellery Versus Investment Purchases
+              </h3>
+              <p className="text-slate-600 dark:text-slate-400 mb-4">
+                Silver jewellery quotes often include making charges and design premiums that can outweigh small day-to-day moves in the kilogram rate. If your goal is gifting or adornment, evaluate craftsmanship and return policies the way you would for any retail product. If your goal is metal exposure, prefer clear weight, purity, and buy-back terms, and be cautious of ornate pieces marketed mainly as investments.
+              </p>
+              <p className="text-slate-600 dark:text-slate-400 mb-4">
+                Check the live benchmark on our{' '}
+                <Link href="/silver" className="text-amber-600 dark:text-amber-400 hover:underline font-medium">
+                  silver price page
+                </Link>
+                , convert units carefully (per kg versus per gram), and ask the seller to itemise metal value separately from fabrication.
+              </p>
+
+              <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-3 mt-6">
                 Practical Trade-Offs for Indian Buyers
               </h3>
               <ul className="list-disc list-inside text-slate-600 dark:text-slate-400 space-y-2 mb-4">
@@ -153,10 +167,24 @@ export default function SilverInvestmentGuidePage() {
               </ul>
 
               <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-3 mt-6">
+                Common Mistakes to Avoid
+              </h3>
+              <ul className="list-disc list-inside text-slate-600 dark:text-slate-400 space-y-2 mb-4">
+                <li>Comparing a jewellery quote with a wholesale per-kg board rate without adjusting for making charges</li>
+                <li>Assuming silver always moves like a smaller version of gold</li>
+                <li>Ignoring storage, purity documentation, and resale liquidity for larger holdings</li>
+                <li>Buying on short-term volatility without a clear holding purpose</li>
+              </ul>
+
+              <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-3 mt-6">
                 Who This Guide Helps Most
               </h3>
               <p className="text-slate-600 dark:text-slate-400 mb-0">
-                This page is especially useful if you are considering your first physical silver purchase, comparing silver with gold for diversification, or trying to understand why silver prices can move more abruptly than headline “safe-haven” narratives suggest.
+                This page is especially useful if you are considering your first physical silver purchase, comparing silver with gold for diversification, or trying to understand why silver prices can move more abruptly than headline “safe-haven” narratives suggest. For how we source and refresh rates, see{' '}
+                <Link href="/methodology" className="text-amber-600 dark:text-amber-400 hover:underline font-medium">
+                  Methodology
+                </Link>
+                .
               </p>
             </div>
           </div>

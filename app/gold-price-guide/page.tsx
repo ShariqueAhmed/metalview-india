@@ -163,10 +163,35 @@ export default function GoldPriceGuidePage() {
               </ul>
 
               <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-3 mt-6">
+                Worked Example: Reading a Jewellery Quote
+              </h3>
+              <p className="text-slate-600 dark:text-slate-400 mb-4">
+                Suppose a shop quotes 22K gold at a familiar per-10g board rate and offers a 10-gram necklace. The metal line is only the starting point. If making charges are 12% of the metal value, and GST applies on the taxable value under current rules, your payable total can be meaningfully higher than “10 grams × board rate.” Ask the jeweller to print metal value, making charges, and tax as separate lines so you can compare shops on the same basis.
+              </p>
+              <p className="text-slate-600 dark:text-slate-400 mb-4">
+                For coins or bars, the arithmetic is usually simpler, but premiums still matter. A “low making charge” jewellery pitch is not automatically cheaper than a coin once you adjust for purity, resale liquidity, and whether you actually want wearable gold.
+              </p>
+
+              <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-3 mt-6">
+                Live Rates and Deeper Guides
+              </h3>
+              <p className="text-slate-600 dark:text-slate-400 mb-4">
+                Check the live benchmark on our{' '}
+                <Link href="/gold" className="text-amber-600 dark:text-amber-400 hover:underline font-medium">
+                  gold price page
+                </Link>
+                , then use the linked explainers below for purity, trends, and bill calculation. MetalView publishes indicative references plus editorial context; your seller’s invoice is the commercial offer.
+              </p>
+
+              <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-3 mt-6">
                 When This Guide Is Most Useful
               </h3>
               <p className="text-slate-600 dark:text-slate-400 mb-0">
-                Use this guide when you are comparing jewellery quotes, thinking about buying coins or bars, tracking prices before a family purchase, or trying to understand why Mumbai, Delhi, Chennai, and other city pages do not always show exactly the same effective buying cost.
+                Use this guide when you are comparing jewellery quotes, thinking about buying coins or bars, tracking prices before a family purchase, or trying to understand why Mumbai, Delhi, Chennai, and other city pages do not always show exactly the same effective buying cost. For sourcing and update rules, see our{' '}
+                <Link href="/methodology" className="text-amber-600 dark:text-amber-400 hover:underline font-medium">
+                  Methodology
+                </Link>{' '}
+                page.
               </p>
             </div>
           </div>

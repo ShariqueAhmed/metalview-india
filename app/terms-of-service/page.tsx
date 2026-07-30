@@ -53,7 +53,7 @@ export default function TermsOfServicePage() {
                 <strong className="text-slate-900 dark:text-slate-50">Not Financial Advice:</strong> All information, data, and prices provided on MetalView India are for informational and educational purposes only. We are not a registered investment advisor, broker-dealer, or financial analyst. Nothing contained on the site constitutes a recommendation or solicitation to buy or sell any precious metal or financial instrument.
               </p>
               <p className="leading-relaxed">
-                <strong className="text-slate-900 dark:text-slate-50">Indicative Prices:</strong> While we strive to provide accurate, real-time data sourced from reputable financial APIs (such as Angel One), prices are strictly indicative. The actual price you pay or receive for gold, silver, copper, platinum, or palladium may vary significantly due to local dealer premiums, making charges, GST, and market fluctuations. Always verify current prices with a professional offline dealer before executing any transactions.
+                <strong className="text-slate-900 dark:text-slate-50">Indicative Prices:</strong> While we strive to provide accurate, real-time data sourced from reputable financial market feeds, prices are strictly indicative. The actual price you pay or receive for gold, silver, copper, platinum, or palladium may vary significantly due to local dealer premiums, making charges, GST, and market fluctuations. Always verify current prices with a professional offline dealer before executing any transactions.
               </p>
             </div>
           </section>

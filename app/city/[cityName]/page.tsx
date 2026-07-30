@@ -582,7 +582,7 @@ export default async function CityOverviewPage({ params }: CityPageProps) {
               <div>
                 <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Source mix</h3>
                 <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                  Gold and silver benchmarks come from Angel One city feeds, while copper, platinum, and palladium are drawn from trusted commodity data sources used for market tracking.
+                  Gold and silver benchmarks come from licensed city-level market feeds, while copper, platinum, and palladium are drawn from trusted commodity data sources used for market tracking.
                 </p>
               </div>
               <div>

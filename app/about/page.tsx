@@ -53,7 +53,7 @@ const SECTIONS = [
     iconColor: 'text-sky-600 dark:text-sky-400',
     content: (
       <>
-        <p>Our gold and silver prices are sourced from Angel One (AngelOne), a trusted financial services platform in India. We use their public APIs to fetch live rates for multiple cities and purities (e.g. 24K, 22K, 18K gold). Copper prices are sourced from established financial data providers. Platinum and palladium rates are obtained from reliable commodity data sources. We do not set or manipulate prices; we aggregate and display them for your convenience.</p>
+        <p>Gold and silver benchmarks are sourced from licensed city-level market feeds used for consumer rate comparison in India. Copper prices come from established commodity data providers. Platinum and palladium rates are obtained from specialised commodity sources. We do not set or manipulate prices; we aggregate and display indicative benchmarks for your convenience, alongside editorial guides that explain how to interpret them.</p>
         <p>Prices are typically updated every few minutes during market hours. You&apos;ll see a &quot;Last updated&quot; timestamp on each page so you know how fresh the data is. Rates can change quickly, so we always recommend confirming with your dealer or broker before making a purchase or investment decision.</p>
       </>
     ),

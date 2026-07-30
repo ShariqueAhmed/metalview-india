@@ -229,6 +229,42 @@ export default function HomeClient({ prices }: HomeClientProps) {
         </section>
 
         <section className="mb-10 sm:mb-12 content-card p-5 sm:p-6 lg:p-7">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-50 mb-3">
+            How to Use Today&apos;s Metal Prices on MetalView
+          </h2>
+          <div className="space-y-4 text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed">
+            <p>
+              Start with the metal you care about—gold, silver, copper, platinum, or palladium—and open its dedicated page. Each hub shows today&apos;s benchmark, recent history, and short explainers so you can see whether the market moved, not only what the headline number is. Use the unit labels carefully: Indian gold is often quoted per 10 grams, silver per kilogram, and jewellery bills still need making charges and GST on top.
+            </p>
+            <p>
+              Next, separate the <strong className="font-semibold text-slate-800 dark:text-slate-200">benchmark</strong> from the <strong className="font-semibold text-slate-800 dark:text-slate-200">payable bill</strong>. A 22K necklace quote is not &quot;the gold rate&quot; alone; it is metal value plus workmanship, wastage policies, taxes, and sometimes stone or design premiums. Coins and bars usually track the metal more closely but still carry mint or dealer premiums. Industrial copper quotes may follow a different convention than jewellery silver.
+            </p>
+            <p>
+              Then read one editorial guide before you negotiate. Our{' '}
+              <Link href="/gold-price-guide" className="font-medium text-amber-600 dark:text-amber-400 hover:underline">
+                Gold Price Guide
+              </Link>
+              ,{' '}
+              <Link href="/24k-vs-22k-vs-18k-gold" className="font-medium text-amber-600 dark:text-amber-400 hover:underline">
+                24K vs 22K vs 18K
+              </Link>
+              , and{' '}
+              <Link href="/silver-investment-guide" className="font-medium text-amber-600 dark:text-amber-400 hover:underline">
+                Silver Investment Guide
+              </Link>{' '}
+              explain purity, invoice line items, and common mistakes. The{' '}
+              <Link href="/blog" className="font-medium text-amber-600 dark:text-amber-400 hover:underline">
+                blog
+              </Link>{' '}
+              adds longer explainers on taxes, trends, and buying decisions. Methodology and corrections pages document how we source rates and how to challenge an unclear claim.
+            </p>
+            <p>
+              Finally, confirm offline. Ask the seller for purity or hallmark details, making charges as a percentage or flat fee, GST treatment, and whether the quoted rate is for the same unit you saw online. If two quotes differ mainly on making charges rather than the metal line, you are comparing craftsmanship and retail margin—not &quot;different gold prices.&quot;
+            </p>
+          </div>
+        </section>
+
+        <section className="mb-10 sm:mb-12 content-card p-5 sm:p-6 lg:p-7">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between mb-5">
             <div>
               <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-50">

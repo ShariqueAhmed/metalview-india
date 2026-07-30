@@ -28,7 +28,7 @@ export default function Footer() {
             any purchase decisions.
           </p>
           <p className="text-xs text-slate-500 dark:text-slate-500 mt-4">
-            Data Sources: Angel One (gold, silver), commodity data providers (copper, platinum, palladium). Not financial advice.
+            Not financial advice.
           </p>
           <div className="mt-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-3 text-xs sm:gap-x-6 sm:gap-y-2">
             <Link

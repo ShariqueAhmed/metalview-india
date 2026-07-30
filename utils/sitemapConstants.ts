@@ -48,6 +48,7 @@ export const SITEMAP_INDEXED_CITY_METALS = ['gold', 'silver'] as const;
 /** Guide routes that exist under app/ (see /guides for the index). */
 export const SITEMAP_GUIDE_SLUGS = [
   'gold-price-guide',
+  'gold-price-calculator',
   'silver-investment-guide',
   'copper-price-guide',
   'platinum-price-guide',

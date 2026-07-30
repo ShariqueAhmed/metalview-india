@@ -34,6 +34,14 @@ export const GUIDE_PAGES: CatalogPage[] = [
     slug: 'gold-price-guide',
   },
   {
+    title: 'Gold Price Calculator',
+    href: '/gold-price-calculator',
+    description: 'Estimate the final gold bill in India from the live benchmark, including making charges and GST.',
+    type: 'guide',
+    metal: 'gold',
+    slug: 'gold-price-calculator',
+  },
+  {
     title: 'Silver Investment Guide',
     href: '/silver-investment-guide',
     description: 'Guide to silver prices, investment use cases, and how to compare silver rates responsibly.',

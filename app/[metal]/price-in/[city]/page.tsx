@@ -271,7 +271,7 @@ function getSourceSummary(metal: MetalType): string {
   switch (metal) {
     case 'gold':
     case 'silver':
-      return 'Angel One city-level benchmark feeds';
+      return 'licensed city-level benchmark feeds';
     case 'copper':
       return 'established financial market data feeds used for commodity tracking';
     case 'platinum':

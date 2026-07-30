@@ -35,6 +35,7 @@ import YouMayAlsoLike from '@/components/YouMayAlsoLike';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { AlertCircle } from 'lucide-react';
 import { GUIDE_PAGES } from '@/utils/contentCatalog';
+import { getMetalEditorialContent } from '@/utils/metalEditorialContent';
 
 const ChartSection = dynamic(() => import('@/components/ChartSection'), {
   loading: () => (
@@ -122,7 +123,7 @@ function getSourceLabel(metal: MetalType): string {
   switch (metal) {
     case 'gold':
     case 'silver':
-      return 'Angel One city-level feeds';
+      return 'licensed city-level market feeds';
     case 'copper':
       return 'established financial market data feeds';
     case 'platinum':
@@ -226,14 +227,52 @@ export default function MetalPageClient({ metal, initialCity, initialData }: Met
     const priceValue = data?.[priceKey as keyof MetalsData];
     const isValidPrice = typeof priceValue === 'number' && !isNaN(priceValue);
     const unit = metal === 'gold' || metal === 'platinum' || metal === 'palladium' ? '10 grams' : 'kilogram';
+    const metalLabel = metal.charAt(0).toUpperCase() + metal.slice(1);
     const base = [
-      { question: `What is the current ${metal} price in ${cityName}?`, answer: isValidPrice ? `The current ${metal} price in ${cityName} is ₹${(priceValue as number).toLocaleString('en-IN')} per ${unit}.` : `Check the current ${metal} price in ${cityName} above.` },
-      { question: `How often are ${metal} prices updated?`, answer: `${metal.charAt(0).toUpperCase() + metal.slice(1)} prices on MetalView are updated in real-time.` },
-      { question: `What factors affect ${metal} prices in India?`, answer: `International rates, USD/INR, import duties, demand, and government policies.` },
+      {
+        question: `What is the current ${metal} price in ${cityName}?`,
+        answer: isValidPrice
+          ? `The current ${metal} benchmark in ${cityName} is ₹${(priceValue as number).toLocaleString('en-IN')} per ${unit}. Treat this as a market reference, then confirm purity, charges, taxes, and availability with your seller.`
+          : `Check the current ${metal} benchmark for ${cityName} on this page. Always verify the final payable quote offline.`,
+      },
+      {
+        question: `How often are ${metal} prices updated on MetalView?`,
+        answer: `${metalLabel} benchmarks on MetalView refresh from market data feeds during the day. Each price page shows a last-updated timestamp when data is available so you can judge freshness.`,
+      },
+      {
+        question: `Is the ${metal} rate on MetalView the same as a shop bill?`,
+        answer: `No. The live figure is an indicative benchmark. Jewellery and retail quotes usually add making or fabrication charges, taxes, premiums, and product-specific costs. Compare final invoices, not board rates alone.`,
+      },
+      {
+        question: `What factors affect ${metal} prices in India?`,
+        answer: `International market rates, the USD/INR exchange rate, import duties and taxes, domestic demand, and local dealer practices all influence what buyers see. Industrial metals also respond to manufacturing and infrastructure cycles.`,
+      },
     ];
     if (metal === 'gold') {
-      base.push({ question: 'What is the difference between 24K, 22K, and 18K gold?', answer: '24K is 99.9% pure; 22K is 91.6% (common for jewelry in India); 18K is 75% pure.' });
-      base.push({ question: 'Is gold a good investment?', answer: 'Gold can be a hedge against inflation. Consider your goals and consult a financial advisor.' });
+      base.push({
+        question: 'What is the difference between 24K, 22K, and 18K gold?',
+        answer:
+          '24K is about 99.9% pure and is common for coins and bars. 22K is about 91.6% pure and dominates traditional Indian jewellery. 18K is 75% pure and is often used for diamond-set or international-style designs. Compare like with like when reading quotes.',
+      });
+      base.push({
+        question: 'How should I use today’s gold rate before buying jewellery?',
+        answer:
+          'Note the purity and unit (per gram vs per 10g), ask for making charges and GST as separate lines, confirm hallmarking, and compare the full bill across shops. Use our Gold Price Guide for a longer walkthrough.',
+      });
+    }
+    if (metal === 'silver') {
+      base.push({
+        question: 'Why is silver often quoted per kilogram?',
+        answer:
+          'Wholesale and investment conversations in India commonly use ₹ per kilogram. Jewellery and small gifts may still be sold by gram or by piece—convert carefully and ask which unit the seller’s board uses.',
+      });
+    }
+    if (metal === 'copper') {
+      base.push({
+        question: 'Is the copper price meant for jewellery buyers?',
+        answer:
+          'Copper on MetalView is primarily an industrial and market-tracking benchmark. Align supplier quotes on grade, form, delivery, and taxes before treating any headline number as a purchase price.',
+      });
     }
     return base;
   }, [data, metal, selectedCity]);
@@ -329,6 +368,43 @@ export default function MetalPageClient({ metal, initialCity, initialData }: Met
             </div>
           </div>
         </section>
+
+        {(() => {
+          const editorial = getMetalEditorialContent(metal);
+          return (
+            <section className="mb-8 content-card p-6 sm:p-8">
+              <h2 className="section-title mb-3">{editorial.title}</h2>
+              <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed mb-5">
+                {editorial.intro}
+              </p>
+              <div className="space-y-5">
+                {editorial.sections.map((section) => (
+                  <div key={section.heading}>
+                    <h3 className="text-base font-semibold text-slate-900 dark:text-slate-50 mb-2">
+                      {section.heading}
+                    </h3>
+                    <div className="space-y-3 text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed">
+                      {section.paragraphs.map((paragraph) => (
+                        <p key={paragraph.slice(0, 48)}>{paragraph}</p>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-5 flex flex-wrap gap-3">
+                {editorial.guideLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="text-sm font-semibold text-amber-600 dark:text-amber-400 hover:underline"
+                  >
+                    {link.label} →
+                  </Link>
+                ))}
+              </div>
+            </section>
+          );
+        })()}
 
         {error && (
           <div className="mb-6 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800/50 rounded-xl p-4 flex items-start gap-3">

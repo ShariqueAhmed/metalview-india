@@ -8,7 +8,7 @@ import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/Breadcrumbs';
-import { BookOpen, BarChart3, DollarSign, MapPin, Award, FileText, ArrowRight, Sparkles } from 'lucide-react';
+import { BookOpen, BarChart3, DollarSign, MapPin, Award, FileText, ArrowRight, Sparkles, Calculator } from 'lucide-react';
 import { getSiteUrl } from '@/utils/siteUrl';
 
 const SITE_URL = getSiteUrl();
@@ -44,6 +44,14 @@ const GUIDE_LINKS = [
     icon: Award,
     category: 'Gold',
     accent: 'from-amber-400 to-yellow-500',
+  },
+  {
+    href: '/gold-price-calculator',
+    title: 'Gold Price Calculator',
+    description: 'Interactive tool to estimate the final gold bill in India — enter weight, purity, and making charges to see metal value plus 3% GST from the live benchmark.',
+    icon: Calculator,
+    category: 'Gold',
+    accent: 'from-amber-400 to-orange-500',
   },
   {
     href: '/silver-investment-guide',
