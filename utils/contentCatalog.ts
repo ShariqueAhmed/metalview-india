@@ -133,7 +133,9 @@ function inferBlogCity(post: (typeof blogIndexPosts)[number]): string | undefine
   return SUPPORTED_CITY_SLUGS.find((city) => post.slug.includes(city));
 }
 
-export const BLOG_PAGES: CatalogPage[] = blogIndexPosts.map((post) => {
+export const BLOG_PAGES: CatalogPage[] = blogIndexPosts
+  .filter((post) => post.indexed !== false)
+  .map((post) => {
   const metals = inferBlogMetals(post);
   const primaryMetal = metals[0];
   const city = inferBlogCity(post);

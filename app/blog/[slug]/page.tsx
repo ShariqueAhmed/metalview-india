@@ -7,6 +7,8 @@ import { generateHowToSchema } from '@/utils/howToSchema';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { getSiteUrl } from '@/utils/siteUrl';
 import { renderInlineMarkdown } from '@/components/InlineMarkdown';
+import { blogIndexPosts } from '@/utils/blogIndexPosts';
+import { expandedBlogBodies } from '@/utils/expandedBlogBodies';
 
 interface BlogPost {
   slug: string;
@@ -1423,7 +1425,19 @@ Thank you for using MetalView as part of your research.
   },
 };
 
-const REVIEW_DATE = '2026-04-10';
+// Prefer expanded long-form bodies for AdSense / thin-content hardening.
+for (const [slug, body] of Object.entries(expandedBlogBodies)) {
+  if (blogPosts[slug]) {
+    const wordCount = body.trim().split(/\s+/).length;
+    blogPosts[slug] = {
+      ...blogPosts[slug],
+      content: `\n${body}\n`,
+      readTime: `${Math.max(6, Math.ceil(wordCount / 200))} min read`,
+    };
+  }
+}
+
+const REVIEW_DATE = '2026-07-30';
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
@@ -1442,10 +1456,22 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   const baseUrl = getSiteUrl();
   const postUrl = `/blog/${slug}`;
   const publishedTime = new Date(post.date).toISOString();
+  const indexMeta = blogIndexPosts.find((entry) => entry.slug === slug);
+  const shouldIndex = indexMeta?.indexed !== false;
 
   return {
     title: `${post.title} | MetalView Blog`,
     description: post.excerpt,
+    robots: shouldIndex
+      ? undefined
+      : {
+          index: false,
+          follow: true,
+          googleBot: {
+            index: false,
+            follow: true,
+          },
+        },
     alternates: {
       canonical: postUrl,
     },

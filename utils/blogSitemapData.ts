@@ -1,9 +1,9 @@
 /**
  * Blog slugs + dates for sitemap.xml and sitemap-blog.xml.
- * Derived from utils/blogIndexPosts.ts (same URLs as /blog). Add new posts there.
+ * Only indexable posts are submitted (city template posts are excluded).
  */
-import { blogIndexPosts } from './blogIndexPosts';
+import { indexableBlogPosts } from './blogIndexPosts';
 
-export const BLOG_SITEMAP_ENTRIES: { slug: string; date: string }[] = blogIndexPosts.map(
+export const BLOG_SITEMAP_ENTRIES: { slug: string; date: string }[] = indexableBlogPosts.map(
   ({ slug, date }) => ({ slug, date })
 );

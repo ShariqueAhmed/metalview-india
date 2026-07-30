@@ -71,8 +71,7 @@ function BlogCard({ post, variant }: { post: BlogIndexPost; variant: 'default' |
 }
 
 export default function BlogPage() {
-  const mainPosts = blogPosts.filter((p) => p.category !== 'City Guide');
-  const cityPosts = blogPosts.filter((p) => p.category === 'City Guide');
+  const mainPosts = blogPosts.filter((p) => p.indexed !== false && p.category !== 'City Guide');
 
   return (
     <div className="page-bg">
@@ -108,9 +107,9 @@ export default function BlogPage() {
               </p>
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">City-level perspective</h3>
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50 mb-1">Decision support</h3>
               <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                Localized explainers that help readers understand why pricing, demand, and buying behavior can differ across major Indian cities.
+                Longer explainers on investment formats, timing, and how to separate benchmark rates from the final bill you actually pay.
               </p>
             </div>
           </div>
@@ -169,13 +168,19 @@ export default function BlogPage() {
           </div>
         </section>
 
-        <section>
-          <h2 className="section-title mb-6">City-Specific Guides</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {cityPosts.map((post) => (
-              <BlogCard key={post.slug} post={post} variant="city" />
-            ))}
-          </div>
+        <section className="content-card p-6 sm:p-7">
+          <h2 className="section-title mb-3">Looking for City Context?</h2>
+          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed">
+            For live gold benchmarks and buying context, start with our{' '}
+            <Link href="/gold" className="font-medium text-amber-600 dark:text-amber-400 hover:underline">
+              gold price hub
+            </Link>
+            {' '}and the{' '}
+            <Link href="/guides" className="font-medium text-amber-600 dark:text-amber-400 hover:underline">
+              guides library
+            </Link>
+            . We focus the blog on deeper explainers rather than thin city template pages.
+          </p>
         </section>
       </main>
       <Footer />
