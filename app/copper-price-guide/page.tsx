@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import AuthorByline from '@/components/AuthorByline';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { Zap, Factory, TrendingUp, Scale } from 'lucide-react';
 import { getSiteUrl } from '@/utils/siteUrl';
@@ -84,6 +85,7 @@ export default function CopperPriceGuidePage() {
                 <p className="text-lg text-slate-600 dark:text-slate-400">
                   How copper prices work in India and how to use live benchmarks responsibly
                 </p>
+                <AuthorByline />
                 <p className="text-sm text-slate-500 dark:text-slate-500 mt-1">
                   Reviewed on April 30, 2026 by the MetalView editorial team
                 </p>

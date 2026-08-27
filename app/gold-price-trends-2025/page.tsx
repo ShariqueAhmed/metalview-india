@@ -7,6 +7,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import AuthorByline from '@/components/AuthorByline';
 import TopicClusterNav from '@/components/TopicClusterNav';
 import YouMayAlsoLike from '@/components/YouMayAlsoLike';
 import { TrendingUp, TrendingDown, BarChart3, Calendar, AlertCircle, DollarSign } from 'lucide-react';
@@ -92,6 +93,7 @@ export default async function GoldPriceTrends2025Page() {
                 <p className="text-lg text-slate-600 dark:text-slate-400">
                   Practical market context for Indian readers: what is moving gold, what could change next, and how to read trend talk more responsibly
                 </p>
+                <AuthorByline />
               </div>
             </div>
           </div>

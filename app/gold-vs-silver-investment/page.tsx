@@ -7,6 +7,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import AuthorByline from '@/components/AuthorByline';
 import { TrendingUp, TrendingDown, DollarSign, Award, BarChart3, Shield } from 'lucide-react';
 import { getSiteUrl } from '@/utils/siteUrl';
 
@@ -94,6 +95,7 @@ export default function GoldVsSilverInvestmentPage() {
             <p className="text-lg text-slate-600 dark:text-slate-400">
               A comprehensive comparison of gold and silver investments in India, including returns, risks, liquidity, and expert recommendations.
             </p>
+            <AuthorByline />
             <p className="text-sm text-slate-500 dark:text-slate-500 mt-2">
               Reviewed on April 9, 2026 by the MetalView editorial team
             </p>

@@ -7,6 +7,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import AuthorByline from '@/components/AuthorByline';
 import TopicClusterNav from '@/components/TopicClusterNav';
 import { MapPin, TrendingDown, Award, DollarSign, Shield } from 'lucide-react';
 import { formatCityName } from '@/utils/conversions';
@@ -102,6 +103,7 @@ export default function BestCitiesToBuyGoldPage() {
             <p className="text-lg text-slate-600 dark:text-slate-400">
               There is no single city that is always “best” for every gold buyer. What matters is how the benchmark rate, local competition, making charges, and final invoice come together in the city where you actually buy.
             </p>
+            <AuthorByline />
           </div>
 
           <section className="mb-12 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 p-6 sm:p-8 card-shadow">

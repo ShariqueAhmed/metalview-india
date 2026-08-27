@@ -8,6 +8,7 @@ import Footer from '@/components/Footer';
 import Link from 'next/link';
 import { Info, RefreshCw, Shield, BarChart3, BookOpen, Sparkles, Users, BadgeCheck, Mail } from 'lucide-react';
 import { getSiteUrl } from '@/utils/siteUrl';
+import { PRIMARY_AUTHOR } from '@/utils/authors';
 
 const SITE_URL = getSiteUrl();
 
@@ -95,8 +96,9 @@ const SECTIONS = [
     iconColor: 'text-violet-600 dark:text-violet-400',
     content: (
       <>
-        <p>MetalView is an independent Indian publishing project focused on metal-price transparency, educational explainers, and city-by-city market context. We are not a brokerage, jeweller, exchange, or investment advisory service. Our goal is to make daily metal prices easier to verify and understand for regular readers.</p>
-        <p>If you need to reach the team, you can contact us at <a href="mailto:metalviewofficial@gmail.com" className="text-amber-600 dark:text-amber-400 hover:underline">metalviewofficial@gmail.com</a>. We use this address for reader feedback, corrections, partnership queries, and data questions.</p>
+        <p>MetalView is founded and edited by <Link href={`/author/${PRIMARY_AUTHOR.slug}`} className="text-amber-600 dark:text-amber-400 hover:underline font-medium">Sharique Ansari</Link>. A senior software developer by profession, Sharique has followed Indian gold and silver prices for more than six years and built MetalView to make daily benchmark rates easier for regular buyers to read and interpret. He writes and reviews the site&apos;s guides personally.</p>
+        <p>MetalView is an independent Indian publishing project focused on metal-price transparency, educational explainers, and city-by-city market context. It is not a brokerage, jeweller, exchange, or investment advisory service, and it publishes reference information rather than personalised financial advice.</p>
+        <p>You can read more on <Link href={`/author/${PRIMARY_AUTHOR.slug}`} className="text-amber-600 dark:text-amber-400 hover:underline font-medium">Sharique&apos;s author page</Link> or reach the team at <a href="mailto:metalviewofficial@gmail.com" className="text-amber-600 dark:text-amber-400 hover:underline">metalviewofficial@gmail.com</a>. We use this address for reader feedback, corrections, partnership queries, and data questions.</p>
       </>
     ),
   },

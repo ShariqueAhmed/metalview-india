@@ -9,6 +9,7 @@ import { getSiteUrl } from '@/utils/siteUrl';
 import { renderInlineMarkdown } from '@/components/InlineMarkdown';
 import { blogIndexPosts } from '@/utils/blogIndexPosts';
 import { expandedBlogBodies } from '@/utils/expandedBlogBodies';
+import { PRIMARY_AUTHOR, getAuthorSchema, getBylineName, hasNamedAuthor } from '@/utils/authors';
 
 interface BlogPost {
   slug: string;
@@ -20,7 +21,6 @@ interface BlogPost {
   excerpt: string;
 }
 
-const EDITORIAL_AUTHOR = 'MetalView Editorial Desk';
 const REVIEW_TEAM = 'MetalView Research Desk';
 
 const blogPosts: Record<string, BlogPost> = {
@@ -1482,7 +1482,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       url: `${baseUrl}${postUrl}`,
       siteName: 'MetalView',
       publishedTime,
-      authors: [EDITORIAL_AUTHOR],
+      authors: [getBylineName()],
       section: post.category,
       images: [
         {
@@ -1679,11 +1679,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         height: 630,
       },
     ],
-    author: {
-      '@type': 'Organization',
-      name: EDITORIAL_AUTHOR,
-      url: baseUrl,
-    },
+    author: getAuthorSchema(baseUrl),
     publisher: {
       '@type': 'Organization',
       name: 'MetalView India',
@@ -1768,7 +1764,15 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <div className="mb-8 grid gap-4 md:grid-cols-3">
             <div className="rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-950/30 p-4">
               <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-1">Written By</p>
-              <p className="text-sm font-medium text-slate-900 dark:text-white">{EDITORIAL_AUTHOR}</p>
+              <p className="text-sm font-medium text-slate-900 dark:text-white">
+                {hasNamedAuthor() ? (
+                  <Link href={`/author/${PRIMARY_AUTHOR.slug}`} className="hover:text-amber-600 dark:hover:text-amber-400">
+                    {getBylineName()}
+                  </Link>
+                ) : (
+                  getBylineName()
+                )}
+              </p>
             </div>
             <div className="rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-950/30 p-4">
               <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-1">Reviewed By</p>
@@ -1833,6 +1837,26 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <div className="prose prose-amber dark:prose-invert max-w-none">
             {renderArticleContent(post.content)}
           </div>
+
+          {hasNamedAuthor() && (
+            <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-800">
+              <div className="flex items-start gap-4 rounded-lg border border-gray-200 dark:border-gray-800 bg-gray-50/70 dark:bg-gray-900/40 p-5">
+                <div className="w-12 h-12 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center flex-shrink-0">
+                  <span className="text-lg font-bold text-amber-700 dark:text-amber-400">{PRIMARY_AUTHOR.name.charAt(0)}</span>
+                </div>
+                <div>
+                  <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-0.5">About the author</p>
+                  <p className="text-sm font-semibold text-gray-900 dark:text-white">
+                    <Link href={`/author/${PRIMARY_AUTHOR.slug}`} className="hover:text-amber-600 dark:hover:text-amber-400">
+                      {PRIMARY_AUTHOR.name}
+                    </Link>
+                    <span className="font-normal text-gray-500 dark:text-gray-400"> — {PRIMARY_AUTHOR.role}</span>
+                  </p>
+                  <p className="mt-1 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{PRIMARY_AUTHOR.bio}</p>
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-800">
             <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Check live metal prices</p>

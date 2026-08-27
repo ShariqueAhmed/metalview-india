@@ -7,6 +7,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import AuthorByline from '@/components/AuthorByline';
 import TopicClusterNav from '@/components/TopicClusterNav';
 import { Award, Gem, Sparkles, TrendingUp, Shield, AlertCircle } from 'lucide-react';
 import { getSiteUrl } from '@/utils/siteUrl';
@@ -88,6 +89,7 @@ export default function GoldPurityComparisonPage() {
             <p className="text-lg text-slate-600 dark:text-slate-400">
               Understand the differences between gold purities, their uses, prices, and which is best for investment vs jewelry.
             </p>
+            <AuthorByline />
           </div>
 
           {/* Comparison Table */}

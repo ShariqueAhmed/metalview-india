@@ -7,6 +7,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import AuthorByline from '@/components/AuthorByline';
 import TopicClusterNav from '@/components/TopicClusterNav';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { Award, TrendingUp, BookOpen, DollarSign, Shield, BarChart3 } from 'lucide-react';
@@ -94,6 +95,7 @@ export default function GoldPriceGuidePage() {
                 <p className="text-lg text-slate-600 dark:text-slate-400">
                   Complete guide to gold prices, purity, and investment in India
                 </p>
+                <AuthorByline />
                 <p className="text-sm text-slate-500 dark:text-slate-500 mt-1">
                   Reviewed on April 9, 2026 by the MetalView editorial team
                 </p>
