@@ -20,6 +20,7 @@ const METAL_LINKS = [
 
 const SECONDARY_LINKS = [
   { href: '/guides', label: 'Guides' },
+  { href: '/gold-price-calculator', label: 'Calculator' },
   { href: '/blog', label: 'Blog' },
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
