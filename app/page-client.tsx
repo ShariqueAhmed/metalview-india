@@ -8,7 +8,7 @@
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { Award, DollarSign, Zap, Gem, ArrowRight, Sparkles } from 'lucide-react';
+import { Award, DollarSign, Zap, Gem, ArrowRight, Sparkles, Calculator } from 'lucide-react';
 import { GUIDE_PAGES } from '@/utils/contentCatalog';
 import { formatIndianCurrency } from '@/utils/conversions';
 import type { HomeMetalPrices } from './page';
@@ -183,6 +183,28 @@ export default function HomeClient({ prices }: HomeClientProps) {
                       </Link>
                     );
                   })}
+        </section>
+
+        {/* Gold price calculator tool callout */}
+        <section className="mt-8 sm:mt-10">
+          <Link
+            href="/gold-price-calculator"
+            className="group flex items-center gap-4 rounded-2xl border-2 border-amber-200/80 dark:border-amber-500/30 bg-amber-500/10 dark:bg-amber-400/5 p-5 sm:p-6 hover:border-amber-400 dark:hover:border-amber-400/60 transition-colors"
+          >
+            <div className="inline-flex w-12 h-12 rounded-xl items-center justify-center bg-gradient-to-br from-amber-500 to-yellow-600 dark:from-amber-400 dark:to-amber-600 flex-shrink-0">
+              <Calculator className="w-6 h-6 text-white" strokeWidth={2} aria-hidden />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h2 className="text-lg font-bold text-slate-900 dark:text-slate-50 mb-1">Gold Price Calculator</h2>
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                Estimate the final bill for 24K, 22K, or 18K gold — metal value plus making charges and 3% GST — from today&apos;s live rate.
+              </p>
+            </div>
+            <span className="hidden sm:inline-flex items-center gap-2 text-sm font-semibold text-amber-600 dark:text-amber-400 group-hover:gap-3 transition-all flex-shrink-0">
+              Open calculator
+              <ArrowRight className="w-4 h-4" aria-hidden />
+            </span>
+          </Link>
         </section>
 
         <section className="mt-10 sm:mt-12 mb-10 sm:mb-12 content-card p-5 sm:p-6 lg:p-7">
